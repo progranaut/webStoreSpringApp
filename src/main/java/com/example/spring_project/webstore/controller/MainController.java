@@ -1,4 +1,4 @@
-package com.example.spring_project.security.controller;
+package com.example.spring_project.webstore.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

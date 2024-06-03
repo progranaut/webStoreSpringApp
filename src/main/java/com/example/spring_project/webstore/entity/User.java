@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -31,7 +32,13 @@ public class User {
     private String address;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "security_user_id")
     private SecurityUser securityUser;
+
+    @JoinTable(name = "user_product_relation",
+              joinColumns = @JoinColumn(name = "user_id"),
+              inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Product> basket;
 
 }

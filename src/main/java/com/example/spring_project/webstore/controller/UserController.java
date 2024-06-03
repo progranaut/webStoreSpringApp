@@ -3,10 +3,7 @@ package com.example.spring_project.webstore.controller;
 import com.example.spring_project.webstore.dto.UserDto;
 import com.example.spring_project.webstore.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +15,16 @@ public class UserController {
     @PostMapping("/add")
     public void addUser(@RequestBody UserDto userDto) {
         userService.addUser(userDto);
+    }
+
+    @PostMapping("/change")
+    public void changeUser(@RequestBody UserDto userDto) {
+        userService.changeUser(userDto);
+    }
+
+    @GetMapping("/current-user-name")
+    public String userName() {
+        return userService.getCurrentUserName();
     }
 
 }
