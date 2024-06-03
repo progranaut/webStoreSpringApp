@@ -5,9 +5,11 @@ import com.example.spring_project.webstore.entity.Product;
 import com.example.spring_project.webstore.mapper.ProductMapper;
 import com.example.spring_project.webstore.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,4 +36,10 @@ public class ProductService {
 
     }
 
+    public Product findProductById(UUID id) {
+
+        return productRepository.findById(id)
+                .orElseThrow(()-> new UsernameNotFoundException("Продукт не найден!"));
+
+    }
 }

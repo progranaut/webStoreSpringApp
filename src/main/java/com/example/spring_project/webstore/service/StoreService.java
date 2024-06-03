@@ -21,6 +21,8 @@ public class StoreService {
 
     private final ProductMapper productMapper;
 
+    private final ProductService productService;
+
     public void addProductInBasket(ProductDto productDto) {
 
         Object principal = SecurityContextHolder.getContext()
@@ -38,7 +40,8 @@ public class StoreService {
 
         User user = userService.getUserBySecId(securityUser.getId());
 
-        Product product = productMapper.toEntity(productDto);
+        //Product product = productMapper.toEntity(productDto);
+        Product product = productService.findProductById(productDto.getId());
 
         user.getBasket().add(product);
 
