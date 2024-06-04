@@ -72,7 +72,12 @@ public class UserService {
 
         if (principal instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) principal;
-            return userDetails.getUsername();
+            SecurityUser securityUser = securityUserService
+                    .findSecUserByName(userDetails.getUsername());
+
+            User user = this.getUserBySecId(securityUser.getId());
+
+            return user.getName();
         }
 
         return null;

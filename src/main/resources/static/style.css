@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: mistyrose;
+}
+
+#header {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+#content {
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
+}
+
+#left_content {
+    background-color: aquamarine;
+}
+
+#right_content {
+    background-color: chartreuse;
+}
+
+#center_content {
+    display: flex;
+    justify-content: space-around;
+}
