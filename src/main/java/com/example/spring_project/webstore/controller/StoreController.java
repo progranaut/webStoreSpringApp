@@ -7,11 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,6 +23,13 @@ public class StoreController {
     public void addProductInBasket(@RequestBody ProductDto productDto){
 
         storeService.addProductInBasket(productDto);
+
+    }
+
+    @GetMapping("/productInBasket")
+    public List<ProductDto> getProductInCart () {
+
+        return storeService.getProductInBasket();
 
     }
 

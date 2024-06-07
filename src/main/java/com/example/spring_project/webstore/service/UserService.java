@@ -59,7 +59,7 @@ public class UserService {
     }
 
     public User getUserBySecId (UUID id) {
-        return userRepository.findBySecUserId(id)
+        return userRepository.findUserBySecId(id)
                 .orElseThrow(()-> new UsernameNotFoundException("Пользователь с таким id не найден!"));
     }
 

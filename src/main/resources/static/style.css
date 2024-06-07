@@ -8,7 +8,7 @@ body {
     background-color: mistyrose;
 }
 
-#header {
+header {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
@@ -30,4 +30,20 @@ body {
 #center_content {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.product {
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.product button {
+    border: none;
+    border-radius: 5px;
+    color: mistyrose;
+    background-color: midnightblue;
+    padding: 5px;
+    cursor: pointer;
 }

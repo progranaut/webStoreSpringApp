@@ -11,6 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class StoreService {
@@ -49,4 +53,25 @@ public class StoreService {
 
     }
 
+    public List<ProductDto> getProductInBasket() {
+
+        Object principal = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
+            SecurityUser securityUser = securityUserService
+                    .findSecUserByName(userDetails.getUsername());
+
+            User user = userService.getUserBySecId(securityUser.getId());
+
+            return user.getBasket().stream()
+                    .map(product -> productMapper.toDto(product))
+                    .collect(Collectors.toList());
+        }
+
+        return null;
+    }
 }

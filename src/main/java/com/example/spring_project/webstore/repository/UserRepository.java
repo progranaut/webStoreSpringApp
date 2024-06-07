@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("FROM User u WHERE u.securityUser.id = :id")
-    Optional<User> findBySecUserId(UUID id);
+    Optional<User> findUserBySecId(UUID id);
 
 }
