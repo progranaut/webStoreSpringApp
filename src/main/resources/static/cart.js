@@ -76,13 +76,15 @@ async function displayProductInCart() {
         let btnMinus = document.createElement('button');
         btnMinus.classList.add('minus_quantity');
         btnMinus.innerText = "-";
-        btnMinus.addEventListener('click', (e) => {
+        btnMinus.addEventListener('click', async (e) => {
             let request = new Request("http://localhost:8080/store/delete-product/" + product.id, {
                 method: "DELETE"
             });
-            fetch(request);
+            await fetch(request);
+            await displayProductInCart();
         });
         divQuantityProduct.appendChild(btnMinus);
+
 
         let prodQuantity = document.createElement('p');
         prodQuantity.innerText = product.quantity;
@@ -91,30 +93,15 @@ async function displayProductInCart() {
         let btnPlus = document.createElement("button");
         btnPlus.classList.add('plus_quantity');
         btnPlus.innerText = "+";
-        btnPlus.addEventListener('click', (e)=>{
-            fetch("http://localhost:8080/store/add-in-basket/" + product.id, {
+        btnPlus.addEventListener('click', async (e)=>{
+            await fetch("http://localhost:8080/store/add-in-basket/" + product.id, {
                 method: "POST"
             });
+            await displayProductInCart();
         });
         divQuantityProduct.appendChild(btnPlus);
 
         div.appendChild(divQuantityProduct);
-
-        // let btn = document.createElement("button");
-        // btn.innerText = "Удалить";
-        // btn.addEventListener('click', (e) => {
-        //     //console.log(div.getAttribute("data-product"));
-        //     fetch("http://localhost:8080/store/add-in-basket", {
-        //         method: "POST",
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: `{
-        //         "id": "${div.getAttribute("data-product")}"
-        //         }`
-        //     });
-        // });
-        // div.appendChild(btn);
         cartContent.appendChild(div);
     });
 

@@ -67,20 +67,21 @@ header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    font-size: 1.5rem;
 }
 
 .minus_quantity {
-    width: 20px;
-    height: 20px;
-    font-size: 3rem;
+    width: 26px;
+    height: 26px;
+    font-size: 1.2rem;
     margin-left: 10px;
     margin-right: 10px;
 }
 
 .plus_quantity {
-    width: 20px;
-    height: 20px;
-    font-size: 3rem;
+    width: 26px;
+    height: 26px;
+    font-size: 1.2rem;
     margin-left: 10px;
     margin-right: 10px;
 }
