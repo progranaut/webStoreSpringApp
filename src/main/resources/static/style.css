@@ -27,16 +27,31 @@ header {
     background-color: chartreuse;
 }
 
-#center_content {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.home_content {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
 }
 
-.product {
+.cart_content {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+.home_product {
     border: 1px solid;
     border-radius: 5px;
     padding: 5px;
+}
+
+.cart_product {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
 }
 
 .product button {
@@ -46,4 +61,26 @@ header {
     background-color: midnightblue;
     padding: 5px;
     cursor: pointer;
+}
+
+.product_quantity {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.minus_quantity {
+    width: 20px;
+    height: 20px;
+    font-size: 3rem;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.plus_quantity {
+    width: 20px;
+    height: 20px;
+    font-size: 3rem;
+    margin-left: 10px;
+    margin-right: 10px;
 }

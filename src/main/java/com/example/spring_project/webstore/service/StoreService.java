@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,25 +28,30 @@ public class StoreService {
 
     private final ProductService productService;
 
-    public void addProductInBasket(ProductDto productDto) {
+    public void addProductInBasket(UUID id) {
 
-        Object principal = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
+//        Object principal = SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//
+//        if (!(principal instanceof UserDetails)) {
+//            return;
+//        }
+//
+//        UserDetails userDetails = (UserDetails) principal;
+//        String username = userDetails.getUsername();
+//
+//        SecurityUser securityUser = securityUserService.findSecUserByName(username);
+//
+//        User user = userService.getUserBySecId(securityUser.getId());
 
-        if (!(principal instanceof UserDetails)) {
+        User user = userService.getCurrentUser();
+
+        if (user == null) {
             return;
         }
 
-        UserDetails userDetails = (UserDetails) principal;
-        String username = userDetails.getUsername();
-
-        SecurityUser securityUser = securityUserService.findSecUserByName(username);
-
-        User user = userService.getUserBySecId(securityUser.getId());
-
-        //Product product = productMapper.toEntity(productDto);
-        Product product = productService.findProductById(productDto.getId());
+        Product product = productService.findProductById(id);
 
         user.getBasket().add(product);
 
@@ -55,23 +61,47 @@ public class StoreService {
 
     public List<ProductDto> getProductInBasket() {
 
-        Object principal = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+//        Object principal = SecurityContextHolder
+//                .getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//
+//        if (!(principal instanceof UserDetails)) {
+//            return null;
+//        }
+//
+//        UserDetails userDetails = (UserDetails) principal;
+//        SecurityUser securityUser = securityUserService
+//                .findSecUserByName(userDetails.getUsername());
+//
+//        User user = userService.getUserBySecId(securityUser.getId());
 
-        if (principal instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) principal;
-            SecurityUser securityUser = securityUserService
-                    .findSecUserByName(userDetails.getUsername());
+        User user = userService.getCurrentUser();
 
-            User user = userService.getUserBySecId(securityUser.getId());
-
-            return user.getBasket().stream()
-                    .map(product -> productMapper.toDto(product))
-                    .collect(Collectors.toList());
+        if (user == null) {
+            return null;
         }
 
-        return null;
+        return user.getBasket().stream()
+                .map(product -> productMapper.toDto(product))
+                .collect(Collectors.toList());
+
+    }
+
+    public void deleteProductInBasket(UUID id) {
+
+        User user = userService.getCurrentUser();
+        int index = -1;
+        for (int i = 0; i < user.getBasket().size(); i++) {
+            if (user.getBasket().get(i).getId().equals(id)) {
+                index = i;
+            }
+        }
+        if (index < 0) {
+            return;
+        }
+        user.getBasket().remove(index);
+
+        userService.changeUser(user);
     }
 }

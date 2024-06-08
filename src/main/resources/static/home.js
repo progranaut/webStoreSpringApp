@@ -34,10 +34,14 @@ async function displayProducts() {
 
     let centerContent = document.getElementById("center_content");
     centerContent.innerHTML = ``;
+
+    let homeContent = document.createElement("div");
+    homeContent.classList.add('home_content');
+
     products.forEach(product => {
 
         let div = document.createElement("div");
-        div.classList.add('product');
+        div.classList.add('home_product');
         div.setAttribute('data-product', product.id);
 
         div.innerHTML = `
@@ -50,20 +54,28 @@ async function displayProducts() {
         let btn = document.createElement("button");
         btn.innerText = "В корзину";
         btn.addEventListener('click', (e) => {
-            //console.log(div.getAttribute("data-product"));
-            fetch("http://localhost:8080/store/add-in-basket", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: `{
-                "id": "${div.getAttribute("data-product")}"
-                }`
+
+            fetch("http://localhost:8080/store/add-in-basket/" + product.id, {
+                method: "POST"
             });
+
+            // fetch("http://localhost:8080/store/add-in-basket", {
+            //     method: "POST",
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: `{
+            //     "id": "${div.getAttribute("data-product")}"
+            //     }`
+            // });
         });
         div.appendChild(btn);
-        centerContent.appendChild(div);
+
+        homeContent.appendChild(div);
 
     });
+
+    centerContent.appendChild(homeContent);
+
 }
 

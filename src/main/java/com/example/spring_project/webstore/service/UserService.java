@@ -63,6 +63,27 @@ public class UserService {
                 .orElseThrow(()-> new UsernameNotFoundException("Пользователь с таким id не найден!"));
     }
 
+    public User getCurrentUser() {
+
+        Object principal = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (!(principal instanceof UserDetails)) {
+            return null;
+        }
+
+        UserDetails userDetails = (UserDetails) principal;
+        SecurityUser securityUser = securityUserService
+                .findSecUserByName(userDetails.getUsername());
+
+        User user = this.getUserBySecId(securityUser.getId());
+
+        return user;
+
+    }
+
     public String getCurrentUserName() {
 
         Object principal = SecurityContextHolder

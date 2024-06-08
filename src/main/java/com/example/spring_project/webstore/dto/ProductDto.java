@@ -21,4 +21,6 @@ public class ProductDto {
 
     private Double price;
 
+    private String imageUrl;
+
 }

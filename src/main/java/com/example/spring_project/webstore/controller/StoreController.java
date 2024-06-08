@@ -19,10 +19,17 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    @PostMapping("/add-in-basket")
-    public void addProductInBasket(@RequestBody ProductDto productDto){
+//    @PostMapping("/add-in-basket")
+//    public void addProductInBasket(@RequestBody ProductDto productDto){
+//
+//        storeService.addProductInBasket(productDto);
+//
+//    }
 
-        storeService.addProductInBasket(productDto);
+    @PostMapping("/add-in-basket/{id}")
+    public void addProductInBasket(@PathVariable UUID id){
+
+        storeService.addProductInBasket(id);
 
     }
 
@@ -31,6 +38,11 @@ public class StoreController {
 
         return storeService.getProductInBasket();
 
+    }
+
+    @DeleteMapping("/delete-product/{id}")
+    public void deleteProductInBasket(@PathVariable UUID id) {
+        storeService.deleteProductInBasket(id);
     }
 
 }
