@@ -6,27 +6,6 @@ document.addEventListener("DOMContentLoaded", function (e){
 
 });
 
-// var btn = document.getElementById("addProductBtn");
-// btn.addEventListener("click", function (e) {
-//
-//     // var product = {
-//     //     id: "d7739532-1310-4936-b941-bcf248ca8b43"
-//     // };
-//     // var data = new FormData();
-//     // data.append("json", JSON.stringify(product));
-//
-//     fetch("http://localhost:8080/store/add-in-basket", {
-//         method: "POST",
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: `{
-//         "id": "cdb98bbc-d5b3-4ba4-9a4d-c2a145aacef9"
-//         }`
-//     }).then(response => console.log(response.status));
-//
-// });
-
 async function displayProducts() {
 
     const productResponse = await fetch('http://localhost:8080/products/all');
@@ -70,12 +49,9 @@ async function displayProducts() {
             // });
         });
         div.appendChild(btn);
-
         homeContent.appendChild(div);
-
     });
 
     centerContent.appendChild(homeContent);
-
 }
 

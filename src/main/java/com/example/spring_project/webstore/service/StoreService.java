@@ -1,6 +1,5 @@
 package com.example.spring_project.webstore.service;
 
-import com.example.spring_project.security.service.SecurityUserService;
 import com.example.spring_project.webstore.dto.ProductDto;
 import com.example.spring_project.webstore.entity.Product;
 import com.example.spring_project.webstore.entity.User;

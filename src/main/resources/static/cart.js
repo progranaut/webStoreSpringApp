@@ -1,9 +1,9 @@
 
-document.addEventListener("DOMContentLoaded", function (e){
-
-    displayProductInCart();
-
-});
+// document.addEventListener("DOMContentLoaded", function (e){
+//
+//     displayProductInCart();
+//
+// });
 
 async function displayProductInCart() {
 

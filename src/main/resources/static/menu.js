@@ -10,7 +10,7 @@ hdr.innerHTML = `
           <a href="http://localhost:8080/contacts">Контакты</a>
       </div>
       <div>
-          <p id="user"></p>
+          <div id="user"></div>
       </div>
 `;
 
@@ -29,9 +29,32 @@ fetch(request).then(response=> response.text())
         if (text === "") {
             user.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
         } else {
-            user.innerHTML = `
-                <a href="http://localhost:8080/cart">Корзина</a> | 
-                <a href="http://localhost:8080/user">${text}</a>
-                `;
+
+            let cartBtn = document.createElement('button');
+            cartBtn.innerHTML = "Корзина";
+            cartBtn.addEventListener('click', (e) => {
+                displayProductInCart();
+            });
+            user.appendChild(cartBtn);
+
+            let userHref = document.createElement('a');
+            userHref.setAttribute('href', 'http://localhost:8080/user');
+            userHref.innerHTML = text;
+            user.appendChild(userHref);
+
+            // let tmpHtml = user.innerHTML;
+            // user.innerHTML = `
+            //     ${tmpHtml} |
+            //     <a href="http://localhost:8080/user">${text}</a>
+            //     `;
+
+            // user.innerHTML = `
+            //     <a href="http://localhost:8080/cart">Корзина</a> |
+            //     <a href="http://localhost:8080/user">${text}</a>
+            //     `;
         }
     });
+
+
+
+
