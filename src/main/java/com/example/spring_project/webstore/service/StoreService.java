@@ -91,10 +91,13 @@ public class StoreService {
                         .id(UUID.fromString("24440326-f4e5-4db6-a351-a116a00320d8"))
                 .build());
 
+        System.out.println(namePass[0].split("=")[1]);
+
         userService.addUser(UserDto.builder()
+                        .name(namePass[0].split("=")[1])
                         .securityUserDto(SecurityUserDto.builder()
-                                .email(namePass[0].split("=")[1])
-                                .password(namePass[1].split("=")[1])
+                                .email(namePass[1].split("=")[1])
+                                .password(namePass[2].split("=")[1])
                                 .roles(roleDtos)
                                 .build())
                 .build());

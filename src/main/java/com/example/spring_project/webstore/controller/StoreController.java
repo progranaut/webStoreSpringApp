@@ -56,6 +56,7 @@ public class StoreController {
 
     @PostMapping("/user-registration")
     public void userRegistration(@RequestBody String request, HttpServletResponse response) throws IOException {
+        System.out.println(request);
         storeService.userRegistration(request);
         response.sendRedirect("/login");
     }

@@ -5,15 +5,17 @@
     <title>Title</title>
 </head>
 <body>
-  <h1 id="log_reg">Вход</h1>
-  <form id="log_reg_form" action="/login" method="post">
-      <label for="username">Логин: </label>
-      <input type="text" name="username" id="username">
-      <label for="password">Пароль: </label>
-      <input type="password" name="password" id="password">
-      <button id="log_reg_btn" type="submit">sign in</button>
-  </form>
-  <button id="login_btn">Вход</button>
+    <div id="log_reg">
+        <h1 id="log_reg_zag">Войти</h1>
+        <form id="log_reg_form" action="/login" method="post">
+            <label for="username">Логин: </label>
+            <input type="text" name="username" id="username">
+            <label for="password">Пароль: </label>
+            <input type="password" name="password" id="password">
+            <button id="log_reg_btn" type="submit">Войти</button>
+        </form>
+    </div>
+  <button id="login_btn">Войти</button>
   <button id="register_btn">Регистарция</button>
   <script src="login.js"></script>
 </body>
