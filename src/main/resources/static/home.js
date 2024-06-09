@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function (e){
 
 async function displayProducts() {
 
-    const productResponse = await fetch('http://localhost:8080/products/all');
+    const productResponse = await fetch('http://localhost:8080/store/products-all');
     const products = await productResponse.json();
 
     let centerContent = document.getElementById("center_content");

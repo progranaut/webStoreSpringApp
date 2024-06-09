@@ -22,39 +22,64 @@ cnt.innerHTML = `
       <div id="right_content">dfgdfg</div>
 `;
 
-var request = new Request("http://localhost:8080/users/current-user-name");
 var user = document.getElementById("user");
-fetch(request).then(response=> response.text())
-    .then(text => {
-        if (text === "") {
-            user.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
-        } else {
 
-            let cartBtn = document.createElement('button');
-            cartBtn.innerHTML = "Корзина";
-            cartBtn.addEventListener('click', (e) => {
-                displayProductInCart();
-            });
-            user.appendChild(cartBtn);
+displayUser(user);
 
-            let userHref = document.createElement('a');
-            userHref.setAttribute('href', 'http://localhost:8080/user');
-            userHref.innerHTML = text;
-            user.appendChild(userHref);
+async function displayUser() {
+    var request = new Request("http://localhost:8080/store/current-user-name");
 
-            // let tmpHtml = user.innerHTML;
-            // user.innerHTML = `
-            //     ${tmpHtml} |
-            //     <a href="http://localhost:8080/user">${text}</a>
-            //     `;
+    let response = await fetch(request);
+    let sts = response.redirected;
+    let txt = await response.text();
+    console.log(sts);
+    if (!sts) {
+        let cartBtn = document.createElement('button');
+        cartBtn.innerHTML = "Корзина";
+        cartBtn.addEventListener('click', (e) => {
+            displayProductInCart();
+        });
+        user.appendChild(cartBtn);
 
-            // user.innerHTML = `
-            //     <a href="http://localhost:8080/cart">Корзина</a> |
-            //     <a href="http://localhost:8080/user">${text}</a>
-            //     `;
-        }
-    });
+        let userHref = document.createElement('a');
+        userHref.setAttribute('href', 'http://localhost:8080/user');
+        userHref.innerHTML = txt;
+        user.appendChild(userHref);
+    } else {
+        user.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
+    }
+}
 
-
+// fetch(request).then(response=> response.text())
+//     .then(text => {
+//         console.log(stts);
+//         if (text === "") {
+//             user.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
+//         } else {
+//
+//             let cartBtn = document.createElement('button');
+//             cartBtn.innerHTML = "Корзина";
+//             cartBtn.addEventListener('click', (e) => {
+//                 displayProductInCart();
+//             });
+//             user.appendChild(cartBtn);
+//
+//             let userHref = document.createElement('a');
+//             userHref.setAttribute('href', 'http://localhost:8080/user');
+//             userHref.innerHTML = text;
+//             user.appendChild(userHref);
+//
+//             // let tmpHtml = user.innerHTML;
+//             // user.innerHTML = `
+//             //     ${tmpHtml} |
+//             //     <a href="http://localhost:8080/user">${text}</a>
+//             //     `;
+//
+//             // user.innerHTML = `
+//             //     <a href="http://localhost:8080/cart">Корзина</a> |
+//             //     <a href="http://localhost:8080/user">${text}</a>
+//             //     `;
+//         }
+//     });
 
 

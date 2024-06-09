@@ -22,9 +22,4 @@ public class UserController {
         userService.changeUser(userDto);
     }
 
-    @GetMapping("/current-user-name")
-    public String userName() {
-        return userService.getCurrentUserName();
-    }
-
 }

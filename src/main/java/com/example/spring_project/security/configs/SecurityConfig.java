@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -45,20 +46,25 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/home").permitAll()
-                        .requestMatchers("/style.css", "/home.js","/menu.js", "/cart.js",
-                                "/roles/**", "/admin", "/users/**", "/products/**", "/user", "/cart").permitAll()
-                        //.requestMatchers("/roles/**", "/admin", "/users/**").hasRole("ADMIN")
+                        .requestMatchers("/", "/home", "/style.css", "/home.js","/menu.js", "/login.js", "/store/user-registration", "/store/products-all").permitAll()
+                        //.requestMatchers("/cart.js", "/roles/**", "/admin", "/users/**", "/products/**", "/user", "/cart").permitAll()
+                        .requestMatchers("/roles/**", "/admin", "/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        //.successHandler(successHandler())
+                        .successHandler(successHandler())
                         .permitAll()/*Customizer.withDefaults()*/)
                 .userDetailsService(userDetailsService)
                 .logout(LogoutConfigurer::permitAll);
 
         return http.build();
+    }
+
+    public AuthenticationSuccessHandler successHandler() {
+        return (request, response, authentication) -> {
+            response.sendRedirect("/");
+        };
     }
 
 }
