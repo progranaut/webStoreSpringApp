@@ -16,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -43,6 +46,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
 
+        var realmName = "localhost";
+        var entryPoint = new BasicAuthenticationEntryPoint();
+        entryPoint.setRealmName(realmName);
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
@@ -57,6 +64,12 @@ public class SecurityConfig {
                         .permitAll()/*Customizer.withDefaults()*/)
                 .userDetailsService(userDetailsService)
                 .logout(LogoutConfigurer::permitAll);
+
+//                .httpBasic(httpBasic ->
+//                        httpBasic.realmName(realmName)
+//                                .authenticationEntryPoint(entryPoint)
+//                                .authenticationDetailsSource(new WebAuthenticationDetailsSource())
+//                                .securityContextRepository(new RequestAttributeSecurityContextRepository()));
 
         return http.build();
     }
