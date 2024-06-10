@@ -3,20 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="log_reg">
-        <h1 id="log_reg_zag">Войти</h1>
-        <form id="log_reg_form" action="/login" method="post">
-            <label for="username">Логин: </label>
-            <input type="text" name="username" id="username">
-            <label for="password">Пароль: </label>
-            <input type="password" name="password" id="password">
-            <button id="log_reg_btn" type="submit">Войти</button>
-        </form>
+    <header>
+    </header>
+    <div id="content">
+        <div id="left_content">dfgdfg</div>
+        <div id="center_content">
+            <div id="log_reg">
+                <div class="form_content">
+                    <p id="log_reg_zag">Войти</p>
+                    <form id="log_reg_form" class="form" action="/login" method="post">
+                        <label for="username">Логин: </label>
+                        <input type="text" name="username" id="username">
+                        <label for="password">Пароль: </label>
+                        <input type="password" name="password" id="password">
+                        <button id="log_reg_btn" type="submit">Войти</button>
+                    </form>
+                </div>
+            </div>
+            <button id="login_btn">Войти</button>
+            <button id="register_btn">Регистарция</button>
+        </div>
+        <div id="right_content">dfgdfg</div>
     </div>
-  <button id="login_btn">Войти</button>
-  <button id="register_btn">Регистарция</button>
+    <script src="menu.js"></script>
   <script src="login.js"></script>
 </body>
 </html>

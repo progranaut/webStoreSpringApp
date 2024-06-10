@@ -95,12 +95,19 @@ public class StoreService {
 
         userService.addUser(UserDto.builder()
                         .name(namePass[0].split("=")[1])
+                        .email(namePass[1].split("=")[1])
                         .securityUserDto(SecurityUserDto.builder()
                                 .email(namePass[1].split("=")[1])
                                 .password(namePass[2].split("=")[1])
                                 .roles(roleDtos)
                                 .build())
                 .build());
+
+    }
+
+    public UserDto getCurrentUserDto() {
+
+        return userService.getCurrentUserDto();
 
     }
 }

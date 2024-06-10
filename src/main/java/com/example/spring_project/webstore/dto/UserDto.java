@@ -22,6 +22,8 @@ public class UserDto {
 
     private String address;
 
+    private String email;
+
     private SecurityUserDto securityUserDto;
 
 }

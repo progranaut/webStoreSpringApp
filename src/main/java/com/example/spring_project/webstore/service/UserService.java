@@ -39,6 +39,8 @@ public class UserService {
         User user = userMapper.toEntity(userDto);
         user.setSecurityUser(securityUser);
 
+        System.out.println(user.getEmail());
+
         userRepository.save(user);
         
     }
@@ -102,5 +104,9 @@ public class UserService {
         }
 
         return null;
+    }
+
+    public UserDto getCurrentUserDto() {
+        return userMapper.toDto(getCurrentUser());
     }
 }

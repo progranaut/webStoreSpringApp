@@ -14,13 +14,13 @@ hdr.innerHTML = `
       </div>
 `;
 
-var cnt = document.getElementById("content");
-
-cnt.innerHTML = `
-      <div id="left_content">dfgdfg</div>
-      <div id="center_content">dfgdfgdf</div>
-      <div id="right_content">dfgdfg</div>
-`;
+// var cnt = document.getElementById("content");
+//
+// cnt.innerHTML = `
+//       <div id="left_content">dfgdfg</div>
+//       <div id="center_content">dfgdfgdf</div>
+//       <div id="right_content">dfgdfg</div>
+// `;
 
 var user = document.getElementById("user");
 
@@ -42,9 +42,18 @@ async function displayUser() {
         user.appendChild(cartBtn);
 
         let userHref = document.createElement('a');
-        userHref.setAttribute('href', 'http://localhost:8080/user');
+        //userHref.setAttribute('href', 'http://localhost:8080/user');
         userHref.innerHTML = txt;
+        userHref.addEventListener('click', (e) => {
+            displayUser();
+        });
         user.appendChild(userHref);
+
+        let logOut = document.createElement('a');
+        logOut.setAttribute('href', 'http://localhost:8080/logout');
+        logOut.innerHTML = "Выйти";
+        user.appendChild(logOut);
+
     } else {
         user.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
     }

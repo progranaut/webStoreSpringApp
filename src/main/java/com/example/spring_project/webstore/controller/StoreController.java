@@ -1,6 +1,7 @@
 package com.example.spring_project.webstore.controller;
 
 import com.example.spring_project.webstore.dto.ProductDto;
+import com.example.spring_project.webstore.dto.UserDto;
 import com.example.spring_project.webstore.service.StoreService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -56,9 +57,13 @@ public class StoreController {
 
     @PostMapping("/user-registration")
     public void userRegistration(@RequestBody String request, HttpServletResponse response) throws IOException {
-        System.out.println(request);
         storeService.userRegistration(request);
         response.sendRedirect("/login");
+    }
+
+    @GetMapping("/current-user")
+    public UserDto getCurrentUser() {
+        return storeService.getCurrentUserDto();
     }
 
 }

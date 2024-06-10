@@ -31,8 +31,11 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    @OneToOne
+    @Column(name = "email")
+    private String email;
+
     @JoinColumn(name = "security_user_id")
+    @OneToOne(fetch = FetchType.LAZY)
     private SecurityUser securityUser;
 
     @JoinTable(name = "user_product_relation",
