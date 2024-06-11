@@ -7,6 +7,7 @@ import com.example.spring_project.security.service.RoleService;
 import com.example.spring_project.webstore.dto.ProductDto;
 import com.example.spring_project.webstore.dto.UserDto;
 import com.example.spring_project.webstore.entity.Product;
+import com.example.spring_project.webstore.entity.ProductQuantity;
 import com.example.spring_project.webstore.entity.User;
 import com.example.spring_project.webstore.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,52 +28,82 @@ public class StoreService {
 
     private final RoleService roleService;
 
+    private final ProductQuantityService productQuantityService;
+
     public void addProductInBasket(UUID id) {
 
         User user = userService.getCurrentUser();
 
         if (user == null) {
-            return;
+            user = userService.getUserBySecId(UUID.fromString("7940ea8e-19ba-4abc-993e-2b3e4fa87415"));
+            //return;
         }
 
         Product product = productService.findProductById(id);
 
-        user.getBasket().add(product);
+        ProductQuantity productQuantity = ProductQuantity.builder()
+                .user(user)
+                .product(product)
+                .quantity(3)
+                .build();
 
-        userService.changeUser(user);
+        productQuantityService.addProductQuantity(productQuantity);
+
+        System.out.println(user);
+        System.out.println(product);
+
+//        var list = user.getProductQuantitySet().stream()
+//                .filter(productQuantity -> productQuantity.getProduct()
+//                        .getId().equals(product.getId()))
+//                .collect(Collectors.toList());
+//
+//        if (list.isEmpty()) {
+//            user.addProductQuantity(ProductQuantity.builder()
+//                            .product(product)
+//                            .user(user)
+//                            .quantity(2)
+//                            .build());
+//        } else {
+//            int tmp = list.get(0).getQuantity();
+//            tmp++;
+//            list.get(0).setQuantity(tmp);
+//        }
+
+        //user.getBasket().add(product);
+        //userService.changeUser(user);
 
     }
 
-    public List<ProductDto> getProductInBasket() {
+//    public List<ProductDto> getProductInBasket() {
+//
+//        User user = userService.getCurrentUser();
+//
+//        if (user == null) {
+//            return null;
+//        }
+//
+//        return user.getBasket().stream()
+//                .map(product -> productMapper.toDto(product))
+//                .collect(Collectors.toList());
+//
+//    }
 
-        User user = userService.getCurrentUser();
-
-        if (user == null) {
-            return null;
-        }
-
-        return user.getBasket().stream()
-                .map(product -> productMapper.toDto(product))
-                .collect(Collectors.toList());
-
-    }
-
-    public void deleteProductInBasket(UUID id) {
-
-        User user = userService.getCurrentUser();
-        int index = -1;
-        for (int i = 0; i < user.getBasket().size(); i++) {
-            if (user.getBasket().get(i).getId().equals(id)) {
-                index = i;
-            }
-        }
-        if (index < 0) {
-            return;
-        }
-        user.getBasket().remove(index);
-
-        userService.changeUser(user);
-    }
+//    public void deleteProductInBasket(UUID id) {
+//
+//        User user = userService.getCurrentUser();
+//        int index = -1;
+//        for (int i = 0; i < user.getBasket().size(); i++) {
+//            if (user.getBasket().get(i).getId().equals(id)) {
+//                index = i;
+//            }
+//        }
+//        if (index < 0) {
+//            return;
+//        }
+//        user.getBasket().remove(index);
+//
+//        userService.changeUser(user);
+//    }
 
     public String getCurrentUserName() {
         return userService.getCurrentUserName();

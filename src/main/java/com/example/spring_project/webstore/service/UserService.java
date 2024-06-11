@@ -107,7 +107,11 @@ public class UserService {
     }
 
     public UserDto getCurrentUserDto() {
-        User user = getCurrentUser();
+
+        //User user = getCurrentUser();
+        User user = getUserBySecId(UUID.fromString("7940ea8e-19ba-4abc-993e-2b3e4fa87415"));
+        System.out.println(user);
+
         UserDto userDto = userMapper.toDto(user);
         userDto.setSecurityUserDto(SecurityUserDto.builder()
                         .id(user.getSecurityUser().getId())

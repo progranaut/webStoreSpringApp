@@ -2,12 +2,10 @@ package com.example.spring_project.webstore.entity;
 
 import com.example.spring_project.security.entity.SecurityUser;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -38,10 +36,23 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY)
     private SecurityUser securityUser;
 
-    @JoinTable(name = "user_product_relation",
-              joinColumns = @JoinColumn(name = "user_id"),
-              inverseJoinColumns = @JoinColumn(name = "product_id"))
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Product> basket;
+    @OneToMany(mappedBy = "user")
+    private Set<ProductQuantity> productQuantitySet;
+
+    public void addProductQuantity(ProductQuantity productQuantity) {
+        this.productQuantitySet.add(productQuantity);
+        productQuantity.setUser(this);
+    }
+
+    public void removeProductQuantity(ProductQuantity productQuantity) {
+        this.productQuantitySet.remove(productQuantity);
+        productQuantity.setUser(null);
+    }
+
+//    @JoinTable(name = "user_product_relation",
+//              joinColumns = @JoinColumn(name = "user_id"),
+//              inverseJoinColumns = @JoinColumn(name = "product_id"))
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    private List<Product> basket;
 
 }

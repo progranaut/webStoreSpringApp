@@ -1,11 +1,9 @@
 package com.example.spring_project.webstore.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -31,5 +29,18 @@ public class Product {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToMany(mappedBy = "product")
+    Set<ProductQuantity> productQuantitySet;
+
+    public void addProductQuantity(ProductQuantity productQuantity) {
+        this.productQuantitySet.add(productQuantity);
+        productQuantity.setProduct(this);
+    }
+
+    public void removeProductQuantity(ProductQuantity productQuantity) {
+        this.productQuantitySet.remove(productQuantity);
+        productQuantity.setProduct(null);
+    }
 
 }

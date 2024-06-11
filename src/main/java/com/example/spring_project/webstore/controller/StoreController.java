@@ -33,21 +33,22 @@ public class StoreController {
 
     }
 
-    @GetMapping("/productInBasket")
-    public List<ProductDto> getProductInCart () {
+//    @GetMapping("/productInBasket")
+//    public List<ProductDto> getProductInCart () {
+//
+//        return storeService.getProductInBasket();
+//
+//    }
 
-        return storeService.getProductInBasket();
-
-    }
-
-    @DeleteMapping("/delete-product/{id}")
-    public void deleteProductInBasket(@PathVariable UUID id) {
-        storeService.deleteProductInBasket(id);
-    }
+//    @DeleteMapping("/delete-product/{id}")
+//    public void deleteProductInBasket(@PathVariable UUID id) {
+//        storeService.deleteProductInBasket(id);
+//    }
 
     @GetMapping("/current-user-name")
     public String userName() {
-        return storeService.getCurrentUserName();
+        return "Привет";
+        //return storeService.getCurrentUserName();
     }
 
     @GetMapping("/products-all")
