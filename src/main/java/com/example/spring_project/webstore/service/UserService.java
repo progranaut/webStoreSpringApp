@@ -107,6 +107,11 @@ public class UserService {
     }
 
     public UserDto getCurrentUserDto() {
-        return userMapper.toDto(getCurrentUser());
+        User user = getCurrentUser();
+        UserDto userDto = userMapper.toDto(user);
+        userDto.setSecurityUserDto(SecurityUserDto.builder()
+                        .id(user.getSecurityUser().getId())
+                .build());
+        return userDto;
     }
 }

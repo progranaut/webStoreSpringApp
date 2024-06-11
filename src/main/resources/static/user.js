@@ -41,7 +41,7 @@ async function displayUser () {
             email: form.email.value,
             address: form.address.value,
             securityUserDto: {
-                id: "7940ea8e-19ba-4abc-993e-2b3e4fa87415"
+                id: user.securityUserDto.id
             }
         }
         fetch('http://localhost:8080/users/change', {
