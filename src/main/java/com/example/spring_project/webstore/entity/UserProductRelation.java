@@ -2,7 +2,6 @@ package com.example.spring_project.webstore.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.objenesis.instantiator.util.UnsafeUtils;
 
 import java.util.UUID;
 
@@ -11,8 +10,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "product_quantity")
-public class ProductQuantity {
+@Table(name = "user_product_relation")
+public class UserProductRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

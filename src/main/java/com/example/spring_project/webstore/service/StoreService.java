@@ -2,19 +2,17 @@ package com.example.spring_project.webstore.service;
 
 import com.example.spring_project.security.dto.RoleDto;
 import com.example.spring_project.security.dto.SecurityUserDto;
-import com.example.spring_project.security.entity.Role;
 import com.example.spring_project.security.service.RoleService;
 import com.example.spring_project.webstore.dto.ProductDto;
 import com.example.spring_project.webstore.dto.UserDto;
 import com.example.spring_project.webstore.entity.Product;
-import com.example.spring_project.webstore.entity.ProductQuantity;
+import com.example.spring_project.webstore.entity.UserProductRelation;
 import com.example.spring_project.webstore.entity.User;
 import com.example.spring_project.webstore.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,29 +26,28 @@ public class StoreService {
 
     private final RoleService roleService;
 
-    private final ProductQuantityService productQuantityService;
+    private final UserProductRelationService userProductRelationService;
 
     public void addProductInBasket(UUID id) {
 
         User user = userService.getCurrentUser();
 
         if (user == null) {
-            user = userService.getUserBySecId(UUID.fromString("7940ea8e-19ba-4abc-993e-2b3e4fa87415"));
-            //return;
+            return;
         }
 
         Product product = productService.findProductById(id);
 
-        ProductQuantity productQuantity = ProductQuantity.builder()
-                .user(user)
-                .product(product)
-                .quantity(3)
-                .build();
+        if (product == null) {
+            return;
+        }
 
-        productQuantityService.addProductQuantity(productQuantity);
+        userProductRelationService.addUserProductRelation(user, product);
 
-        System.out.println(user);
-        System.out.println(product);
+        //userProductRelationService.addProductQuantity(userProductRelation);
+
+//        System.out.println(user);
+//        System.out.println(product);
 
 //        var list = user.getProductQuantitySet().stream()
 //                .filter(productQuantity -> productQuantity.getProduct()

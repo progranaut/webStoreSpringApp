@@ -4,7 +4,6 @@ import com.example.spring_project.security.entity.SecurityUser;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,16 +36,16 @@ public class User {
     private SecurityUser securityUser;
 
     @OneToMany(mappedBy = "user")
-    private Set<ProductQuantity> productQuantitySet;
+    private Set<UserProductRelation> userProductRelationSet;
 
-    public void addProductQuantity(ProductQuantity productQuantity) {
-        this.productQuantitySet.add(productQuantity);
-        productQuantity.setUser(this);
+    public void addProductQuantity(UserProductRelation userProductRelation) {
+        this.userProductRelationSet.add(userProductRelation);
+        userProductRelation.setUser(this);
     }
 
-    public void removeProductQuantity(ProductQuantity productQuantity) {
-        this.productQuantitySet.remove(productQuantity);
-        productQuantity.setUser(null);
+    public void removeProductQuantity(UserProductRelation userProductRelation) {
+        this.userProductRelationSet.remove(userProductRelation);
+        userProductRelation.setUser(null);
     }
 
 //    @JoinTable(name = "user_product_relation",

@@ -47,8 +47,9 @@ public class StoreController {
 
     @GetMapping("/current-user-name")
     public String userName() {
-        return "Привет";
-        //return storeService.getCurrentUserName();
+
+        return storeService.getCurrentUserName();
+
     }
 
     @GetMapping("/products-all")

@@ -88,18 +88,26 @@ public class UserService {
 
     public String getCurrentUserName() {
 
-        Object principal = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+//        Object principal = SecurityContextHolder
+//                .getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//
+//        if (principal instanceof UserDetails) {
+//            UserDetails userDetails = (UserDetails) principal;
+//            SecurityUser securityUser = securityUserService
+//                    .findSecUserByName(userDetails.getUsername());
+//
+//            User user = this.getUserBySecId(securityUser.getId());
+//
+//            return user.getName();
+//        }
+//
+//        return null;
 
-        if (principal instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) principal;
-            SecurityUser securityUser = securityUserService
-                    .findSecUserByName(userDetails.getUsername());
+        User user = getCurrentUser();
 
-            User user = this.getUserBySecId(securityUser.getId());
-
+        if (user != null) {
             return user.getName();
         }
 
@@ -108,14 +116,14 @@ public class UserService {
 
     public UserDto getCurrentUserDto() {
 
-        //User user = getCurrentUser();
-        User user = getUserBySecId(UUID.fromString("7940ea8e-19ba-4abc-993e-2b3e4fa87415"));
-        System.out.println(user);
+        User user = getCurrentUser();
 
         UserDto userDto = userMapper.toDto(user);
         userDto.setSecurityUserDto(SecurityUserDto.builder()
                         .id(user.getSecurityUser().getId())
                 .build());
+
         return userDto;
+
     }
 }

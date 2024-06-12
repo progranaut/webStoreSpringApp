@@ -31,16 +31,16 @@ public class Product {
     private String imageUrl;
 
     @OneToMany(mappedBy = "product")
-    Set<ProductQuantity> productQuantitySet;
+    Set<UserProductRelation> userProductRelationSet;
 
-    public void addProductQuantity(ProductQuantity productQuantity) {
-        this.productQuantitySet.add(productQuantity);
-        productQuantity.setProduct(this);
+    public void addProductQuantity(UserProductRelation userProductRelation) {
+        this.userProductRelationSet.add(userProductRelation);
+        userProductRelation.setProduct(this);
     }
 
-    public void removeProductQuantity(ProductQuantity productQuantity) {
-        this.productQuantitySet.remove(productQuantity);
-        productQuantity.setProduct(null);
+    public void removeProductQuantity(UserProductRelation userProductRelation) {
+        this.userProductRelationSet.remove(userProductRelation);
+        userProductRelation.setProduct(null);
     }
 
 }
