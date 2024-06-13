@@ -32,21 +32,21 @@ public class StoreService {
 
     private final UserProductRelationService userProductRelationService;
 
-    public void addProductInBasket(UUID id) {
+    public ResponseEntity<?> addProductInBasket(UUID id) {
 
         User user = userService.getCurrentUser();
 
         if (user == null) {
-            return;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         Product product = productService.findProductById(id);
 
         if (product == null) {
-            return;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        userProductRelationService.addUserProductRelation(user, product);
+        return userProductRelationService.addUserProductRelation(user, product);
 
     }
 

@@ -29,9 +29,9 @@ public class StoreController {
 //    }
 
     @PostMapping("/add-in-basket/{id}")
-    public void addProductInBasket(@PathVariable UUID id){
+    public ResponseEntity<?> addProductInBasket(@PathVariable UUID id){
 
-        storeService.addProductInBasket(id);
+        return storeService.addProductInBasket(id);
 
     }
 

@@ -1,11 +1,15 @@
 package com.example.spring_project.webstore.service;
 
 import com.example.spring_project.webstore.dto.ProductDto;
+import com.example.spring_project.webstore.dto.UserProductRelationDto;
 import com.example.spring_project.webstore.entity.Product;
 import com.example.spring_project.webstore.entity.User;
 import com.example.spring_project.webstore.entity.UserProductRelation;
+import com.example.spring_project.webstore.mapper.ProductMapper;
 import com.example.spring_project.webstore.repository.UserProductRelationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,38 +21,41 @@ public class UserProductRelationService {
 
     private final UserProductRelationRepository userProductRelationRepository;
 
-    public void addUserProductRelation(User user, Product product) {
+    private final ProductMapper productMapper;
+
+    public ResponseEntity<?> addUserProductRelation(User user, Product product) {
 
         UserProductRelation userProductRelation;
 
         try {
 
             userProductRelation = getRelation(user.getId(), product.getId());
+
+            if (userProductRelation.getProduct().getAvailability() <= userProductRelation.getQuantity()) {
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }
+
             int quantity = userProductRelation.getQuantity();
             userProductRelation.setQuantity(++quantity);
-            //userProductRelationRepository.save(userProductRelation);
 
         } catch (Exception e) {
+
             userProductRelation = UserProductRelation.builder()
                     .user(user)
                     .product(product)
                     .quantity(1)
                     .build();
-            //userProductRelationRepository.save(userProductRelation);
+
         }
 
-//        if (userProductRelation == null) {
-//            userProductRelation = UserProductRelation.builder()
-//                    .user(user)
-//                    .product(product)
-//                    .quantity(1)
-//                    .build();
-//        } else {
-//            int quantity = userProductRelation.getQuantity();
-//            userProductRelation.setQuantity(++quantity);
-//        }
-
         userProductRelationRepository.save(userProductRelation);
+
+        userProductRelation = getRelation(user.getId(), product.getId());
+
+        return new ResponseEntity<>(UserProductRelationDto.builder()
+                .productDto(productMapper.toDto(product))
+                .quantity(userProductRelation.getQuantity())
+                .build(), HttpStatus.OK);
     }
 
     public UserProductRelation getRelation(UUID userId, UUID productId) {

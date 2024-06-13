@@ -23,4 +23,6 @@ public class ProductDto {
 
     private String imageUrl;
 
+    private int availability;
+
 }

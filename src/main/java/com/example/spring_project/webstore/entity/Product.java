@@ -30,17 +30,20 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "availability")
+    private int availability;
+
     @OneToMany(mappedBy = "product")
     Set<UserProductRelation> userProductRelationSet;
 
-    public void addProductQuantity(UserProductRelation userProductRelation) {
-        this.userProductRelationSet.add(userProductRelation);
-        userProductRelation.setProduct(this);
-    }
-
-    public void removeProductQuantity(UserProductRelation userProductRelation) {
-        this.userProductRelationSet.remove(userProductRelation);
-        userProductRelation.setProduct(null);
-    }
+//    public void addProductQuantity(UserProductRelation userProductRelation) {
+//        this.userProductRelationSet.add(userProductRelation);
+//        userProductRelation.setProduct(this);
+//    }
+//
+//    public void removeProductQuantity(UserProductRelation userProductRelation) {
+//        this.userProductRelationSet.remove(userProductRelation);
+//        userProductRelation.setProduct(null);
+//    }
 
 }

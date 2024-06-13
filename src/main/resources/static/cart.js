@@ -17,75 +17,87 @@ async function displayProductInCart() {
 
     console.log(productArray);
 
-    productArray.forEach(product => {
+    productArray.forEach(relation => {
 
         let div = document.createElement("div");
         div.classList.add('cart_product');
-        div.setAttribute('data-product', product.id);
+        div.setAttribute('data-product', relation.productDto.id);
 
         let divProdImg = document.createElement("div");
         divProdImg.classList.add('product_img');
         divProdImg.innerHTML = `
-        <img src="${product.productDto.imageUrl}">
+        <img src="${relation.productDto.imageUrl}">
         `;
         div.appendChild(divProdImg);
 
         let divProdInfo = document.createElement("div");
         divProdInfo.classList.add('product_info');
         divProdInfo.innerHTML = `
-        <p>${product.productDto.id}</p>
-        <p>${product.productDto.serialNumber}</p>
-        <p>${product.productDto.name}</p>
-        <p>${product.productDto.price}</p>
+        <p>${relation.productDto.id}</p>
+        <p>${relation.productDto.serialNumber}</p>
+        <p>${relation.productDto.name}</p>
+        <p>${relation.productDto.price}</p>
         `;
         div.appendChild(divProdInfo);
 
         let divQuantityProduct = document.createElement("div");
-        divQuantityProduct.classList.add('product_quantity');
+        divQuantityProduct.classList.add('product_quantity_availability');
 
+        let divQuantity = document.createElement('div');
+        divQuantity.classList.add('product_quantity');
         let btnMinus = document.createElement('button');
         btnMinus.classList.add('minus_quantity');
         btnMinus.innerText = "-";
         btnMinus.addEventListener('click', async (e) => {
-            let request = new Request("http://localhost:8080/store/delete-product-from-basket/" + product.productDto.id, {
+            let request = new Request("http://localhost:8080/store/delete-product-from-basket/" + relation.productDto.id, {
                 method: "DELETE"
             });
             await fetch(request);
-
-            let response = await fetch("http://localhost:8080/store/product-in-basket/" + product.productDto.id);
+            let response = await fetch("http://localhost:8080/store/product-in-basket/" + relation.productDto.id);
             if (response.status != 404) {
                 let respJson = await response.json();
                 prodQuantity.innerText = respJson.quantity;
             } else {
                 div.remove();
             }
-
             //await displayProductInCart();
         });
-        divQuantityProduct.appendChild(btnMinus);
-
+        divQuantity.appendChild(btnMinus);
 
         let prodQuantity = document.createElement('p');
-        prodQuantity.innerText = product.quantity;
-        divQuantityProduct.appendChild(prodQuantity);
+        prodQuantity.innerText = relation.quantity;
+        divQuantity.appendChild(prodQuantity);
 
         let btnPlus = document.createElement("button");
         btnPlus.classList.add('plus_quantity');
         btnPlus.innerText = "+";
         btnPlus.addEventListener('click', async (e)=>{
-            await fetch("http://localhost:8080/store/add-in-basket/" + product.productDto.id, {
+            let response = await fetch("http://localhost:8080/store/add-in-basket/" + relation.productDto.id, {
                 method: "POST"
             });
-
-            let response = await fetch("http://localhost:8080/store/product-in-basket/" + product.productDto.id);
-            let respJson = await response.json();
-            prodQuantity.innerText = respJson.quantity;
-
-            //await displayProductInCart();
+            console.log(response.status);
+            if (response.status === 200) {
+                let respJson = await response.json();
+                prodQuantity.innerText = respJson.quantity;
+            }
+            if (response.status === 406) {
+                console.log("red");
+                divAvailability.style.backgroundColor = "RED";
+            }
         });
-        divQuantityProduct.appendChild(btnPlus);
+        divQuantity.appendChild(btnPlus);
+
+        divQuantityProduct.appendChild(divQuantity);
+
+        let divAvailability = document.createElement('div');
+        divAvailability.classList.add('product_availability');
+        divAvailability.innerHTML = `
+            Наличие: ${relation.productDto.availability} шт.
+        `;
+        divQuantityProduct.appendChild(divAvailability);
 
         div.appendChild(divQuantityProduct);
+
         cartContent.appendChild(div);
     });
 
