@@ -2,9 +2,11 @@ package com.example.spring_project.webstore.controller;
 
 import com.example.spring_project.webstore.dto.ProductDto;
 import com.example.spring_project.webstore.dto.UserDto;
+import com.example.spring_project.webstore.dto.UserProductRelationDto;
 import com.example.spring_project.webstore.service.StoreService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,17 +35,24 @@ public class StoreController {
 
     }
 
-//    @GetMapping("/productInBasket")
-//    public List<ProductDto> getProductInCart () {
-//
-//        return storeService.getProductInBasket();
-//
-//    }
+    @GetMapping("/all-products-in-basket")
+    public List<UserProductRelationDto> getProductsInCart () {
 
-//    @DeleteMapping("/delete-product/{id}")
-//    public void deleteProductInBasket(@PathVariable UUID id) {
-//        storeService.deleteProductInBasket(id);
-//    }
+        return storeService.getAllProductsInBasket();
+
+    }
+
+    @GetMapping("/product-in-basket/{id}")
+    public ResponseEntity<?> getProductInBasket(@PathVariable UUID id) {
+
+        return storeService.getProductInBasket(id);
+
+    }
+
+    @DeleteMapping("/delete-product-from-basket/{id}")
+    public void deleteProductInBasket(@PathVariable UUID id) {
+        storeService.deleteProductFromBasket(id);
+    }
 
     @GetMapping("/current-user-name")
     public String userName() {

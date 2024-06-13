@@ -1,5 +1,6 @@
 package com.example.spring_project.webstore.service;
 
+import com.example.spring_project.webstore.dto.ProductDto;
 import com.example.spring_project.webstore.entity.Product;
 import com.example.spring_project.webstore.entity.User;
 import com.example.spring_project.webstore.entity.UserProductRelation;
@@ -7,6 +8,7 @@ import com.example.spring_project.webstore.repository.UserProductRelationReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -17,18 +19,34 @@ public class UserProductRelationService {
 
     public void addUserProductRelation(User user, Product product) {
 
-        UserProductRelation userProductRelation = getRelation(user.getId(), product.getId());
+        UserProductRelation userProductRelation;
 
-        if (userProductRelation == null) {
+        try {
+
+            userProductRelation = getRelation(user.getId(), product.getId());
+            int quantity = userProductRelation.getQuantity();
+            userProductRelation.setQuantity(++quantity);
+            //userProductRelationRepository.save(userProductRelation);
+
+        } catch (Exception e) {
             userProductRelation = UserProductRelation.builder()
                     .user(user)
                     .product(product)
                     .quantity(1)
                     .build();
-        } else {
-            int quantity = userProductRelation.getQuantity();
-            userProductRelation.setQuantity(++quantity);
+            //userProductRelationRepository.save(userProductRelation);
         }
+
+//        if (userProductRelation == null) {
+//            userProductRelation = UserProductRelation.builder()
+//                    .user(user)
+//                    .product(product)
+//                    .quantity(1)
+//                    .build();
+//        } else {
+//            int quantity = userProductRelation.getQuantity();
+//            userProductRelation.setQuantity(++quantity);
+//        }
 
         userProductRelationRepository.save(userProductRelation);
     }
@@ -36,7 +54,31 @@ public class UserProductRelationService {
     public UserProductRelation getRelation(UUID userId, UUID productId) {
 
         return userProductRelationRepository.findRelationByIds(userId, productId)
-                .orElse(null);
+                .orElseThrow();
+
+    }
+
+    public List<UserProductRelation> getRelations(User user) {
+
+        return userProductRelationRepository.findAllByUserId(user.getId());
+
+    }
+
+    public void delUserProductRelation(User user, Product product) {
+
+        UserProductRelation userProductRelation = getRelation(user.getId(), product.getId());
+
+        if (userProductRelation.getQuantity() > 1) {
+
+            int quantity = userProductRelation.getQuantity();
+            userProductRelation.setQuantity(--quantity);
+            userProductRelationRepository.save(userProductRelation);
+
+        } else {
+
+            userProductRelationRepository.delete(userProductRelation);
+
+        }
 
     }
 }

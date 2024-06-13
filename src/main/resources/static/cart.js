@@ -1,14 +1,11 @@
 
-// document.addEventListener("DOMContentLoaded", function (e){
-//
-//     displayProductInCart();
-//
-// });
 
 async function displayProductInCart() {
 
-    var response = await fetch('http://localhost:8080/store/productInBasket');
+    var response = await fetch('http://localhost:8080/store/all-products-in-basket');
     var productsInBasket = await response.json();
+
+    console.log(productsInBasket);
 
     let centerContent = document.getElementById("center_content");
     centerContent.innerHTML = ``;
@@ -17,37 +14,10 @@ async function displayProductInCart() {
     cartContent.classList.add('cart_content');
 
     let productArray = Array.from(productsInBasket);
-    let prdObjArray = new Array();
 
-    let prd = new Product();
-    prd.id = productArray[0].id;
-    prd.serialNumber = productArray[0].serialNumber;
-    prd.name = productArray[0].name;
-    prd.price = productArray[0].price;
-    prd.quantity = 1;
-    prdObjArray.push(prd);
+    console.log(productArray);
 
-    for (let i = 1; i < productArray.length; i++) {
-        let index = -1;
-        for (let j = 0; j < prdObjArray.length; j++) {
-            if (prdObjArray[j].id === productArray[i].id) {
-                index = j;
-            }
-        }
-        if (index < 0) {
-            let prdct = new Product();
-            prdct.id = productArray[i].id;
-            prdct.serialNumber = productArray[i].serialNumber;
-            prdct.name = productArray[i].name;
-            prdct.price = productArray[i].price;
-            prdct.quantity = 1;
-            prdObjArray.push(prdct);
-        } else {
-            prdObjArray[index].quantity++;
-        }
-    }
-
-    prdObjArray.forEach(product => {
+    productArray.forEach(product => {
 
         let div = document.createElement("div");
         div.classList.add('cart_product');
@@ -56,17 +26,17 @@ async function displayProductInCart() {
         let divProdImg = document.createElement("div");
         divProdImg.classList.add('product_img');
         divProdImg.innerHTML = `
-        <img src="${product.imageUrl}">
+        <img src="${product.productDto.imageUrl}">
         `;
         div.appendChild(divProdImg);
 
         let divProdInfo = document.createElement("div");
         divProdInfo.classList.add('product_info');
         divProdInfo.innerHTML = `
-        <p>${product.id}</p>
-        <p>${product.serialNumber}</p>
-        <p>${product.name}</p>
-        <p>${product.price}</p>
+        <p>${product.productDto.id}</p>
+        <p>${product.productDto.serialNumber}</p>
+        <p>${product.productDto.name}</p>
+        <p>${product.productDto.price}</p>
         `;
         div.appendChild(divProdInfo);
 
@@ -77,11 +47,20 @@ async function displayProductInCart() {
         btnMinus.classList.add('minus_quantity');
         btnMinus.innerText = "-";
         btnMinus.addEventListener('click', async (e) => {
-            let request = new Request("http://localhost:8080/store/delete-product/" + product.id, {
+            let request = new Request("http://localhost:8080/store/delete-product-from-basket/" + product.productDto.id, {
                 method: "DELETE"
             });
             await fetch(request);
-            await displayProductInCart();
+
+            let response = await fetch("http://localhost:8080/store/product-in-basket/" + product.productDto.id);
+            if (response.status != 404) {
+                let respJson = await response.json();
+                prodQuantity.innerText = respJson.quantity;
+            } else {
+                div.remove();
+            }
+
+            //await displayProductInCart();
         });
         divQuantityProduct.appendChild(btnMinus);
 
@@ -94,10 +73,15 @@ async function displayProductInCart() {
         btnPlus.classList.add('plus_quantity');
         btnPlus.innerText = "+";
         btnPlus.addEventListener('click', async (e)=>{
-            await fetch("http://localhost:8080/store/add-in-basket/" + product.id, {
+            await fetch("http://localhost:8080/store/add-in-basket/" + product.productDto.id, {
                 method: "POST"
             });
-            await displayProductInCart();
+
+            let response = await fetch("http://localhost:8080/store/product-in-basket/" + product.productDto.id);
+            let respJson = await response.json();
+            prodQuantity.innerText = respJson.quantity;
+
+            //await displayProductInCart();
         });
         divQuantityProduct.appendChild(btnPlus);
 

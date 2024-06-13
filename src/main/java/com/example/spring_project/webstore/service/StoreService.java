@@ -5,14 +5,18 @@ import com.example.spring_project.security.dto.SecurityUserDto;
 import com.example.spring_project.security.service.RoleService;
 import com.example.spring_project.webstore.dto.ProductDto;
 import com.example.spring_project.webstore.dto.UserDto;
+import com.example.spring_project.webstore.dto.UserProductRelationDto;
 import com.example.spring_project.webstore.entity.Product;
 import com.example.spring_project.webstore.entity.UserProductRelation;
 import com.example.spring_project.webstore.entity.User;
 import com.example.spring_project.webstore.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,63 +48,42 @@ public class StoreService {
 
         userProductRelationService.addUserProductRelation(user, product);
 
-        //userProductRelationService.addProductQuantity(userProductRelation);
+    }
 
-//        System.out.println(user);
-//        System.out.println(product);
+    public void deleteProductFromBasket(UUID id) {
 
-//        var list = user.getProductQuantitySet().stream()
-//                .filter(productQuantity -> productQuantity.getProduct()
-//                        .getId().equals(product.getId()))
-//                .collect(Collectors.toList());
-//
-//        if (list.isEmpty()) {
-//            user.addProductQuantity(ProductQuantity.builder()
-//                            .product(product)
-//                            .user(user)
-//                            .quantity(2)
-//                            .build());
-//        } else {
-//            int tmp = list.get(0).getQuantity();
-//            tmp++;
-//            list.get(0).setQuantity(tmp);
-//        }
+        User user = userService.getCurrentUser();
 
-        //user.getBasket().add(product);
-        //userService.changeUser(user);
+        if (user == null) {
+            return;
+        }
+
+        Product product = productService.findProductById(id);
+
+        if (product == null) {
+            return;
+        }
+
+        userProductRelationService.delUserProductRelation(user, product);
 
     }
 
-//    public List<ProductDto> getProductInBasket() {
-//
-//        User user = userService.getCurrentUser();
-//
-//        if (user == null) {
-//            return null;
-//        }
-//
-//        return user.getBasket().stream()
-//                .map(product -> productMapper.toDto(product))
-//                .collect(Collectors.toList());
-//
-//    }
+    public List<UserProductRelationDto> getAllProductsInBasket() {
 
-//    public void deleteProductInBasket(UUID id) {
-//
-//        User user = userService.getCurrentUser();
-//        int index = -1;
-//        for (int i = 0; i < user.getBasket().size(); i++) {
-//            if (user.getBasket().get(i).getId().equals(id)) {
-//                index = i;
-//            }
-//        }
-//        if (index < 0) {
-//            return;
-//        }
-//        user.getBasket().remove(index);
-//
-//        userService.changeUser(user);
-//    }
+        User user = userService.getCurrentUser();
+
+        if (user == null) {
+            return null;
+        }
+
+        return userProductRelationService.getRelations(user).stream()
+                .map(userProductRelation -> UserProductRelationDto.builder()
+                        .productDto(productMapper.toDto(userProductRelation.getProduct()))
+                        .quantity(userProductRelation.getQuantity())
+                        .build())
+                .collect(Collectors.toList());
+
+    }
 
     public String getCurrentUserName() {
         return userService.getCurrentUserName();
@@ -136,6 +119,29 @@ public class StoreService {
     public UserDto getCurrentUserDto() {
 
         return userService.getCurrentUserDto();
+
+    }
+
+    public ResponseEntity<?> getProductInBasket(UUID productId) {
+
+        User user = userService.getCurrentUser();
+
+        try {
+
+            UserProductRelation userProductRelation = userProductRelationService.getRelation(user.getId(), productId);
+
+            return new ResponseEntity<>(
+                    UserProductRelationDto.builder()
+                    .productDto(productMapper.toDto(userProductRelation.getProduct()))
+                    .quantity(userProductRelation.getQuantity())
+                    .build(),
+                    HttpStatus.OK);
+
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
 
     }
 }
