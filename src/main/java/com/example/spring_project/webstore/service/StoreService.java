@@ -50,21 +50,21 @@ public class StoreService {
 
     }
 
-    public void deleteProductFromBasket(UUID id) {
+    public ResponseEntity<?> deleteProductFromBasket(UUID id) {
 
         User user = userService.getCurrentUser();
 
         if (user == null) {
-            return;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         Product product = productService.findProductById(id);
 
         if (product == null) {
-            return;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        userProductRelationService.delUserProductRelation(user, product);
+        return userProductRelationService.delUserProductRelation(user, product);
 
     }
 

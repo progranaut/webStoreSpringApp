@@ -38,15 +38,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<UserProductRelation> userProductRelationSet;
 
-    public void addProductQuantity(UserProductRelation userProductRelation) {
-        this.userProductRelationSet.add(userProductRelation);
-        userProductRelation.setUser(this);
-    }
-
-    public void removeProductQuantity(UserProductRelation userProductRelation) {
-        this.userProductRelationSet.remove(userProductRelation);
-        userProductRelation.setUser(null);
-    }
+//    public void addProductQuantity(UserProductRelation userProductRelation) {
+//        this.userProductRelationSet.add(userProductRelation);
+//        userProductRelation.setUser(this);
+//    }
+//
+//    public void removeProductQuantity(UserProductRelation userProductRelation) {
+//        this.userProductRelationSet.remove(userProductRelation);
+//        userProductRelation.setUser(null);
+//    }
 
 //    @JoinTable(name = "user_product_relation",
 //              joinColumns = @JoinColumn(name = "user_id"),

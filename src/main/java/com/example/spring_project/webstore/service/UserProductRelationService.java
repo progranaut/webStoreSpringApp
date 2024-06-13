@@ -71,9 +71,15 @@ public class UserProductRelationService {
 
     }
 
-    public void delUserProductRelation(User user, Product product) {
+    public ResponseEntity<?> delUserProductRelation(User user, Product product) {
 
-        UserProductRelation userProductRelation = getRelation(user.getId(), product.getId());
+        UserProductRelation userProductRelation;
+
+        try {
+            userProductRelation = getRelation(user.getId(), product.getId());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         if (userProductRelation.getQuantity() > 1) {
 
@@ -87,5 +93,15 @@ public class UserProductRelationService {
 
         }
 
+        try {
+            userProductRelation = getRelation(user.getId(), product.getId());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(UserProductRelationDto.builder()
+                .productDto(productService.toDto(product))
+                .quantity(userProductRelation.getQuantity())
+                .build(), HttpStatus.OK);
     }
 }

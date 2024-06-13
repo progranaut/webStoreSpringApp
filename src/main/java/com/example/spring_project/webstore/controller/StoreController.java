@@ -50,8 +50,8 @@ public class StoreController {
     }
 
     @DeleteMapping("/delete-product-from-basket/{id}")
-    public void deleteProductInBasket(@PathVariable UUID id) {
-        storeService.deleteProductFromBasket(id);
+    public ResponseEntity<?> deleteProductInBasket(@PathVariable UUID id) {
+        return storeService.deleteProductFromBasket(id);
     }
 
     @GetMapping("/current-user-name")

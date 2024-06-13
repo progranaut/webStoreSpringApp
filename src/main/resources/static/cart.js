@@ -2,8 +2,8 @@
 
 async function displayProductInCart() {
 
-    var response = await fetch('http://localhost:8080/store/all-products-in-basket');
-    var productsInBasket = await response.json();
+    let response = await fetch('http://localhost:8080/store/all-products-in-basket');
+    let productsInBasket = await response.json();
 
     console.log(productsInBasket);
 
@@ -13,11 +13,20 @@ async function displayProductInCart() {
     let cartContent = document.createElement("div");
     cartContent.classList.add('cart_content');
 
-    let productArray = Array.from(productsInBasket);
+    let relationArray = Array.from(productsInBasket);
 
-    console.log(productArray);
+    console.log(relationArray);
 
-    productArray.forEach(relation => {
+    if (relationArray.length === 0) {
+        cartContent.innerHTML = `
+                        <p>Корзина пуста</p>
+                        <a href="http://localhost:8080/">Просмотреть товары</a>
+                    `;
+        centerContent.appendChild(cartContent);
+        return;
+    }
+
+    relationArray.forEach(relation => {
 
         let div = document.createElement("div");
         div.classList.add('cart_product');
@@ -52,15 +61,22 @@ async function displayProductInCart() {
             let request = new Request("http://localhost:8080/store/delete-product-from-basket/" + relation.productDto.id, {
                 method: "DELETE"
             });
-            await fetch(request);
-            let response = await fetch("http://localhost:8080/store/product-in-basket/" + relation.productDto.id);
-            if (response.status != 404) {
-                let respJson = await response.json();
+            let responseDel = await fetch(request);
+            //let response = await fetch("http://localhost:8080/store/product-in-basket/" + relation.productDto.id);
+            if (responseDel.status != 404) {
+                let respJson = await responseDel.json();
                 prodQuantity.innerText = respJson.quantity;
             } else {
                 div.remove();
+                let checkLast = await fetch('http://localhost:8080/store/all-products-in-basket');
+                let checkLastJson = await checkLast.json();
+                if (checkLastJson.length === 0) {
+                    cartContent.innerHTML = `
+                        <p>Корзина пуста</p>
+                        <a href="http://localhost:8080/">Просмотреть товары</a>
+                    `;
+                }
             }
-            //await displayProductInCart();
         });
         divQuantity.appendChild(btnMinus);
 
@@ -75,13 +91,11 @@ async function displayProductInCart() {
             let response = await fetch("http://localhost:8080/store/add-in-basket/" + relation.productDto.id, {
                 method: "POST"
             });
-            console.log(response.status);
             if (response.status === 200) {
                 let respJson = await response.json();
                 prodQuantity.innerText = respJson.quantity;
             }
             if (response.status === 406) {
-                console.log("red");
                 divAvailability.style.backgroundColor = "RED";
             }
         });
@@ -100,6 +114,11 @@ async function displayProductInCart() {
 
         cartContent.appendChild(div);
     });
+
+    let orderBtn = document.createElement('button');
+    orderBtn.innerText = "Подтвердить заказ";
+    cartContent.appendChild(orderBtn);
+
 
     centerContent.appendChild(cartContent);
 
