@@ -21,7 +21,7 @@ public class UserProductRelationService {
 
     private final UserProductRelationRepository userProductRelationRepository;
 
-    private final ProductMapper productMapper;
+    private final ProductService productService;
 
     public ResponseEntity<?> addUserProductRelation(User user, Product product) {
 
@@ -53,7 +53,7 @@ public class UserProductRelationService {
         userProductRelation = getRelation(user.getId(), product.getId());
 
         return new ResponseEntity<>(UserProductRelationDto.builder()
-                .productDto(productMapper.toDto(product))
+                .productDto(productService.toDto(product))
                 .quantity(userProductRelation.getQuantity())
                 .build(), HttpStatus.OK);
     }

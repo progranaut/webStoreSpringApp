@@ -42,4 +42,16 @@ public class ProductService {
                 .orElseThrow(()-> new UsernameNotFoundException("Продукт не найден!"));
 
     }
+
+    public ProductDto toDto(Product product) {
+
+        return productMapper.toDto(product);
+
+    }
+
+    public Product toEntity(ProductDto productDto) {
+
+        return productMapper.toEntity(productDto);
+
+    }
 }
