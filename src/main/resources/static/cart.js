@@ -7,9 +7,6 @@ async function displayProductInCart() {
 
     console.log(productsInBasket);
 
-    let centerContent = document.getElementById("center_content");
-    centerContent.innerHTML = ``;
-
     let cartContent = document.createElement("div");
     cartContent.classList.add('cart_content');
 
@@ -22,8 +19,7 @@ async function displayProductInCart() {
                         <p>Корзина пуста</p>
                         <a href="http://localhost:8080/">Просмотреть товары</a>
                     `;
-        centerContent.appendChild(cartContent);
-        return;
+        return cartContent;
     }
 
     relationArray.forEach(relation => {
@@ -62,7 +58,6 @@ async function displayProductInCart() {
                 method: "DELETE"
             });
             let responseDel = await fetch(request);
-            //let response = await fetch("http://localhost:8080/store/product-in-basket/" + relation.productDto.id);
             if (responseDel.status != 404) {
                 let respJson = await responseDel.json();
                 prodQuantity.innerText = respJson.quantity;
@@ -116,11 +111,32 @@ async function displayProductInCart() {
     });
 
     let orderBtn = document.createElement('button');
-    orderBtn.innerText = "Подтвердить заказ";
+    orderBtn.innerText = "Оформить заказ";
+    orderBtn.addEventListener('click', async (e)=>{
+        orderBtn.style.visibility = "hidden";
+        let dispUser = await displayUser();
+        cartContent.appendChild(dispUser);
+        let confirmBtn = document.createElement('button');
+        confirmBtn.innerText = "Подтвердить заказ";
+        confirmBtn.addEventListener('click', (e) => {
+            fetch('http://localhost:8080/store/add-order').then(response => {
+                if (response.status === 200) {
+                    let message = document.createElement('p');
+                    message.innerText = "Заказ успешно подтвержден";
+                    cartContent.insertBefore(message ,confirmBtn);
+                } else {
+                    let message = document.createElement('p');
+                    message.innerText = "Необходимо заполнить все поля и сохранить их!";
+                    cartContent.insertBefore(message ,confirmBtn);
+                }
+            });
+        });
+        cartContent.appendChild(confirmBtn);
+    });
+
     cartContent.appendChild(orderBtn);
 
-
-    centerContent.appendChild(cartContent);
+    return cartContent;
 
 }
 

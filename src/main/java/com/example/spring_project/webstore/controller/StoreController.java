@@ -6,6 +6,7 @@ import com.example.spring_project.webstore.dto.UserProductRelationDto;
 import com.example.spring_project.webstore.service.StoreService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +76,13 @@ public class StoreController {
     @GetMapping("/current-user")
     public UserDto getCurrentUser() {
         return storeService.getCurrentUserDto();
+    }
+
+    @GetMapping("/add-order")
+    public ResponseEntity<?> addOrder() {
+
+        return storeService.addOrder();
+
     }
 
 }

@@ -6,9 +6,7 @@ import com.example.spring_project.security.service.RoleService;
 import com.example.spring_project.webstore.dto.ProductDto;
 import com.example.spring_project.webstore.dto.UserDto;
 import com.example.spring_project.webstore.dto.UserProductRelationDto;
-import com.example.spring_project.webstore.entity.Product;
-import com.example.spring_project.webstore.entity.UserProductRelation;
-import com.example.spring_project.webstore.entity.User;
+import com.example.spring_project.webstore.entity.*;
 import com.example.spring_project.webstore.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +29,10 @@ public class StoreService {
     private final RoleService roleService;
 
     private final UserProductRelationService userProductRelationService;
+
+    private final OrderService orderService;
+
+    private final OrderProductRelationService orderProductRelationService;
 
     public ResponseEntity<?> addProductInBasket(UUID id) {
 
@@ -142,6 +144,48 @@ public class StoreService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
+
+    }
+
+    public ResponseEntity<?> addOrder() {
+
+        User user = userService.getCurrentUser();
+
+        if (user.getName().equals("") || user.getName() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (user.getPhoneNumber().equals("") || user.getPhoneNumber() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        System.out.println(user.getEmail());
+        if (user.getEmail().equals("") || user.getEmail() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if (user.getAddress().equals("") || user.getAddress() == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        Order order = orderService.addOrder(user);
+
+        List<UserProductRelation> userProductRelations = userProductRelationService
+                .getRelations(user);
+
+        List<OrderProductRelation> orderProductRelations = userProductRelations.stream()
+                .map(relation -> OrderProductRelation.builder()
+                        .order(order)
+                        .product(relation.getProduct())
+                        .relationQuantity(relation.getQuantity())
+                        .build())
+                .collect(Collectors.toList());
+
+        orderProductRelationService.addRelations(orderProductRelations);
+
+        userProductRelationService.delAllUserProductRelation(userProductRelations);
+
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 }

@@ -104,4 +104,12 @@ public class UserProductRelationService {
                 .quantity(userProductRelation.getQuantity())
                 .build(), HttpStatus.OK);
     }
+
+    public void delAllUserProductRelation(List<UserProductRelation> upr) {
+
+        userProductRelationRepository.deleteAll(upr);
+                //.deleteAllByUserId(user.getId());
+
+    }
+
 }

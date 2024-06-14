@@ -17,4 +17,7 @@ public interface UserProductRelationRepository extends JpaRepository<UserProduct
 
     List<UserProductRelation> findAllByUserId(UUID userId);
 
+    //@Query("DELETE FROM UserProductRelation u WHERE u.user.id = :userId")
+    //void deleteAllByUserId(UUID userId);
+
 }

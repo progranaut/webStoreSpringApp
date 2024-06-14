@@ -2,7 +2,51 @@ console.log("Скрипт подключен!");
 
 document.addEventListener("DOMContentLoaded", function (e){
 
-    displayProducts();
+    fetch("http://localhost:8080/store/current-user-name").then(async (response) => {
+
+        let currentUser = document.getElementById("user");
+        let centerContent = document.getElementById('center_content');
+        if (response.redirected) {
+            currentUser.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
+        } else {
+            //let name = await response.text();
+            let menu = await displayMenuUser(response);
+            currentUser.appendChild(menu);
+            centerContent.appendChild(await displayProducts());
+        }
+
+        // let menu = await displayMenuUser(response);
+        // let currentUser = document.getElementById("user");
+        // currentUser.appendChild(menu);
+
+        // if (!response.redirected) {
+        //     let cartBtn = document.createElement('button');
+        //     cartBtn.innerHTML = "Корзина";
+        //     cartBtn.addEventListener('click', async (e) => {
+        //         let centerContent = document.getElementById("center_content");
+        //         centerContent.innerHTML = ``;
+        //         centerContent.appendChild(await displayProductInCart());
+        //     });
+        //     currentUser.appendChild(cartBtn);
+        //
+        //     let userHref = document.createElement('a');
+        //     userHref.innerHTML = txt;
+        //     userHref.addEventListener('click', async (e) => {
+        //         let center = document.getElementById('center_content');
+        //         center.innerHTML = ``;
+        //         center.appendChild(await displayUser());
+        //     });
+        //     currentUser.appendChild(userHref);
+        //
+        //     let logOut = document.createElement('a');
+        //     logOut.setAttribute('href', 'http://localhost:8080/logout');
+        //     logOut.innerHTML = "Выйти";
+        //     currentUser.appendChild(logOut);
+        // } else {
+        //     currentUser.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
+        // }
+
+    });
 
 });
 
@@ -44,8 +88,10 @@ async function displayProducts() {
 
         let btnInBasket = document.createElement('button');
         btnInBasket.innerText = "Перейти к заказу";
-        btnInBasket.addEventListener('click', (e) => {
-            displayProductInCart();
+        btnInBasket.addEventListener('click', async (e) => {
+            let displayProduct = await displayProductInCart();
+            centerContent.innerHTML = ``;
+            centerContent.appendChild(displayProduct);
         });
 
         let response = await fetch("http://localhost:8080/store/product-in-basket/" + product.id, {
@@ -65,7 +111,8 @@ async function displayProducts() {
         homeContent.appendChild(div);
     }
 
-    centerContent.appendChild(homeContent);
+    return homeContent;
+    //centerContent.appendChild(homeContent);
 
 }
 

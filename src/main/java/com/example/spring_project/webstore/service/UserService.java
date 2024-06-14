@@ -9,6 +9,8 @@ import com.example.spring_project.webstore.entity.User;
 import com.example.spring_project.webstore.mapper.UserMapper;
 import com.example.spring_project.webstore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -88,23 +90,6 @@ public class UserService {
 
     public String getCurrentUserName() {
 
-//        Object principal = SecurityContextHolder
-//                .getContext()
-//                .getAuthentication()
-//                .getPrincipal();
-//
-//        if (principal instanceof UserDetails) {
-//            UserDetails userDetails = (UserDetails) principal;
-//            SecurityUser securityUser = securityUserService
-//                    .findSecUserByName(userDetails.getUsername());
-//
-//            User user = this.getUserBySecId(securityUser.getId());
-//
-//            return user.getName();
-//        }
-//
-//        return null;
-
         User user = getCurrentUser();
 
         if (user != null) {
@@ -126,4 +111,5 @@ public class UserService {
         return userDto;
 
     }
+
 }

@@ -28,6 +28,7 @@ public class OrderProductRelation {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private int productQuantity;
+    @Column(name = "relation_quantity")
+    private int relationQuantity;
 
 }
