@@ -22,8 +22,6 @@ public class StoreService {
 
     private final UserService userService;
 
-    private final ProductMapper productMapper;
-
     private final ProductService productService;
 
     private final RoleService roleService;
@@ -80,7 +78,7 @@ public class StoreService {
 
         return userProductRelationService.getRelations(user).stream()
                 .map(userProductRelation -> UserProductRelationDto.builder()
-                        .productDto(productMapper.toDto(userProductRelation.getProduct()))
+                        .productDto(productService.toDto(userProductRelation.getProduct()))
                         .quantity(userProductRelation.getQuantity())
                         .build())
                 .collect(Collectors.toList());
@@ -134,7 +132,7 @@ public class StoreService {
 
             return new ResponseEntity<>(
                     UserProductRelationDto.builder()
-                    .productDto(productMapper.toDto(userProductRelation.getProduct()))
+                    .productDto(productService.toDto(userProductRelation.getProduct()))
                     .quantity(userProductRelation.getQuantity())
                     .build(),
                     HttpStatus.OK);

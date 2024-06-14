@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function (e){
             //let name = await response.text();
             let menu = await displayMenuUser(response);
             currentUser.appendChild(menu);
+            centerContent.innerHTML = ``;
             centerContent.appendChild(await displayProducts());
         }
 
@@ -56,7 +57,6 @@ async function displayProducts() {
     const products = await productResponse.json();
 
     let centerContent = document.getElementById("center_content");
-    centerContent.innerHTML = ``;
 
     let homeContent = document.createElement("div");
     homeContent.classList.add('home_content');
@@ -89,9 +89,9 @@ async function displayProducts() {
         let btnInBasket = document.createElement('button');
         btnInBasket.innerText = "Перейти к заказу";
         btnInBasket.addEventListener('click', async (e) => {
-            let displayProduct = await displayProductInCart();
+            let displayProductsInCart = await displayProductInCart();
             centerContent.innerHTML = ``;
-            centerContent.appendChild(displayProduct);
+            centerContent.appendChild(displayProductsInCart);
         });
 
         let response = await fetch("http://localhost:8080/store/product-in-basket/" + product.id, {

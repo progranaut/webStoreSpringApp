@@ -121,9 +121,23 @@ async function displayProductInCart() {
         confirmBtn.addEventListener('click', (e) => {
             fetch('http://localhost:8080/store/add-order').then(response => {
                 if (response.status === 200) {
-                    let message = document.createElement('p');
-                    message.innerText = "Заказ успешно подтвержден";
-                    cartContent.insertBefore(message ,confirmBtn);
+                    cartContent.innerHTML = `
+                        <p>Заказ успешно подтвержден</p>
+                    `;
+                    let inStoreBtn = document.createElement('button');
+                    inStoreBtn.innerText = "Продолжить покупки";
+                    inStoreBtn.addEventListener('click', async (e)=>{
+                        cartContent.innerHTML = ``;
+                        cartContent.appendChild(await displayProducts());
+                    });
+                    cartContent.appendChild(inStoreBtn);
+                    let inUserBtn = document.createElement('button');
+                    inUserBtn.innerText = "Просмотреть заказы";
+                    inUserBtn.addEventListener('click', async (e)=>{
+                        cartContent.innerHTML = ``;
+                        cartContent.appendChild(await displayUser());
+                    });
+                    cartContent.appendChild(inUserBtn);
                 } else {
                     let message = document.createElement('p');
                     message.innerText = "Необходимо заполнить все поля и сохранить их!";
