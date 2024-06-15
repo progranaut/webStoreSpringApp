@@ -11,20 +11,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductDto {
+public class CategoryDto {
 
     private UUID id;
 
-    private String serialNumber;
-
-    private String name;
-
-    private Double price;
-
-    private CategoryDto categoryDto;
-
-    private String imageUrl;
-
-    private int availability;
+    private String categoryType;
 
 }

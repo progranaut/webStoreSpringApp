@@ -13,7 +13,9 @@ import org.mapstruct.*;
 )
 public interface ProductMapper {
 
-    //@Mapping(target = "roles", ignore = true)
+    //@Mapping(target = "category", ignore = true)
+    //@Mapping(target = "categoryDto.id", source = "category.id")
+    //@Mapping(target = "categoryDto.categoryType", source = "category.categoryType")
     ProductDto toDto(Product product);
 
     Product toEntity(ProductDto productDto);

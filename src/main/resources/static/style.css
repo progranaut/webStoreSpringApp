@@ -105,3 +105,30 @@ header {
     flex-direction: column;
 }
 
+/* admin */
+
+#admin_panel {
+    display: flex;
+    flex-direction: row;
+}
+
+#admin_menu {
+    background-color: #cafff9;
+}
+
+#admin_content {
+    background-color: #f0fffe;
+}
+
+.product_table {
+    border: midnightblue 1px dotted;
+}
+
+.product_table tr {
+    border: midnightblue 1px dotted;
+}
+
+.product_table tr td {
+    border: midnightblue 1px dotted;
+    padding: 5px;
+}

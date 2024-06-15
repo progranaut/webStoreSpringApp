@@ -1,5 +1,6 @@
 package com.example.spring_project.webstore.service;
 
+import com.example.spring_project.webstore.dto.CategoryDto;
 import com.example.spring_project.webstore.dto.ProductDto;
 import com.example.spring_project.webstore.entity.Product;
 import com.example.spring_project.webstore.mapper.ProductMapper;
@@ -31,7 +32,14 @@ public class ProductService {
     public List<ProductDto> getAllProduct() {
 
         return productRepository.findAll().stream()
-                .map(product -> productMapper.toDto(product))
+                .map(product -> {
+                    ProductDto productDto = productMapper.toDto(product);
+                    productDto.setCategoryDto(CategoryDto.builder()
+                                    .id(product.getCategory().getId())
+                                    .categoryType(product.getCategory().getCategoryType())
+                            .build());
+                    return productDto;
+                })
                 .collect(Collectors.toList());
 
     }

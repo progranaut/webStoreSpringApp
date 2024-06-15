@@ -6,7 +6,28 @@ async function displayMenuUser() {
 
     if (!arguments[0].redirected) {
 
-        let txt = await arguments[0].text();
+        // let txt = await arguments[0].text();
+        let response = await arguments[0].json();
+        console.log(response);
+        let userName = response.name;
+        let roleUser = false;
+        let roleAdmin = false;
+
+        response.roles.forEach(role => {
+            if (role.roleType === "ROLE_ADMIN") {
+                roleAdmin = true;
+            }
+            if (role.roleType === "ROLE_USER") {
+                roleUser = true;
+            }
+        });
+
+        if (roleAdmin) {
+            let adminHref = document.createElement('a');
+            adminHref.innerText = "AdminPanel";
+            adminHref.setAttribute('href', 'http://localhost:8080/admin');
+            userInfo.appendChild(adminHref);
+        }
 
         let cartBtn = document.createElement('button');
         cartBtn.innerHTML = "Корзина";
@@ -18,7 +39,7 @@ async function displayMenuUser() {
         userInfo.appendChild(cartBtn);
 
         let userHref = document.createElement('a');
-        userHref.innerHTML = txt;
+        userHref.innerHTML = userName;
         userHref.addEventListener('click', async (e) => {
             let center = document.getElementById('center_content');
             center.innerHTML = ``;

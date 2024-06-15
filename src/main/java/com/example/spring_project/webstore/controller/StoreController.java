@@ -1,8 +1,6 @@
 package com.example.spring_project.webstore.controller;
 
-import com.example.spring_project.webstore.dto.ProductDto;
-import com.example.spring_project.webstore.dto.UserDto;
-import com.example.spring_project.webstore.dto.UserProductRelationDto;
+import com.example.spring_project.webstore.dto.*;
 import com.example.spring_project.webstore.service.StoreService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -55,14 +53,14 @@ public class StoreController {
         return storeService.deleteProductFromBasket(id);
     }
 
-    @GetMapping("/current-user-name")
-    public String userName() {
+    @GetMapping("/current-user-name-roll")
+    public UserNameAndRoleDto userName() {
 
-        return storeService.getCurrentUserName();
+        return storeService.getCurrentUserNameAndRole();
 
     }
 
-    @GetMapping("/products-all")
+    @GetMapping("/all-products")
     public List<ProductDto> allProducts() {
         return storeService.getAllProduct();
     }
@@ -82,6 +80,13 @@ public class StoreController {
     public ResponseEntity<?> addOrder() {
 
         return storeService.addOrder();
+
+    }
+
+    @GetMapping("/all-product-categories")
+    public List<CategoryDto> getProductCategories(){
+
+        return storeService.getAllProductCategories();
 
     }
 

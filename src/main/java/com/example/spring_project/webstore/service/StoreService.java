@@ -3,11 +3,8 @@ package com.example.spring_project.webstore.service;
 import com.example.spring_project.security.dto.RoleDto;
 import com.example.spring_project.security.dto.SecurityUserDto;
 import com.example.spring_project.security.service.RoleService;
-import com.example.spring_project.webstore.dto.ProductDto;
-import com.example.spring_project.webstore.dto.UserDto;
-import com.example.spring_project.webstore.dto.UserProductRelationDto;
+import com.example.spring_project.webstore.dto.*;
 import com.example.spring_project.webstore.entity.*;
-import com.example.spring_project.webstore.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +28,8 @@ public class StoreService {
     private final OrderService orderService;
 
     private final OrderProductRelationService orderProductRelationService;
+
+    private final CategoryService categoryService;
 
     public ResponseEntity<?> addProductInBasket(UUID id) {
 
@@ -85,8 +84,8 @@ public class StoreService {
 
     }
 
-    public String getCurrentUserName() {
-        return userService.getCurrentUserName();
+    public UserNameAndRoleDto getCurrentUserNameAndRole() {
+        return userService.getCurrentUserNameAndRole();
     }
 
     public List<ProductDto> getAllProduct() {
@@ -184,6 +183,12 @@ public class StoreService {
         userProductRelationService.delAllUserProductRelation(userProductRelations);
 
         return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    public List<CategoryDto> getAllProductCategories() {
+
+        return categoryService.getAllProductCategories();
 
     }
 }

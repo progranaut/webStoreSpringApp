@@ -1,10 +1,13 @@
 package com.example.spring_project.webstore.service;
 
+import com.example.spring_project.security.dto.RoleDto;
 import com.example.spring_project.security.dto.SecurityUserDto;
+import com.example.spring_project.security.entity.Role;
 import com.example.spring_project.security.entity.SecurityUser;
 import com.example.spring_project.security.mapper.SecurityUserMapper;
 import com.example.spring_project.security.service.SecurityUserService;
 import com.example.spring_project.webstore.dto.UserDto;
+import com.example.spring_project.webstore.dto.UserNameAndRoleDto;
 import com.example.spring_project.webstore.entity.User;
 import com.example.spring_project.webstore.mapper.UserMapper;
 import com.example.spring_project.webstore.repository.UserRepository;
@@ -16,7 +19,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -88,12 +93,20 @@ public class UserService {
 
     }
 
-    public String getCurrentUserName() {
+    public UserNameAndRoleDto getCurrentUserNameAndRole() {
 
         User user = getCurrentUser();
 
+        Set<Role> roles = user.getSecurityUser().getRoles();
+        Set<RoleDto> roleDtoSet = roles.stream().map(role -> RoleDto.builder()
+                .roleType(role.getRoleType().toString())
+                .build()).collect(Collectors.toSet());
+
         if (user != null) {
-            return user.getName();
+            return UserNameAndRoleDto.builder()
+                    .name(user.getName())
+                    .roles(roleDtoSet)
+                    .build();
         }
 
         return null;

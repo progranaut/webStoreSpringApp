@@ -1,5 +1,6 @@
 package com.example.spring_project.webstore.entity;
 
+import com.example.spring_project.webstore.enums.CategoryType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,10 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Column(name = "image_url")
     private String imageUrl;
 
@@ -35,15 +40,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     Set<UserProductRelation> userProductRelationSet;
-
-//    public void addProductQuantity(UserProductRelation userProductRelation) {
-//        this.userProductRelationSet.add(userProductRelation);
-//        userProductRelation.setProduct(this);
-//    }
-//
-//    public void removeProductQuantity(UserProductRelation userProductRelation) {
-//        this.userProductRelationSet.remove(userProductRelation);
-//        userProductRelation.setProduct(null);
-//    }
 
 }
