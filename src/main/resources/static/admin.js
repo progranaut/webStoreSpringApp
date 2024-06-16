@@ -3,6 +3,7 @@ let adminContent = document.getElementById('admin_content');
 let productBtn = document.getElementById('product_btn');
 let categoryBtn = document.getElementById('category_button');
 
+//Страница категории
 categoryBtn.addEventListener('click', (e)=>{
     adminContent.innerHTML = `
         <form id="add_category">
@@ -28,33 +29,28 @@ categoryBtn.addEventListener('click', (e)=>{
     adminContent.appendChild(addCategoryBtn);
 });
 
-productBtn.addEventListener('click', (e) => {
+
+//Страница товары
+
+productBtn.addEventListener('click', async (e) => {
+
     adminContent.innerHTML = `
+        <h3>Добавить товар: </h3>
         <form id="add_product">
-        
+            <label for="serial_number">Серийный номер: </label>
             <input type="text" name="serial_number" id="serial_number">
+            <label for="name">Имя: </label>
             <input type="text" name="name" id="name">
+            <label for="price">Цена: </label>
             <input type="text" name="price" id="price">
-            <select id="categories">
-            </select>
-            <input type="text" name="quantity" id="quantity">
-        
+            <label for="categories">Категория: </label>
+            <select id="categories"></select>
+            <label for="quantity">Количество: </label>
+            <input type="text" name="availability" id="availability">
+            <button id="add_product_btn">Добавить</button>
         </form>
+        <h3>Товары: </h3>
     `;
-
-    let select = document.getElementById('categories');
-
-    fetch('http://localhost:8080/store/all-product-categories').then(async response => {
-        let category = await response.json();
-        let categoryArray = Array.from(category);
-        categoryArray.forEach(category => {
-            let option = document.createElement('option');
-            option.setAttribute('data-id', category.id);
-            option.setAttribute('value', category.categoryType);
-            option.innerText = category.categoryType;
-            select.appendChild(option);
-        });
-    });
 
     let productTable = document.createElement('table');
     productTable.classList.add('product_table');
@@ -70,6 +66,66 @@ productBtn.addEventListener('click', (e) => {
             </tr>
         `;
     adminContent.appendChild(productTable);
+
+    let addProductBtn = document.getElementById('add_product_btn');
+    addProductBtn.addEventListener('click', async (e)=>{
+
+        e.preventDefault();
+
+        let form = document.getElementById('add_product');
+
+        let product = {
+            serialNumber: form.serial_number.value,
+            name: form.name.value,
+            price: form.price.value,
+            categoryDto: {
+                id: "",
+                categoryType: form.categories.value
+            },
+            availability: form.availability.value
+        }
+
+        console.log(product);
+
+        await fetch('http://localhost:8080/products/add', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(product)
+        }).then(async response => {
+            let product = await response.json();
+            console.log(product);
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${product.id}</td>
+                <td>${product.serialNumber}</td>
+                <td>${product.name}</td>
+                <td>${product.price}</td>
+                <td>${product.categoryDto.categoryType}</td>
+                <td>img</td>
+                <td>${product.availability}</td>
+            `;
+            productTable.appendChild(tr);
+        });
+    });
+
+
+    let select = document.getElementById('categories');
+    select.replaceWith(await getCategories());
+
+    // fetch('http://localhost:8080/store/all-product-categories').then(async response => {
+    //     let category = await response.json();
+    //     let categoryArray = Array.from(category);
+    //     categoryArray.forEach(category => {
+    //         let option = document.createElement('option');
+    //         option.setAttribute('data-id', category.id);
+    //         option.setAttribute('value', category.categoryType);
+    //         option.innerText = category.categoryType;
+    //         select.appendChild(option);
+    //     });
+    // });
+
 
     fetch('http://localhost:8080/store/all-products').then(async response => {
         let products = await response.json();
@@ -87,8 +143,95 @@ productBtn.addEventListener('click', (e) => {
             <td>${product.image}</td>
             <td>${product.availability}</td>
             `;
+            let td = document.createElement('td');
+            let redactBtn = document.createElement('button');
+            redactBtn.innerText = "Редактировать";
+            redactBtn.addEventListener('click', async (e) => {
+                let tr = td.parentElement;
+                let tds = tr.children;
+                let tdsArray = Array.from(tds);
+                for (let i = 1; i < tdsArray.length; i++) {
+                    if (i === 4) {
+                        let tmp = tdsArray[i].innerText;
+                        tdsArray[i].innerHTML = ``;
+                        let select = await getCategories(tmp);
+                        tdsArray[i].appendChild(select);
+                    } else {
+                        let tmp = tdsArray[i].innerText;
+                        let input = document.createElement('input');
+                        input.value = tmp;
+                        tdsArray[i].innerHTML = ``;
+                        tdsArray[i].appendChild(input);
+                    }
+                    if (i === 7) {
+                        tdsArray[i].innerHTML = ``;
+                        let saveBtn = document.createElement('button');
+                        saveBtn.innerText = "Сохранить";
+                        saveBtn.addEventListener('click', (e)=>{
+                            let saveProduct = {
+                                id: tdsArray[0].innerText,
+                                serialNumber: tdsArray[1].firstElementChild.value,
+                                name: tdsArray[2].firstElementChild.value,
+                                price: tdsArray[3].firstElementChild.value,
+                                categoryDto: {
+                                    id: "",
+                                    categoryType: tdsArray[4].firstElementChild.value
+                                },
+                                imageUrl: tdsArray[5].firstElementChild.value,
+                                availability: tdsArray[6].firstElementChild.value
+                            }
+                            console.log(saveProduct);
+                            fetch('http://localhost:8080/products/change', {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(saveProduct)
+                            }).then(async response=>{
+                                let product = await response.json();
+                                console.log(product);
+                                tdsArray[0].innerText = product.id;
+                                tdsArray[1].innerText = product.serialNumber;
+                                tdsArray[2].innerText = product.name;
+                                tdsArray[3].innerText = product.price;
+                                tdsArray[4].innerText = product.categoryDto.categoryType;
+                                tdsArray[5].innerText = product.imageUrl;
+                                tdsArray[6].innerText = product.availability;
+                                tdsArray[7].innerHTML = ``;
+                                tdsArray[7].appendChild(redactBtn);
+                            });
+                        });
+                        tdsArray[i].appendChild(saveBtn);
+                    }
+                }
+                console.log(tdsArray);
+            });
+            td.appendChild(redactBtn);
+            tr.appendChild(td);
             productTable.appendChild(tr);
         });
     });
 });
+
+
+async function getCategories() {
+    let select = document.createElement('select');
+    select.setAttribute('id', 'categories');
+    let response = await fetch('http://localhost:8080/store/all-product-categories');
+    let category = await response.json();
+    let categoryArray = Array.from(category);
+    categoryArray.forEach(category => {
+        let option = document.createElement('option');
+        option.setAttribute('data-id', category.id);
+        option.setAttribute('value', category.categoryType);
+        if (arguments[0] != null) {
+            if (category.categoryType === arguments[0]) {
+                option.setAttribute('selected', arguments[0]);
+            }
+        }
+        option.innerText = category.categoryType;
+        select.appendChild(option);
+    });
+    return select;
+}
 

@@ -2,6 +2,7 @@ package com.example.spring_project.webstore.service;
 
 import com.example.spring_project.webstore.dto.CategoryDto;
 import com.example.spring_project.webstore.dto.ProductDto;
+import com.example.spring_project.webstore.entity.Category;
 import com.example.spring_project.webstore.entity.Product;
 import com.example.spring_project.webstore.mapper.ProductMapper;
 import com.example.spring_project.webstore.repository.ProductRepository;
@@ -21,12 +22,21 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
-    public void addProduct (ProductDto productDto) {
+    private final CategoryService categoryService;
+
+    public ProductDto addProduct (ProductDto productDto) {
 
         Product product = productMapper.toEntity(productDto);
 
-        productRepository.save(product);
+        product.setCategory(categoryService.toEntity(productDto.getCategoryDto()));
 
+        product = productRepository.save(product);
+
+        productDto = productMapper.toDto(product);
+
+        productDto.setCategoryDto(categoryService.toDto(product.getCategory()));
+
+        return productDto;
     }
 
     public List<ProductDto> getAllProduct() {
@@ -61,5 +71,18 @@ public class ProductService {
 
         return productMapper.toEntity(productDto);
 
+    }
+
+    public ProductDto changeProduct(ProductDto productDto) {
+
+        Product product = productMapper.toEntity(productDto);
+        product.setCategory(categoryService.toEntity(productDto.getCategoryDto()));
+
+        product = productRepository.save(product);
+
+        productDto = productMapper.toDto(product);
+        productDto.setCategoryDto(categoryService.toDto(product.getCategory()));
+
+        return productDto;
     }
 }
