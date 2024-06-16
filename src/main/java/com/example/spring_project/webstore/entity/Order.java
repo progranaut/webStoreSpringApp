@@ -26,7 +26,6 @@ public class Order {
     private UUID id;
 
     @Column(name = "order_number")
-    //@GeneratedValue(strategy = GenerationType.AUTO)
     private Long orderNumber;
 
     @Column(name = "date")

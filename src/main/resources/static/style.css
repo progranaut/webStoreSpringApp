@@ -120,15 +120,19 @@ header {
     background-color: #f0fffe;
 }
 
-.product_table {
+.content_table {
     border: midnightblue 1px dotted;
 }
 
-.product_table tr {
+.content_table tr {
     border: midnightblue 1px dotted;
 }
 
-.product_table tr td {
+.content_table tr td {
     border: midnightblue 1px dotted;
     padding: 5px;
+}
+
+.product_id_td {
+
 }

@@ -63,25 +63,31 @@ public class ProductService {
 
     public ProductDto toDto(Product product) {
 
-        return productMapper.toDto(product);
+        ProductDto productDto = productMapper.toDto(product);
+        productDto.setCategoryDto(categoryService.toDto(product.getCategory()));
+
+        return productDto;
 
     }
 
     public Product toEntity(ProductDto productDto) {
 
-        return productMapper.toEntity(productDto);
+        Product product = productMapper.toEntity(productDto);
+        product.setCategory(categoryService.toEntity(productDto.getCategoryDto()));
+
+        return product;
 
     }
 
     public ProductDto changeProduct(ProductDto productDto) {
 
-        Product product = productMapper.toEntity(productDto);
-        product.setCategory(categoryService.toEntity(productDto.getCategoryDto()));
+        Product product = toEntity(productDto);
+        //product.setCategory(categoryService.toEntity(productDto.getCategoryDto()));
 
         product = productRepository.save(product);
 
-        productDto = productMapper.toDto(product);
-        productDto.setCategoryDto(categoryService.toDto(product.getCategory()));
+        productDto = toDto(product);
+        //productDto.setCategoryDto(categoryService.toDto(product.getCategory()));
 
         return productDto;
     }

@@ -1,7 +1,9 @@
 
 let adminContent = document.getElementById('admin_content');
+
 let productBtn = document.getElementById('product_btn');
 let categoryBtn = document.getElementById('category_button');
+let usersBtn = document.getElementById('user_btn');
 
 //Страница категории
 categoryBtn.addEventListener('click', (e)=>{
@@ -31,7 +33,6 @@ categoryBtn.addEventListener('click', (e)=>{
 
 
 //Страница товары
-
 productBtn.addEventListener('click', async (e) => {
 
     adminContent.innerHTML = `
@@ -53,7 +54,7 @@ productBtn.addEventListener('click', async (e) => {
     `;
 
     let productTable = document.createElement('table');
-    productTable.classList.add('product_table');
+    productTable.classList.add('content_table');
     productTable.innerHTML = `
             <tr>
                 <td>id</td>
@@ -98,15 +99,16 @@ productBtn.addEventListener('click', async (e) => {
             console.log(product);
             let tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${product.id}</td>
+                <td class="product_id_td">${product.id}</td>
                 <td>${product.serialNumber}</td>
                 <td>${product.name}</td>
                 <td>${product.price}</td>
                 <td>${product.categoryDto.categoryType}</td>
                 <td>img</td>
                 <td>${product.availability}</td>
+                <td>Добавлено</td>
             `;
-            productTable.appendChild(tr);
+            productTable.firstElementChild.appendChild(tr);
         });
     });
 
@@ -135,7 +137,7 @@ productBtn.addEventListener('click', async (e) => {
         productsArray.forEach(product => {
             let tr = document.createElement('tr');
             tr.innerHTML = `
-            <td>${product.id}</td>
+            <td class="product_id_td">${product.id}</td>
             <td>${product.serialNumber}</td>
             <td>${product.name}</td>
             <td>${product.price}</td>
@@ -208,11 +210,10 @@ productBtn.addEventListener('click', async (e) => {
             });
             td.appendChild(redactBtn);
             tr.appendChild(td);
-            productTable.appendChild(tr);
+            productTable.firstElementChild.appendChild(tr);
         });
     });
 });
-
 
 async function getCategories() {
     let select = document.createElement('select');
@@ -235,3 +236,53 @@ async function getCategories() {
     return select;
 }
 
+
+// Страница пользователи
+usersBtn.addEventListener('click', async (e) => {
+    let userTable = document.createElement('table');
+    userTable.classList.add('content_table');
+    userTable.innerHTML = `
+        <tr>
+            <td>Id</td>
+            <td>Имя</td>
+            <td>email</td>
+            <td>Адрес</td>
+            <td>Телефон</td>
+        </tr>
+    `;
+    fetch('http://localhost:8080/users/all').then( async response => {
+        let users = await response.json();
+        let usersArray = Array.from(users);
+        console.log(usersArray);
+        usersArray.forEach(user => {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.address}</td>
+                <td>${user.phoneNumber}</td>
+            `;
+            let td = document.createElement('td');
+            let userOrderBtn = document.createElement('button');
+            userOrderBtn.setAttribute('data-id', user.id);
+            userOrderBtn.innerText = "Заказы";
+            userOrderBtn.addEventListener('click', (e) => {
+                let request = new Request("http://localhost:8080/orders/all-user-order/" + userOrderBtn.getAttribute('data-id'));
+                fetch(request).then(async response=>{
+                    let orders = await response.json();
+                    let ordersArray = Array.from(orders);
+                    console.log(orders);
+                    console.log(ordersArray);
+                    //
+                    
+                });
+            });
+            td.appendChild(userOrderBtn);
+            tr.appendChild(td);
+            userTable.firstElementChild.appendChild(tr);
+        });
+    });
+    adminContent.innerHTML = ``;
+    adminContent.appendChild(userTable);
+});

@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -125,4 +126,11 @@ public class UserService {
 
     }
 
+    public List<UserDto> getAllUsers() {
+
+        return userRepository.findAll().stream()
+                .map(user -> userMapper.toDto(user))
+                .collect(Collectors.toList());
+
+    }
 }

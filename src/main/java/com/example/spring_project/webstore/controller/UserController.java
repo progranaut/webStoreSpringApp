@@ -5,6 +5,8 @@ import com.example.spring_project.webstore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -22,4 +24,10 @@ public class UserController {
         userService.changeUser(userDto);
     }
 
+    @GetMapping("/all")
+    public List<UserDto> getAllUsers() {
+
+        return userService.getAllUsers();
+
+    }
 }
