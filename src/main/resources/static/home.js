@@ -46,6 +46,7 @@ async function displayProducts() {
         `;
 
         if (arguments[0].status == 200) {
+
             let btnNotInBasket = document.createElement("button");
             btnNotInBasket.innerText = "Добавить";
             btnNotInBasket.addEventListener('click', async (e) => {
@@ -55,8 +56,10 @@ async function displayProducts() {
                 let resp = await fetch("http://localhost:8080/store/product-in-basket/" + product.id, {
                     method: "HEAD"
                 });
-                btnNotInBasket.remove();
-                div.appendChild(btnInBasket);
+                if (resp.status == 200) {
+                    btnNotInBasket.remove();
+                    div.appendChild(btnInBasket);
+                }
             });
 
             let btnInBasket = document.createElement('button');
@@ -72,14 +75,46 @@ async function displayProducts() {
             });
 
             if (responsePrd.status === 200) {
-
                 div.appendChild(btnInBasket);
-
             } else {
-
                 div.appendChild(btnNotInBasket);
-
             }
+
+        } else {
+
+            let btnNotInBasket = document.createElement("button");
+            btnNotInBasket.innerText = "Добавить";
+            btnNotInBasket.addEventListener('click', async (e) => {
+
+                document.cookie = product.id + "=1";
+
+                btnNotInBasket.remove();
+                div.appendChild(btnInBasket);
+            });
+
+            let btnInBasket = document.createElement('button');
+            btnInBasket.innerText = "Перейти к заказу";
+            btnInBasket.addEventListener('click', async (e) => {
+
+                console.log(document.cookie);
+
+            });
+
+            let cook = document.cookie;
+            let cookieArray = cook.split(";");
+            let cookieContains = false;
+            cookieArray.forEach(cook => {
+                if (cook.split("=")[0].trim() === /*div.getAttribute('data-product')*/ product.id) {
+                    cookieContains = true;
+                }
+            });
+
+            if (cookieContains) {
+                div.appendChild(btnInBasket);
+            } else {
+                div.appendChild(btnNotInBasket);
+            }
+
         }
 
         homeContent.appendChild(div);

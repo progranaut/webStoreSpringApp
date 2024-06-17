@@ -20,12 +20,12 @@ public class StoreController {
 
     private final StoreService storeService;
 
-//    @PostMapping("/add-in-basket")
-//    public void addProductInBasket(@RequestBody ProductDto productDto){
-//
-//        storeService.addProductInBasket(productDto);
-//
-//    }
+/*    @PostMapping("/add-in-basket")
+    public void addProductInBasket(@RequestBody ProductDto productDto){
+
+        storeService.addProductInBasket(productDto);
+
+    }*/
 
     @PostMapping("/add-in-basket/{id}")
     public ResponseEntity<?> addProductInBasket(@PathVariable UUID id){

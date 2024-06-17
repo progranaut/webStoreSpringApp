@@ -154,6 +154,118 @@ async function displayProductInCart() {
 
 }
 
+async function displayProductInCartNotReg() {
+    let response = await fetch('http://localhost:8080/store/all-products');
+    let products = await response.json();
+    let productsArray = Array.from(products);
+
+    let cartContent = document.createElement("div");
+    cartContent.classList.add('cart_content');
+
+    productsArray.forEach(product => {
+        let cookie = document.cookie;
+        let cookieArray = cookie.split(";");
+        cookieArray.forEach(cook => {
+            if (cook.split("=")[0].trim() === product.id) {
+
+                let div = document.createElement("div");
+                div.classList.add('cart_product');
+                div.setAttribute('data-product', product.id);
+
+                let divProdImg = document.createElement("div");
+                divProdImg.classList.add('product_img');
+                divProdImg.innerHTML = `
+                    <img src="${product.imageUrl}">
+                `;
+                div.appendChild(divProdImg);
+
+                let divProdInfo = document.createElement("div");
+                divProdInfo.classList.add('product_info');
+                divProdInfo.innerHTML = `
+                    <p>${product.id}</p>
+                    <p>${product.serialNumber}</p>
+                    <p>${product.name}</p>
+                    <p>${product.price}</p>
+                `;
+                div.appendChild(divProdInfo);
+
+                let divQuantityProduct = document.createElement("div");
+                divQuantityProduct.classList.add('product_quantity_availability');
+
+                let divQuantity = document.createElement('div');
+                divQuantity.classList.add('product_quantity');
+                let btnMinus = document.createElement('button');
+                btnMinus.classList.add('minus_quantity');
+                btnMinus.innerText = "-";
+                btnMinus.addEventListener('click', async (e) => {
+
+                    let value = 0;
+                    document.cookie.split(";").forEach(cookie => {
+                        if (cookie.split("=")[0].trim() === product.id) {
+                            value = cookie.split("=")[1].trim();
+                        }
+                    });
+                    if (value > 1) {
+                        document.cookie = product.id + "=" + --value;
+                        prodQuantity.innerText = value;
+                    } else {
+                        document.cookie = product.id + "=" + value + "; max-age=0";
+                        div.remove();
+                    }
+
+                });
+                divQuantity.appendChild(btnMinus);
+
+                let prodQuantity = document.createElement('p');
+                prodQuantity.innerText = cook.split("=")[1].trim();
+                divQuantity.appendChild(prodQuantity);
+
+                let btnPlus = document.createElement("button");
+                btnPlus.classList.add('plus_quantity');
+                btnPlus.innerText = "+";
+                btnPlus.addEventListener('click', async (e)=>{
+                    let value = 0;
+                    document.cookie.split(";").forEach(cookie => {
+                        if (cookie.split("=")[0].trim() === product.id) {
+                            value = cookie.split("=")[1].trim();
+                        }
+                    });
+                    if (value < product.availability) {
+                        document.cookie = product.id + "=" + ++value;
+                        prodQuantity.innerText = value;
+                    } else {
+                        divAvailability.style.backgroundColor = "RED";
+                    }
+                });
+                divQuantity.appendChild(btnPlus);
+
+                divQuantityProduct.appendChild(divQuantity);
+
+                let divAvailability = document.createElement('div');
+                divAvailability.classList.add('product_availability');
+                divAvailability.innerHTML = `
+                    Наличие: ${product.availability} шт.
+                `;
+                divQuantityProduct.appendChild(divAvailability);
+
+                div.appendChild(divQuantityProduct);
+
+                cartContent.appendChild(div);
+            }
+        });
+    });
+
+    // if (.length === 0) {
+    //     cartContent.innerHTML = `
+    //                     <p>Корзина пуста</p>
+    //                     <a href="http://localhost:8080/">Просмотреть товары</a>
+    //                 `;
+    //     return cartContent;
+    // }
+
+    return cartContent;
+}
+
 class Product {
 
     constructor(/*id, serialNumber, name, price*/) {
