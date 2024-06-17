@@ -1,12 +1,11 @@
-
+console.log("menu.js подключен!")
 
 async function displayMenuUser() {
 
     let userInfo = document.createElement('div');
 
-    if (!arguments[0].redirected) {
+    if (arguments[0].status == 200) {
 
-        // let txt = await arguments[0].text();
         let response = await arguments[0].json();
         console.log(response);
         let userName = response.name;
@@ -54,7 +53,14 @@ async function displayMenuUser() {
 
     } else {
 
-        userInfo.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
+        let cartBtn = document.createElement('button');
+        cartBtn.innerText = "Корзина";
+        userInfo.appendChild(cartBtn);
+
+        let loginHref = document.createElement('a');
+        loginHref.setAttribute('href', 'http://localhost:8080/login');
+        loginHref.innerText = "Войти";
+        userInfo.appendChild(loginHref);
 
     }
 

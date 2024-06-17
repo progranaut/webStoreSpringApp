@@ -1,50 +1,27 @@
-console.log("Скрипт подключен!");
+console.log("home.js подключен!");
 
-document.addEventListener("DOMContentLoaded", function (e){
+document.addEventListener("DOMContentLoaded", async function (e){
 
     fetch("http://localhost:8080/store/current-user-name-roll").then(async (response) => {
+
+        console.log(response.status);
 
         let currentUser = document.getElementById("user");
         let centerContent = document.getElementById('center_content');
 
-        // if (response.redirected) {
-        //     currentUser.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
-        // } else {
-        //     let menu = await displayMenuUser(response);
-        //     currentUser.appendChild(menu);
-        //     centerContent.innerHTML = ``;
-        //     centerContent.appendChild(await displayProducts());
-        // }
-
         let menu = await displayMenuUser(response);
         currentUser.appendChild(menu);
         centerContent.innerHTML = ``;
-        centerContent.appendChild(await displayProducts());
+        console.log("test");
+        let content = await displayProducts(response);
+        console.log("test2");
+        centerContent.appendChild(content);
+        console.log("test3");
 
     });
 
 });
 
-
-// document.addEventListener("DOMContentLoaded", function (e){
-//
-//     fetch("http://localhost:8080/store/current-user-name").then(async (response) => {
-//
-//         let currentUser = document.getElementById("user");
-//         let centerContent = document.getElementById('center_content');
-//         if (response.redirected) {
-//             currentUser.innerHTML = '<a href="http://localhost:8080/login">Войти</a>';
-//         } else {
-//             //let name = await response.text();
-//             let menu = await displayMenuUser(response);
-//             currentUser.appendChild(menu);
-//             centerContent.innerHTML = ``;
-//             centerContent.appendChild(await displayProducts());
-//         }
-//
-//     });
-//
-// });
 
 async function displayProducts() {
 
@@ -68,39 +45,41 @@ async function displayProducts() {
         <p>${product.price}</p>
         `;
 
-        let btnNotInBasket = document.createElement("button");
-        btnNotInBasket.innerText = "Добавить";
-        btnNotInBasket.addEventListener('click', async (e) => {
-            await fetch("http://localhost:8080/store/add-in-basket/" + product.id, {
-                method: "POST"
+        if (arguments[0].status == 200) {
+            let btnNotInBasket = document.createElement("button");
+            btnNotInBasket.innerText = "Добавить";
+            btnNotInBasket.addEventListener('click', async (e) => {
+                await fetch("http://localhost:8080/store/add-in-basket/" + product.id, {
+                    method: "POST"
+                });
+                let resp = await fetch("http://localhost:8080/store/product-in-basket/" + product.id, {
+                    method: "HEAD"
+                });
+                btnNotInBasket.remove();
+                div.appendChild(btnInBasket);
             });
-            let resp = await fetch("http://localhost:8080/store/product-in-basket/" + product.id, {
+
+            let btnInBasket = document.createElement('button');
+            btnInBasket.innerText = "Перейти к заказу";
+            btnInBasket.addEventListener('click', async (e) => {
+                let displayProductsInCart = await displayProductInCart();
+                centerContent.innerHTML = ``;
+                centerContent.appendChild(displayProductsInCart);
+            });
+
+            let responsePrd = await fetch("http://localhost:8080/store/product-in-basket/" + product.id, {
                 method: "HEAD"
             });
-            btnNotInBasket.remove();
-            div.appendChild(btnInBasket);
-        });
 
-        let btnInBasket = document.createElement('button');
-        btnInBasket.innerText = "Перейти к заказу";
-        btnInBasket.addEventListener('click', async (e) => {
-            let displayProductsInCart = await displayProductInCart();
-            centerContent.innerHTML = ``;
-            centerContent.appendChild(displayProductsInCart);
-        });
+            if (responsePrd.status === 200) {
 
-        let response = await fetch("http://localhost:8080/store/product-in-basket/" + product.id, {
-            method: "HEAD"
-        });
+                div.appendChild(btnInBasket);
 
-        if (response.status === 200) {
+            } else {
 
-            div.appendChild(btnInBasket);
+                div.appendChild(btnNotInBasket);
 
-        } else {
-
-            div.appendChild(btnNotInBasket);
-
+            }
         }
 
         homeContent.appendChild(div);

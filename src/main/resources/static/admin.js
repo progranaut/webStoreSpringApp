@@ -268,14 +268,44 @@ usersBtn.addEventListener('click', async (e) => {
             userOrderBtn.setAttribute('data-id', user.id);
             userOrderBtn.innerText = "Заказы";
             userOrderBtn.addEventListener('click', (e) => {
+                adminContent.innerHTML = ``;
                 let request = new Request("http://localhost:8080/orders/all-user-order/" + userOrderBtn.getAttribute('data-id'));
                 fetch(request).then(async response=>{
                     let orders = await response.json();
                     let ordersArray = Array.from(orders);
                     console.log(orders);
                     console.log(ordersArray);
-                    //
-                    
+                    ordersArray.forEach(order => {
+                        let orderDiv = document.createElement('div');
+                        orderDiv.classList.add('order');
+                        orderDiv.innerHTML = `
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>${order.id}</td>
+                                        <td>${order.date}</td>
+                                        <td>${order.orderNumber}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        `;
+                        let relationTable = document.createElement('table');
+                        relationTable.classList.add('relation');
+                        order.relations.forEach(relation => {
+                            let tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${relation.productDto.id}</td>
+                                <td>${relation.productDto.imageUrl}</td>
+                                <td>${relation.productDto.name}</td>
+                                <td>${relation.productDto.price}</td>
+                                <td>${relation.productDto.serialNumber}</td>
+                                <td>${relation.relation}</td>
+                            `;
+                            relationTable.appendChild(tr);
+                        });
+                        orderDiv.appendChild(relationTable);
+                        adminContent.appendChild(orderDiv);
+                    });
                 });
             });
             td.appendChild(userOrderBtn);

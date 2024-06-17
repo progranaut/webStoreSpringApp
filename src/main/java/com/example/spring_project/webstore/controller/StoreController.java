@@ -54,7 +54,7 @@ public class StoreController {
     }
 
     @GetMapping("/current-user-name-roll")
-    public UserNameAndRoleDto userName() {
+    public /*UserNameAndRoleDto*/ ResponseEntity<?> userName() {
 
         return storeService.getCurrentUserNameAndRole();
 

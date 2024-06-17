@@ -80,6 +80,10 @@ public class UserService {
                 .getAuthentication()
                 .getPrincipal();
 
+        if (principal == null) {
+            return null;
+        }
+
         if (!(principal instanceof UserDetails)) {
             return null;
         }
@@ -94,23 +98,24 @@ public class UserService {
 
     }
 
-    public UserNameAndRoleDto getCurrentUserNameAndRole() {
+    public /*UserNameAndRoleDto*/ ResponseEntity<?> getCurrentUserNameAndRole() {
 
         User user = getCurrentUser();
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         Set<Role> roles = user.getSecurityUser().getRoles();
         Set<RoleDto> roleDtoSet = roles.stream().map(role -> RoleDto.builder()
                 .roleType(role.getRoleType().toString())
                 .build()).collect(Collectors.toSet());
 
-        if (user != null) {
-            return UserNameAndRoleDto.builder()
-                    .name(user.getName())
-                    .roles(roleDtoSet)
-                    .build();
-        }
+        return new ResponseEntity<>(UserNameAndRoleDto.builder()
+                .name(user.getName())
+                .roles(roleDtoSet)
+                .build(), HttpStatus.OK);
 
-        return null;
     }
 
     public UserDto getCurrentUserDto() {

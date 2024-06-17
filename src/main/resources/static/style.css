@@ -136,3 +136,20 @@ header {
 .product_id_td {
 
 }
+
+.order {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    background-color: #b0e5ff;
+}
+
+.order div{
+    display: flex;
+    flex-direction: row;
+}
+
+/*.relation {*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*}*/

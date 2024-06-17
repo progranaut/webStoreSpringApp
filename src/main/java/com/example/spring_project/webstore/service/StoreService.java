@@ -84,7 +84,7 @@ public class StoreService {
 
     }
 
-    public UserNameAndRoleDto getCurrentUserNameAndRole() {
+    public /*UserNameAndRoleDto*/ ResponseEntity<?> getCurrentUserNameAndRole() {
         return userService.getCurrentUserNameAndRole();
     }
 
