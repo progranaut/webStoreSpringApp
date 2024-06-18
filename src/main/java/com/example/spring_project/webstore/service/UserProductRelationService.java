@@ -112,4 +112,9 @@ public class UserProductRelationService {
 
     }
 
+    public void addAllRelation(List<UserProductRelation> userProductRelations) {
+
+        userProductRelationRepository.saveAll(userProductRelations);
+
+    }
 }

@@ -34,6 +34,13 @@ public class StoreController {
 
     }
 
+    @PostMapping("/add-basket")
+    public void addBasket(@RequestBody List<UserProductRelationDto> uprd){
+
+        storeService.addBasket(uprd);
+
+    }
+
     @GetMapping("/all-products-in-basket")
     public List<UserProductRelationDto> getProductsInCart () {
 

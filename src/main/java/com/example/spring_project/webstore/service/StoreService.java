@@ -191,4 +191,24 @@ public class StoreService {
         return categoryService.getAllProductCategories();
 
     }
+
+    public void addBasket(List<UserProductRelationDto> uprd) {
+
+        User user = userService.getCurrentUser();
+
+        List<UserProductRelation> userProductRelations = userProductRelationService.getRelations(user);
+
+        userProductRelationService.delAllUserProductRelation(userProductRelations);
+
+        userProductRelations = uprd.stream()
+                .map(relation ->
+                  UserProductRelation.builder()
+                          .user(user)
+                          .product(productService.toEntity(relation.getProductDto()))
+                          .quantity(relation.getQuantity())
+                          .build()
+                  ).collect(Collectors.toList());
+
+        userProductRelationService.addAllRelation(userProductRelations);
+    }
 }

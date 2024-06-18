@@ -49,6 +49,10 @@ public class CategoryService {
 
     public Category toEntity(CategoryDto categoryDto) {
 
+        if (categoryDto == null) {
+            return null;
+        }
+
         Category category;
 
         if (categoryDto.getId() == null || categoryDto.getId().equals("")) {
@@ -63,6 +67,10 @@ public class CategoryService {
     }
 
     public CategoryDto toDto(Category category) {
+
+        if (category == null) {
+            return  null;
+        }
 
         return CategoryDto.builder()
                 .id(category.getId())

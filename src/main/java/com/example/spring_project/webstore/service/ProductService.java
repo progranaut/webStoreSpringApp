@@ -64,7 +64,9 @@ public class ProductService {
     public ProductDto toDto(Product product) {
 
         ProductDto productDto = productMapper.toDto(product);
-        productDto.setCategoryDto(categoryService.toDto(product.getCategory()));
+        if (product.getCategory() != null) {
+            productDto.setCategoryDto(categoryService.toDto(product.getCategory()));
+        }
 
         return productDto;
 
@@ -73,7 +75,9 @@ public class ProductService {
     public Product toEntity(ProductDto productDto) {
 
         Product product = productMapper.toEntity(productDto);
-        product.setCategory(categoryService.toEntity(productDto.getCategoryDto()));
+        if (productDto.getCategoryDto() != null) {
+            product.setCategory(categoryService.toEntity(productDto.getCategoryDto()));
+        }
 
         return product;
 
