@@ -15,6 +15,7 @@ public class MVCConfig implements WebMvcConfigurer {
         registry.addViewController("/user").setViewName("user");
         registry.addViewController("/cart").setViewName("cart");
         registry.addViewController("/admin").setViewName("admin");
+        registry.addViewController("/file").setViewName("file");
         //registry.addViewController("/denied").setViewName("denied");
     }
 
