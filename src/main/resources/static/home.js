@@ -62,11 +62,15 @@ async function displayProducts() {
     homeContent.classList.add('home_content');
 
     for (let product of products) {
+        if (product.availability < 1) {
+            continue;
+        }
         let div = document.createElement("div");
         div.classList.add('home_product');
         div.setAttribute('data-product', product.id);
 
         div.innerHTML = `
+        <p><img src="${ "/image/" + product.imageUrl + ".jpg"}"></p>
         <p>${product.id}</p>
         <p>${product.serialNumber}</p>
         <p>${product.name}</p>

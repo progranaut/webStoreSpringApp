@@ -32,6 +32,9 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "image_url")
     private String imageUrl;
 

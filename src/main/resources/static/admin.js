@@ -46,6 +46,8 @@ productBtn.addEventListener('click', async (e) => {
             <input type="text" name="price" id="price">
             <label for="categories">Категория: </label>
             <select id="categories"></select>
+            <label for="description">Описание: </label>
+            <input type="text" name="description" id="description">
             <label for="quantity">Количество: </label>
             <input type="text" name="availability" id="availability">
             <button id="add_product_btn">Добавить</button>
@@ -62,6 +64,7 @@ productBtn.addEventListener('click', async (e) => {
                 <td>Имя</td>
                 <td>Цена</td>
                 <td>Категория</td>
+                <td>Описание</td>
                 <td>Картинка</td>
                 <td>Количество</td>
             </tr>
@@ -83,6 +86,7 @@ productBtn.addEventListener('click', async (e) => {
                 id: "",
                 categoryType: form.categories.value
             },
+            description: form.description.value,
             availability: form.availability.value
         }
 
@@ -104,6 +108,7 @@ productBtn.addEventListener('click', async (e) => {
                 <td>${product.name}</td>
                 <td>${product.price}</td>
                 <td>${product.categoryDto.categoryType}</td>
+                <td>${product.description}</td>
                 <td>img</td>
                 <td>${product.availability}</td>
                 <td>Добавлено</td>
@@ -142,7 +147,8 @@ productBtn.addEventListener('click', async (e) => {
             <td>${product.name}</td>
             <td>${product.price}</td>
             <td>${product.categoryDto.categoryType}</td>
-            <td>${product.image}</td>
+            <td>${product.description}</td>
+            <td>${product.imageUrl}</td>
             <td>${product.availability}</td>
             `;
             let td = document.createElement('td');
@@ -165,7 +171,7 @@ productBtn.addEventListener('click', async (e) => {
                         tdsArray[i].innerHTML = ``;
                         tdsArray[i].appendChild(input);
                     }
-                    if (i === 7) {
+                    if (i === 8) {
                         tdsArray[i].innerHTML = ``;
                         let saveBtn = document.createElement('button');
                         saveBtn.innerText = "Сохранить";
@@ -179,8 +185,9 @@ productBtn.addEventListener('click', async (e) => {
                                     id: "",
                                     categoryType: tdsArray[4].firstElementChild.value
                                 },
-                                imageUrl: tdsArray[5].firstElementChild.value,
-                                availability: tdsArray[6].firstElementChild.value
+                                description: tdsArray[5].firstElementChild.value,
+                                imageUrl: tdsArray[6].firstElementChild.value,
+                                availability: tdsArray[7].firstElementChild.value
                             }
                             console.log(saveProduct);
                             fetch('http://localhost:8080/products/change', {
@@ -197,10 +204,11 @@ productBtn.addEventListener('click', async (e) => {
                                 tdsArray[2].innerText = product.name;
                                 tdsArray[3].innerText = product.price;
                                 tdsArray[4].innerText = product.categoryDto.categoryType;
-                                tdsArray[5].innerText = product.imageUrl;
-                                tdsArray[6].innerText = product.availability;
-                                tdsArray[7].innerHTML = ``;
-                                tdsArray[7].appendChild(redactBtn);
+                                tdsArray[5].innerText = product.description;
+                                tdsArray[6].innerText = product.imageUrl;
+                                tdsArray[7].innerText = product.availability;
+                                tdsArray[8].innerHTML = ``;
+                                tdsArray[8].appendChild(redactBtn);
                             });
                         });
                         tdsArray[i].appendChild(saveBtn);

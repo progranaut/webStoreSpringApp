@@ -23,6 +23,8 @@ public class ProductDto {
 
     private CategoryDto categoryDto;
 
+    private String description;
+
     private String imageUrl;
 
     private int availability;
