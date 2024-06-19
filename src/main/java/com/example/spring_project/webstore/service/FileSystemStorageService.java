@@ -2,8 +2,11 @@ package com.example.spring_project.webstore.service;
 
 import com.example.spring_project.webstore.config.StorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.FileSystemUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.stream.Stream;
+
+
 
 @Service
 public class FileSystemStorageService implements StorageService{
@@ -43,7 +49,7 @@ public class FileSystemStorageService implements StorageService{
 
         try {
             if (file.isEmpty()) {
-                throw new RuntimeException("Failed to store empty file.");
+                throw new RuntimeException("Пустой файл");
             }
             Path destinationFile = this.rootLocation.resolve(
                             Paths.get(file.getOriginalFilename()))
@@ -63,4 +69,17 @@ public class FileSystemStorageService implements StorageService{
         }
 
     }
+
+    @Override
+    public Stream<Path> loadAll() {
+        try {
+            return Files.walk(this.rootLocation, 1)
+                    .filter(path -> !path.equals(this.rootLocation))
+                    .map(this.rootLocation::relativize);
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Failed to read stored files", e);
+        }
+    }
+
 }

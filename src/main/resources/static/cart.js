@@ -31,7 +31,7 @@ async function displayProductInCart() {
         let divProdImg = document.createElement("div");
         divProdImg.classList.add('product_img');
         divProdImg.innerHTML = `
-        <img src="${"/image/" + relation.productDto.imageUrl + ".jpg"}">
+        <img src="${"/img/" + relation.productDto.imageUrl + ".jpg"}">
         `;
         div.appendChild(divProdImg);
 
@@ -175,7 +175,7 @@ async function displayProductInCartNotReg() {
                 let divProdImg = document.createElement("div");
                 divProdImg.classList.add('product_img');
                 divProdImg.innerHTML = `
-                    <img src="${"/image/" + product.imageUrl + ".jpg"}">
+                    <img src="${"/img/" + product.imageUrl + ".jpg"}">
                 `;
                 div.appendChild(divProdImg);
 

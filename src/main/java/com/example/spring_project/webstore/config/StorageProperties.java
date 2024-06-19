@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StorageProperties {
 
-    private String location = "src\\main\\resources\\static\\image";
+    private String location = "src\\main\\resources\\static\\img";
 
     public String getLocation() {
         return location;

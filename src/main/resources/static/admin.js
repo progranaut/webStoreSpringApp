@@ -4,6 +4,18 @@ let adminContent = document.getElementById('admin_content');
 let productBtn = document.getElementById('product_btn');
 let categoryBtn = document.getElementById('category_button');
 let usersBtn = document.getElementById('user_btn');
+let imageBtn = document.getElementById('image_btn');
+let orderBtn = document.getElementById('order_btn');
+
+//Страница заказы
+orderBtn.addEventListener('click', (e)=>{
+    fetch('http://localhost:8080/orders/all-orders').then(async response => {
+        let orders = await response.json();
+        let ordersArray = Array.from(orders);
+        console.log(ordersArray);
+    });
+});
+
 
 //Страница категории
 categoryBtn.addEventListener('click', (e)=>{
@@ -323,4 +335,36 @@ usersBtn.addEventListener('click', async (e) => {
     });
     adminContent.innerHTML = ``;
     adminContent.appendChild(userTable);
+});
+
+
+//Страница изображения
+imageBtn.addEventListener('click',  (e) => {
+    adminContent.innerHTML = `
+        <div>
+            <form method="POST" enctype="multipart/form-data" action="/files/upload">
+                <table>
+                     <tr>
+                        <td>Файл для загрузки:</td>
+                        <td><input type="file" name="file" /></td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td><input type="submit" value="Загрузить" /></td>
+                     </tr>
+                </table>
+            </form>
+        </div>
+    `;
+
+    fetch('http://localhost:8080/files/all-image').then(async response => {
+        let imageNames = await response.json();
+        let arrayImgNames = Array.from(imageNames);
+        console.log(arrayImgNames);
+        arrayImgNames.forEach(name => {
+            let img = document.createElement('img');
+            img.setAttribute('src', '/img/' + name);
+            adminContent.appendChild(img);
+        });
+    });
 });

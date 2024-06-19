@@ -70,14 +70,13 @@ async function displayProducts() {
         div.setAttribute('data-product', product.id);
 
         div.innerHTML = `
-        <p><img src="${ "/image/" + product.imageUrl + ".jpg"}"></p>
-        <p>${product.id}</p>
-        <p>${product.serialNumber}</p>
-        <p>${product.name}</p>
-        <p>${product.price}</p>
+        <p><img src="${ "/img/" + product.imageUrl + ".jpg"}"></p>
+        <p class="product_name">${product.name}</p>
+        <p class="product_description">${product.description}</p>
+        <p class="product_price">${product.price}</p>
         `;
 
-        if (arguments[0].status == 200) {
+        if (arguments[0].status === 200) {
 
             let btnNotInBasket = document.createElement("button");
             btnNotInBasket.innerText = "Добавить";

@@ -4,7 +4,7 @@ async function displayMenuUser() {
 
     let userInfo = document.createElement('div');
 
-    if (arguments[0].status == 200) {
+    if (arguments[0].status === 200) {
 
         let response = await arguments[0].json();
         console.log(response);

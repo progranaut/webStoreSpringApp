@@ -27,6 +27,8 @@ public class OrderService {
 
     private final ProductService productService;
 
+    private final UserService userService;
+
     public Order addOrder(User user) {
 
         Order order = Order.builder()
@@ -66,6 +68,18 @@ public class OrderService {
                                 .collect(Collectors.toSet())));
 
         return new ResponseEntity<>(orderDtoList, HttpStatus.OK);
+
+    }
+
+    public List<OrderDto> getAllOrders() {
+
+        return orderRepository.findAll().stream()
+                .map(order -> OrderDto.builder()
+                        .id(order.getId())
+                        .orderNumber(order.getOrderNumber())
+                        .userDto(userService.toDto(order.getUser()))
+                        .build())
+                .collect(Collectors.toList());
 
     }
 }

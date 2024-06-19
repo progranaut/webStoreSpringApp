@@ -20,6 +20,8 @@ public class OrderDto {
 
     private String date;
 
+    private UserDto userDto;
+
     private Set<OrderProductRelationDto> relations;
 
 }

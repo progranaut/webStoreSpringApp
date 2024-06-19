@@ -138,4 +138,8 @@ public class UserService {
                 .collect(Collectors.toList());
 
     }
+
+    public UserDto toDto(User user) {
+        return userMapper.toDto(user);
+    }
 }

@@ -26,4 +26,11 @@ public class OrderController {
 
     }
 
+    @GetMapping("/all-orders")
+    public List<OrderDto> getAllOrders() {
+
+        return orderService.getAllOrders();
+
+    }
+
 }
