@@ -13,7 +13,7 @@
             </div>
             <div>
                 <a href="http://localhost:8080/home">Главная</a>
-                <a href="http://localhost:8080/contacts">Контакты</a>
+<!--                <a href="http://localhost:8080/contacts">Контакты</a>-->
             </div>
             <div>
                 <div id="user"></div>
@@ -22,20 +22,23 @@
         <div id="content">
             <div id="left_content"></div>
             <div id="center_content">
-                <div id="log_reg">
-                    <div class="form_content">
-                        <p id="log_reg_zag">Войти</p>
-                        <form id="log_reg_form" class="form" action="/login" method="post">
-                            <label for="username">Логин: </label>
-                            <input type="text" name="username" id="username">
-                            <label for="password">Пароль: </label>
-                            <input type="password" name="password" id="password">
-                            <button id="log_reg_btn" type="submit">Войти</button>
-                        </form>
+                <div id="form_convert">
+                    <div id="log_reg">
+                        <div class="form_content">
+                            <form id="log_reg_form" class="form" action="/login" method="post">
+                                <label for="username">Логин: </label>
+                                <input type="text" name="username" id="username">
+                                <label for="password">Пароль: </label>
+                                <input type="password" name="password" id="password">
+                                <button id="log_btn" type="submit">Войти</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="log_reg_btn">
+                        <button id="login_btn">Войти</button>
+                        <button id="register_btn">Регистарция</button>
                     </div>
                 </div>
-                <button id="login_btn">Войти</button>
-                <button id="register_btn">Регистарция</button>
             </div>
             <div id="right_content"></div>
         </div>

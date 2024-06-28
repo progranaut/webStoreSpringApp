@@ -9,6 +9,10 @@ body {
     /*background-image: url("img/back/back.jpg");*/
 }
 
+h2 {
+    margin-top: 20px;
+}
+
 .page {
     min-height: 100vh;
     display: flex;
@@ -59,6 +63,7 @@ header {
 #center_content {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .home_content {
@@ -105,10 +110,16 @@ header {
 .cart_product {
     display: flex;
     justify-content: space-between;
-    border: 1px solid;
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 10px;
+    padding: 0px 20px 0px 20px;
     margin: 10px;
+    height: 125px;
+    box-shadow: 0px 0px 7px rgb(38, 38, 86);
+}
+
+.product_img {
+    display: flex;
+    align-items: center;
 }
 
 .product button {
@@ -141,6 +152,20 @@ header {
     font-size: 1.2rem;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.product_quantity_availability {
+    display: flex;
+    flex-direction: column;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product_info {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    align-items: center;
 }
 
 #mp3 {
@@ -202,10 +227,20 @@ header {
     flex-direction: row;
 }
 
-/*.relation {*/
-/*    display: flex;*/
-/*    flex-direction: row;*/
-/*}*/
+#form_convert {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#log_reg_form {
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 7px rgb(38, 38, 86);
+    margin: 20px;
+}
 
 #login_btn {
     height: 30px;
@@ -213,4 +248,39 @@ header {
 
 #register_btn {
     height: 30px;
+}
+
+.form_user_info {
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 7px rgb(38, 38, 86);
+}
+
+.user_order {
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 7px rgb(38, 38, 86);
+}
+
+.relation_head {
+    display: flex;
+    justify-content: space-between;
+    font-size: smaller;
+    margin-top: 10px;
+}
+
+.order_date_number {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order_relation {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order_relation p {
+    text-align: center;
 }

@@ -38,10 +38,8 @@ async function displayProductInCart() {
         let divProdInfo = document.createElement("div");
         divProdInfo.classList.add('product_info');
         divProdInfo.innerHTML = `
-        <p>${relation.productDto.id}</p>
-        <p>${relation.productDto.serialNumber}</p>
-        <p>${relation.productDto.name}</p>
-        <p>${relation.productDto.price}</p>
+        <p class="product_name">${relation.productDto.name}</p>
+        <p class="product_price">${relation.productDto.price}</p>
         `;
         div.appendChild(divProdInfo);
 
@@ -182,10 +180,8 @@ async function displayProductInCartNotReg() {
                 let divProdInfo = document.createElement("div");
                 divProdInfo.classList.add('product_info');
                 divProdInfo.innerHTML = `
-                    <p>${product.id}</p>
-                    <p>${product.serialNumber}</p>
-                    <p>${product.name}</p>
-                    <p>${product.price}</p>
+                    <p class="product_name">${product.name}</p>
+                    <p class="product_price">${product.price}</p>
                 `;
                 div.appendChild(divProdInfo);
 

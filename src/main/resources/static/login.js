@@ -5,7 +5,6 @@ registerBtn.addEventListener('click', (e) => {
 
     logReg.innerHTML = `
         <div class="form_content">
-            <p id="log_reg_zag">Регистрация</p>
             <form id="log_reg_form" class="form" action="/store/user-registration" method="post">
                  <label for="name">Имя: </label>
                  <input type="text" name="name" id="name">
@@ -13,49 +12,24 @@ registerBtn.addEventListener('click', (e) => {
                  <input type="text" name="username" id="username">
                  <label for="password">Пароль: </label>
                  <input type="password" name="password" id="password">
-                 <button id="log_reg_btn" type="submit">Зарегистрировать</button>
+                 <button id="log_btn" type="submit">Зарегистрировать</button>
             </form>
         </div>
     `;
 
-    // let h1 = document.getElementById('log_reg');
-    // h1.innerHTML = ``;
-    // h1.innerText = "Регистрация";
-    // let form = document.getElementById('log_reg_form');
-    // form.setAttribute('action', '/store/user-registration');
-    //
-    // let logRegBtn = document.getElementById('log_reg_btn');
-    //
-    // let label = document.createElement('label');
-    // label.setAttribute('for', 'name');
-    // label.innerHTML = "Имя: ";
-    // form.insertBefore(label, logRegBtn);
-    //
-    // let input = document.createElement('input');
-    // input.setAttribute('type', 'text');
-    // input.setAttribute('name', 'name');
-    // input.setAttribute('id', 'name');
-    // form.insertBefore(input, logRegBtn);
 });
 loginBtn.addEventListener('click', (e) => {
 
     logReg.innerHTML = `
         <div class="form_content">
-            <p id="log_reg_zag">Войти</p>
             <form id="log_reg_form" class="form" action="/login" method="post">
                 <label htmlFor="username">Логин: </label>
                 <input type="text" name="username" id="username">
                 <label htmlFor="password">Пароль: </label>
                 <input type="password" name="password" id="password">
-                <button id="log_reg_btn" type="submit">Войти</button>
+                <button id="reg_btn" type="submit">Войти</button>
             </form>
         </div>
     `;
 
-
-    // let h1 = document.getElementById('log_reg');
-    // h1.innerHTML = ``;
-    // h1.innerText = "Вход";
-    // let form = document.getElementById('log_reg_form');
-    // form.setAttribute('action', '/login');
 });

@@ -5,13 +5,18 @@ async function displayUser () {
 
     console.log(user);
 
-    //let centerContent = document.getElementById('center_content');
     let userContent = document.createElement('div');
     userContent.classList.add('user_content')
-    let formContent = document.createElement('div');
-    userContent.appendChild(formContent);
 
-    formContent.innerHTML = `
+    let infoHead = document.createElement('div');
+    infoHead.innerHTML = '<h2>Личная информация: </h2>';
+    userContent.appendChild(infoHead);
+
+    let userInfo = document.createElement('div');
+    userInfo.classList.add('form_user_info');
+    userContent.appendChild(userInfo);
+
+    userInfo.innerHTML = `
         <form id="user_form" class="form">            
             <label for="name">Имя:</label>
             <input type="text" value="${user.name}" name="name" id="name">
@@ -29,7 +34,6 @@ async function displayUser () {
 
     let saveBtn = document.createElement('button');
     saveBtn.addEventListener('click', (e) => {
-        //e.preventDefault();
         let form = document.getElementById('user_form');
         console.log(form.phone.value);
         let userInfo = {
@@ -42,6 +46,9 @@ async function displayUser () {
                 id: user.securityUserDto.id
             }
         }
+
+        // TODO Организовать определение security_id по user_id на бэкэ и не гонять sec_id на фронт
+
         fetch('http://localhost:8080/users/change', {
             method: "POST",
             headers: {
@@ -51,8 +58,48 @@ async function displayUser () {
         });
     });
     saveBtn.innerText = 'Сохранить';
-    //let form = document.getElementById('user_form');
-    userContent.appendChild(saveBtn);
+    userInfo.appendChild(saveBtn);
+
+    // TODO Организовать вывод заказов пользователя
+    let ordersResponse = await fetch('http://localhost:8080/orders/all-user-order/' + user.id);
+    let orders = await ordersResponse.json();
+    let ordersArray = Array.from(orders);
+    console.log(ordersArray);
+    let ordersHead = document.createElement('div');
+    ordersHead.innerHTML = '<h2>Оформленные заказы</h2>';
+    userContent.appendChild(ordersHead);
+    ordersArray.forEach(order => {
+        let orderDiv = document.createElement('div');
+        orderDiv.classList.add('user_order');
+        orderDiv.innerHTML = `
+            <div class="order_date_number">
+                <p>Дата заказа: ${order.date}</p>
+                <p>Номер заказа: ${order.orderNumber}</p>
+            </div>
+        `;
+        let relationHead = document.createElement('div');
+        relationHead.classList.add('relation_head');
+        relationHead.innerHTML = `
+            <p>Название</p>
+            <p>Серийный номер</p>
+            <p>Цена</p>
+            <p>Количество</p>
+        `;
+        orderDiv.appendChild(relationHead);
+        let orderRelationArray = Array.from(order.relations);
+        orderRelationArray.forEach(relation => {
+            let relationDiv = document.createElement('div');
+            relationDiv.classList.add('order_relation');
+            relationDiv.innerHTML = `
+                <p>${relation.productDto.name}</p>
+                <p>${relation.productDto.serialNumber}</p>
+                <p>${relation.productDto.price}</p>
+                <p>${relation.relation}</p>
+            `;
+            orderDiv.appendChild(relationDiv);
+        });
+        userContent.appendChild(orderDiv);
+    });
 
     return userContent;
 }
