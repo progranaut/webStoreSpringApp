@@ -32,13 +32,17 @@ public class OrderService {
     public Order addOrder(User user) {
 
         Order order = Order.builder()
-                .orderNumber(1l)
+                .id(UUID.randomUUID())
+                //.orderNumber(1l)
                 .localDateTime(LocalDateTime.now())
                 .user(user)
                 .build();
-
-        return orderRepository.save(order);
-
+        System.out.println("уид");
+        System.out.println(order.getId());
+        //return orderRepository.save(order);
+        orderRepository.saveOrder(order.getId(), order.getLocalDateTime(), order.getUser().getId());
+        System.out.println("после запроса");
+        return order;
     }
 
     public ResponseEntity<?> getOrderByUserId(UUID id) {
@@ -49,6 +53,39 @@ public class OrderService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
+        return new ResponseEntity<>(toOrderDtoList(orders), HttpStatus.OK);
+
+    }
+
+    public List<OrderDto> getAllOrders() {
+
+        return orderRepository.findAll().stream()
+                .map(order -> OrderDto.builder()
+                        .id(order.getId())
+                        .orderNumber(order.getOrderNumber())
+                        .userDto(userService.toDto(order.getUser()))
+                        .build())
+                .collect(Collectors.toList());
+
+    }
+
+    public ResponseEntity<?> getAllCurrentUserOrders() {
+
+        User user = userService.getCurrentUser();
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Order> orders = orderRepository.findAllByUserId(user.getId());
+
+        if (orders.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(toOrderDtoList(orders), HttpStatus.OK);
+    }
+
+    private List<OrderDto> toOrderDtoList(List<Order> orders) {
         List<OrderDto> orderDtoList = orders.stream()
                 .map(order -> OrderDto.builder()
                         .id(order.getId())
@@ -66,20 +103,6 @@ public class OrderService {
                                         .relation(relation.getRelationQuantity())
                                         .build())
                                 .collect(Collectors.toSet())));
-
-        return new ResponseEntity<>(orderDtoList, HttpStatus.OK);
-
-    }
-
-    public List<OrderDto> getAllOrders() {
-
-        return orderRepository.findAll().stream()
-                .map(order -> OrderDto.builder()
-                        .id(order.getId())
-                        .orderNumber(order.getOrderNumber())
-                        .userDto(userService.toDto(order.getUser()))
-                        .build())
-                .collect(Collectors.toList());
-
+        return orderDtoList;
     }
 }

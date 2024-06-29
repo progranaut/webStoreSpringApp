@@ -7,7 +7,6 @@ async function displayMenuUser() {
     if (arguments[0].status === 200) {
 
         let response = await arguments[0].json();
-        console.log(response);
         let userName = response.name;
         let roleUser = false;
         let roleAdmin = false;
@@ -24,12 +23,28 @@ async function displayMenuUser() {
         if (roleAdmin) {
             let adminHref = document.createElement('a');
             adminHref.innerText = "AdminPanel";
+            adminHref.classList.add('menu_btn');
+            adminHref.classList.add('admin_btn');
             adminHref.setAttribute('href', 'http://localhost:8080/admin');
             userInfo.appendChild(adminHref);
         }
 
+        let userHref = document.createElement('button');
+        userHref.innerHTML = userName;
+        userHref.classList.add('menu_btn');
+        userHref.classList.add('menu_user_name_btn');
+        userHref.addEventListener('click', async (e) => {
+            let center = document.getElementById('center_content');
+            center.innerHTML = ``;
+            center.appendChild(await displayUser());
+            center.appendChild(await displayUserOrders());
+        });
+        userInfo.appendChild(userHref);
+
         let cartBtn = document.createElement('button');
         cartBtn.innerHTML = "Корзина";
+        cartBtn.classList.add('menu_btn');
+        cartBtn.classList.add('menu_cart_btn');
         cartBtn.addEventListener('click', async (e) => {
             let centerContent = document.getElementById("center_content");
             centerContent.innerHTML = ``;
@@ -37,17 +52,10 @@ async function displayMenuUser() {
         });
         userInfo.appendChild(cartBtn);
 
-        let userHref = document.createElement('a');
-        userHref.innerHTML = userName;
-        userHref.addEventListener('click', async (e) => {
-            let center = document.getElementById('center_content');
-            center.innerHTML = ``;
-            center.appendChild(await displayUser());
-        });
-        userInfo.appendChild(userHref);
-
         let logOut = document.createElement('a');
         logOut.setAttribute('href', 'http://localhost:8080/logout');
+        logOut.classList.add('menu_btn');
+        logOut.classList.add('exit_btn');
         logOut.innerHTML = "Выйти";
         userInfo.appendChild(logOut);
 
@@ -55,6 +63,8 @@ async function displayMenuUser() {
 
         let cartBtn = document.createElement('button');
         cartBtn.innerText = "Корзина";
+        cartBtn.classList.add('menu_btn');
+        cartBtn.classList.add('menu_cart_btn');
         cartBtn.addEventListener('click', async (e) => {
             let centerContent = document.getElementById("center_content");
             centerContent.innerHTML = ``;
@@ -64,6 +74,8 @@ async function displayMenuUser() {
 
         let loginHref = document.createElement('a');
         loginHref.setAttribute('href', 'http://localhost:8080/login');
+        loginHref.classList.add('menu_btn');
+        loginHref.classList.add('login_href');
         loginHref.innerText = "Войти";
         userInfo.appendChild(loginHref);
 

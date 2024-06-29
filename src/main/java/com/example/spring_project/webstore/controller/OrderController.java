@@ -33,4 +33,11 @@ public class OrderController {
 
     }
 
+    @GetMapping("/all-current-user-orders")
+    public ResponseEntity<?> getAllCurrentUserOrders() {
+
+        return orderService.getAllCurrentUserOrders();
+
+    }
+
 }

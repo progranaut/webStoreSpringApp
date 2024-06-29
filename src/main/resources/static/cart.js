@@ -133,7 +133,7 @@ async function displayProductInCart() {
                     inUserBtn.innerText = "Просмотреть заказы";
                     inUserBtn.addEventListener('click', async (e)=>{
                         cartContent.innerHTML = ``;
-                        cartContent.appendChild(await displayUser());
+                        cartContent.appendChild(await displayUserOrders());
                     });
                     cartContent.appendChild(inUserBtn);
                 } else {
@@ -157,8 +157,18 @@ async function displayProductInCartNotReg() {
     let products = await response.json();
     let productsArray = Array.from(products);
 
+
+
     let cartContent = document.createElement("div");
     cartContent.classList.add('cart_content');
+
+    if (document.cookie.length === 0) {
+        cartContent.innerHTML = `
+                        <p>Корзина пуста</p>
+                        <a href="http://localhost:8080/">Просмотреть товары</a>
+                    `;
+        return cartContent;
+    }
 
     productsArray.forEach(product => {
         let cookie = document.cookie;
@@ -207,6 +217,12 @@ async function displayProductInCartNotReg() {
                     } else {
                         document.cookie = product.id + "=" + value + "; max-age=0";
                         div.remove();
+                        if (document.cookie.length === 0) {
+                            cartContent.innerHTML = `
+                            <p>Корзина пуста</p>
+                            <a href="http://localhost:8080/">Просмотреть товары</a>
+                        `;
+                        }
                     }
 
                 });
@@ -251,24 +267,22 @@ async function displayProductInCartNotReg() {
         });
     });
 
-    // if (.length === 0) {
-    //     cartContent.innerHTML = `
-    //                     <p>Корзина пуста</p>
-    //                     <a href="http://localhost:8080/">Просмотреть товары</a>
-    //                 `;
-    //     return cartContent;
-    // }
+    let regHref = document.createElement('p');
+    regHref.innerHTML = `
+        Для оформления заказа необходимо выполнить <a href="/login">вход</a>.
+    `;
+    cartContent.appendChild(regHref);
 
     return cartContent;
 }
 
-class Product {
-
-    constructor(/*id, serialNumber, name, price*/) {
-        // this.id = id;
-        // this.serialNumber = serialNumber;
-        // this.name = name;
-        // this.price = price;
-    }
-
-}
+// class Product {
+//
+//     constructor(/*id, serialNumber, name, price*/) {
+//         // this.id = id;
+//         // this.serialNumber = serialNumber;
+//         // this.name = name;
+//         // this.price = price;
+//     }
+//
+// }

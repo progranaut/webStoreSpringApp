@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function (e){
 
     fetch("http://localhost:8080/store/current-user-name-roll").then(async (response) => {
 
-        console.log(response.status);
-
-        await addBasket(response);
+        if (response.status === 200) {
+            await addBasket();
+        }
 
         let currentUser = document.getElementById("user");
         let centerContent = document.getElementById('center_content');
@@ -14,40 +14,33 @@ document.addEventListener("DOMContentLoaded", function (e){
         let menu = await displayMenuUser(response);
         currentUser.appendChild(menu);
         centerContent.innerHTML = ``;
-        console.log("test");
         let content = await displayProducts(response);
-        console.log("test2");
         centerContent.appendChild(content);
-        console.log("test3");
 
     });
 
 });
 
 async function addBasket(){
-    if (arguments[0].status === 200) {
-        if (!(document.cookie === "")) {
-            console.log("куки есть");
-            let productRelationArray = new Array();
-            document.cookie.split(";").forEach(cook => {
-                let product = {
-                    productDto: {
-                        id: cook.split("=")[0].trim()
-                    },
-                    quantity: cook.split("=")[1].trim()
-                }
-                productRelationArray.push(product);
-                document.cookie = cook.trim() + "; max-age=0";
-            });
-            console.log(productRelationArray);
-            await fetch('http://localhost:8080/store/add-basket', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
+    if (!(document.cookie === "")) {
+        let productRelationArray = new Array();
+        document.cookie.split(";").forEach(cook => {
+            let product = {
+                productDto: {
+                    id: cook.split("=")[0].trim()
                 },
-                body: JSON.stringify(productRelationArray)
-            });
-        }
+                quantity: cook.split("=")[1].trim()
+            }
+            productRelationArray.push(product);
+            document.cookie = cook.trim() + "; max-age=0";
+        });
+        await fetch('http://localhost:8080/store/add-basket', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(productRelationArray)
+        });
     }
 }
 
@@ -70,7 +63,7 @@ async function displayProducts() {
         div.setAttribute('data-product', product.id);
 
         div.innerHTML = `
-        <p><img src="${ "/img/" + product.imageUrl + ".jpg"}"></p>
+        <p class="product_image"><img src="${ "/img/" + product.imageUrl + ".jpg"}"></p>
         <p class="product_name">${product.name}</p>
         <p class="product_description">${product.description}</p>
         <p class="product_price">${product.price}</p>
@@ -80,6 +73,7 @@ async function displayProducts() {
 
             let btnNotInBasket = document.createElement("button");
             btnNotInBasket.innerText = "Добавить";
+            btnNotInBasket.classList.add('add_in_basket');
             btnNotInBasket.addEventListener('click', async (e) => {
                 await fetch("http://localhost:8080/store/add-in-basket/" + product.id, {
                     method: "POST"
@@ -95,6 +89,7 @@ async function displayProducts() {
 
             let btnInBasket = document.createElement('button');
             btnInBasket.innerText = "Перейти к заказу";
+            btnInBasket.classList.add('in_to_order_btn');
             btnInBasket.addEventListener('click', async (e) => {
                 let displayProductsInCart = await displayProductInCart();
                 centerContent.innerHTML = ``;
@@ -115,6 +110,7 @@ async function displayProducts() {
 
             let btnNotInBasket = document.createElement("button");
             btnNotInBasket.innerText = "Добавить";
+            btnNotInBasket.classList.add('add_in_basket');
             btnNotInBasket.addEventListener('click', async (e) => {
 
                 document.cookie = product.id + "=1";
@@ -125,6 +121,7 @@ async function displayProducts() {
 
             let btnInBasket = document.createElement('button');
             btnInBasket.innerText = "Перейти к заказу";
+            btnInBasket.classList.add('in_to_order_btn');
             btnInBasket.addEventListener('click', async (e) => {
 
                 centerContent.innerHTML = ``;

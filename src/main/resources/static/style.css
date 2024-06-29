@@ -7,6 +7,7 @@
 body {
     height: 100%;
     /*background-image: url("img/back/back.jpg");*/
+    /*background-position: center;*/
 }
 
 h2 {
@@ -20,11 +21,10 @@ h2 {
 }
 
 header {
-    /*background-color: rgba(104, 103, 229, 0.97);*/
-    background-color: rgba(255, 255, 255, 0.97);
+    /*background-color: rgba(109, 108, 221, 0.93);*/
     display: flex;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 #header {
@@ -37,12 +37,63 @@ header {
     color: #8ada36;
 }
 
+#header div h1 {
+    color: rgb(109, 108, 221);
+    text-shadow: 0px 0px 2px rgb(141, 141, 141);
+}
+
+.label {
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu_cart_btn {
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 80%;
+}
+
+.menu_btn {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    height: 80%;
+    border-radius: 10px;
+}
+
+.menu_user_name_btn {
+    border: 0;
+    background-color: white;
+    cursor: pointer;
+    color: #8ada36;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.login_href {
+    text-decoration: none;
+    background-color: #8ada36;
+    color: white;
+}
+
+.exit_btn {
+    text-decoration: none;
+    background-color: rgb(109, 108, 221);
+    color: white;
+}
+
+.admin_btn {
+    text-decoration: none;
+    background-color: rgb(252, 106, 144);
+    color: white;
+}
+
 #user div button {
     margin-right: 10px;
 }
 
 #content {
-    background-color: rgba(250, 250, 250, 0.4);
     flex: 1 1 auto;
     display: grid;
     grid-template-columns: 15% 70% 15%;
@@ -71,6 +122,7 @@ header {
     justify-content: center;
     flex-wrap: wrap;
     align-items: center;
+    margin-top: 20px;
 }
 
 .cart_content {
@@ -102,9 +154,33 @@ header {
     font-size: medium;
 }
 
+.product_image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 125px;
+    height: 125px;
+}
+
 .product_price {
     font-size: x-large;
     color: #fca503;
+}
+
+.add_in_basket {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(109, 108, 221);
+    color: white;
+    border: 0px;
+}
+
+.in_to_order_btn {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #8ada36;
+    color: white;
+    border: 0px;
 }
 
 .cart_product {
@@ -265,10 +341,7 @@ header {
 }
 
 .relation_head {
-    display: flex;
-    justify-content: space-between;
     font-size: smaller;
-    margin-top: 10px;
 }
 
 .order_date_number {
@@ -276,9 +349,30 @@ header {
     justify-content: space-between;
 }
 
-.order_relation {
-    display: flex;
-    justify-content: space-between;
+/*.order_relation {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*}*/
+
+.order_table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.order_table tr td{
+    padding: 5px;
+}
+
+.td_prod_name {
+    text-align: left;
+}
+
+.td_prod_price {
+    text-align: center;
+}
+
+.td_prod_rel {
+    text-align: right;
 }
 
 .order_relation p {

@@ -3,8 +3,6 @@ async function displayUser () {
     let response = await fetch('http://localhost:8080/store/current-user');
     let user = await response.json();
 
-    console.log(user);
-
     let userContent = document.createElement('div');
     userContent.classList.add('user_content')
 
@@ -60,11 +58,14 @@ async function displayUser () {
     saveBtn.innerText = 'Сохранить';
     userInfo.appendChild(saveBtn);
 
-    // TODO Организовать вывод заказов пользователя
-    let ordersResponse = await fetch('http://localhost:8080/orders/all-user-order/' + user.id);
+    return userContent;
+}
+
+async function displayUserOrders() {
+    let userContent = document.createElement('div');
+    let ordersResponse = await fetch('http://localhost:8080/orders/all-current-user-orders');
     let orders = await ordersResponse.json();
     let ordersArray = Array.from(orders);
-    console.log(ordersArray);
     let ordersHead = document.createElement('div');
     ordersHead.innerHTML = '<h2>Оформленные заказы</h2>';
     userContent.appendChild(ordersHead);
@@ -73,33 +74,34 @@ async function displayUser () {
         orderDiv.classList.add('user_order');
         orderDiv.innerHTML = `
             <div class="order_date_number">
-                <p>Дата заказа: ${order.date}</p>
+                <p>Дата заказа: ${order.date.split('T')[0]} ${order.date.split('T')[1].split('.')[0]}</p>
                 <p>Номер заказа: ${order.orderNumber}</p>
             </div>
         `;
-        let relationHead = document.createElement('div');
+
+        let orderTable = document.createElement('table');
+        orderTable.classList.add('order_table');
+        let relationHead = document.createElement('tr');
         relationHead.classList.add('relation_head');
         relationHead.innerHTML = `
-            <p>Название</p>
-            <p>Серийный номер</p>
-            <p>Цена</p>
-            <p>Количество</p>
+            <td class="td_prod_name">Название</td>
+            <td class="td_prod_price">Цена</td>
+            <td class="td_prod_rel">Количество</td>
         `;
-        orderDiv.appendChild(relationHead);
+        orderTable.appendChild(relationHead);
+        orderDiv.appendChild(orderTable);
         let orderRelationArray = Array.from(order.relations);
         orderRelationArray.forEach(relation => {
-            let relationDiv = document.createElement('div');
-            relationDiv.classList.add('order_relation');
-            relationDiv.innerHTML = `
-                <p>${relation.productDto.name}</p>
-                <p>${relation.productDto.serialNumber}</p>
-                <p>${relation.productDto.price}</p>
-                <p>${relation.relation}</p>
+            let relationTr = document.createElement('tr');
+            //relationTr.classList.add('order_relation');
+            relationTr.innerHTML = `
+                <td class="td_prod_name">${relation.productDto.name}</td>
+                <td class="td_prod_price">${relation.productDto.price}</td>
+                <td class="td_prod_rel">${relation.relation}</td>
             `;
-            orderDiv.appendChild(relationDiv);
+            orderTable.appendChild(relationTr);
         });
         userContent.appendChild(orderDiv);
     });
-
     return userContent;
 }
