@@ -55,7 +55,7 @@ async function displayProducts() {
     homeContent.classList.add('home_content');
 
     for (let product of products) {
-        if (product.availability < 1) {
+        if (!product.visibility || product.availability < 1) {
             continue;
         }
         let div = document.createElement("div");

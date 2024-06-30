@@ -29,4 +29,6 @@ public class ProductDto {
 
     private int availability;
 
+    private boolean visibility;
+
 }

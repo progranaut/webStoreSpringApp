@@ -43,6 +43,10 @@ public class ProductService {
     public List<ProductDto> getAllProduct() {
 
         return productRepository.findAll().stream()
+//TODO Для пользователей сделать отдельный запрос с фильтрацией
+// возвращать только видимые и с количеством больше нуля
+//                .filter(product -> product.isVisibility())
+//                .filter(product -> product.getAvailability() > 0)
                 .map(product -> {
                     ProductDto productDto = productMapper.toDto(product);
                     productDto.setCategoryDto(CategoryDto.builder()

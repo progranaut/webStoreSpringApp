@@ -41,6 +41,9 @@ public class Product {
     @Column(name = "availability")
     private int availability;
 
+    @Column(name = "visibility")
+    private boolean visibility;
+
     @OneToMany(mappedBy = "product")
     Set<UserProductRelation> userProductRelationSet;
 

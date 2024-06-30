@@ -67,22 +67,6 @@ productBtn.addEventListener('click', async (e) => {
         <h3>Товары: </h3>
     `;
 
-    let productTable = document.createElement('table');
-    productTable.classList.add('content_table');
-    productTable.innerHTML = `
-            <tr>
-                <td>id</td>
-                <td>Серийный номер</td>
-                <td>Имя</td>
-                <td>Цена</td>
-                <td>Категория</td>
-                <td>Описание</td>
-                <td>Картинка</td>
-                <td>Количество</td>
-            </tr>
-        `;
-    adminContent.appendChild(productTable);
-
     let addProductBtn = document.getElementById('add_product_btn');
     addProductBtn.addEventListener('click', async (e)=>{
 
@@ -129,22 +113,25 @@ productBtn.addEventListener('click', async (e) => {
         });
     });
 
-
     let select = document.getElementById('categories');
     select.replaceWith(await getCategories());
 
-    // fetch('http://localhost:8080/store/all-product-categories').then(async response => {
-    //     let category = await response.json();
-    //     let categoryArray = Array.from(category);
-    //     categoryArray.forEach(category => {
-    //         let option = document.createElement('option');
-    //         option.setAttribute('data-id', category.id);
-    //         option.setAttribute('value', category.categoryType);
-    //         option.innerText = category.categoryType;
-    //         select.appendChild(option);
-    //     });
-    // });
-
+    let productTable = document.createElement('table');
+    productTable.classList.add('content_table');
+    productTable.innerHTML = `
+            <tr>
+                <td>id</td>
+                <td>Серийный номер</td>
+                <td>Имя</td>
+                <td>Цена</td>
+                <td>Категория</td>
+                <td>Описание</td>
+                <td>Картинка</td>
+                <td>Количество</td>
+                <td>Скрытый</td>
+            </tr>
+        `;
+    adminContent.appendChild(productTable);
 
     fetch('http://localhost:8080/store/all-products').then(async response => {
         let products = await response.json();
@@ -162,6 +149,7 @@ productBtn.addEventListener('click', async (e) => {
             <td>${product.description}</td>
             <td>${product.imageUrl}</td>
             <td>${product.availability}</td>
+            <td>${product.visibility ? "Нет" : "Да"}</td>
             `;
             let td = document.createElement('td');
             let redactBtn = document.createElement('button');
@@ -176,14 +164,14 @@ productBtn.addEventListener('click', async (e) => {
                         tdsArray[i].innerHTML = ``;
                         let select = await getCategories(tmp);
                         tdsArray[i].appendChild(select);
-                    } else {
+                    } else if (i === 8) {
                         let tmp = tdsArray[i].innerText;
-                        let input = document.createElement('input');
-                        input.value = tmp;
-                        tdsArray[i].innerHTML = ``;
-                        tdsArray[i].appendChild(input);
-                    }
-                    if (i === 8) {
+                        if (tmp === "Да") {
+                            tdsArray[i].innerHTML = `<input type="checkbox" checked>`;
+                        } else {
+                            tdsArray[i].innerHTML = `<input type="checkbox">`;
+                        }
+                    } else if (i === 9) {
                         tdsArray[i].innerHTML = ``;
                         let saveBtn = document.createElement('button');
                         saveBtn.innerText = "Сохранить";
@@ -199,7 +187,8 @@ productBtn.addEventListener('click', async (e) => {
                                 },
                                 description: tdsArray[5].firstElementChild.value,
                                 imageUrl: tdsArray[6].firstElementChild.value,
-                                availability: tdsArray[7].firstElementChild.value
+                                availability: tdsArray[7].firstElementChild.value,
+                                visibility: !tdsArray[8].firstElementChild.checked
                             }
                             console.log(saveProduct);
                             fetch('http://localhost:8080/products/change', {
@@ -219,11 +208,18 @@ productBtn.addEventListener('click', async (e) => {
                                 tdsArray[5].innerText = product.description;
                                 tdsArray[6].innerText = product.imageUrl;
                                 tdsArray[7].innerText = product.availability;
-                                tdsArray[8].innerHTML = ``;
-                                tdsArray[8].appendChild(redactBtn);
+                                tdsArray[8].innerHTML = product.visibility ? "Нет" : "Да";
+                                tdsArray[9].innerHTML = ``;
+                                tdsArray[9].appendChild(redactBtn);
                             });
                         });
                         tdsArray[i].appendChild(saveBtn);
+                    } else {
+                        let tmp = tdsArray[i].innerText;
+                        let input = document.createElement('input');
+                        input.value = tmp;
+                        tdsArray[i].innerHTML = ``;
+                        tdsArray[i].appendChild(input);
                     }
                 }
                 console.log(tdsArray);
