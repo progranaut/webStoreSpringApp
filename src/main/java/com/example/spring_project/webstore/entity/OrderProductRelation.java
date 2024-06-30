@@ -31,4 +31,7 @@ public class OrderProductRelation {
     @Column(name = "relation_quantity")
     private int relationQuantity;
 
+    @Column(name = "relation_price")
+    private Double relationPrice;
+
 }

@@ -317,7 +317,7 @@ usersBtn.addEventListener('click', async (e) => {
                                 <td>${relation.productDto.id}</td>
                                 <td>${relation.productDto.imageUrl}</td>
                                 <td>${relation.productDto.name}</td>
-                                <td>${relation.productDto.price}</td>
+                                <td>${relation.relationPrice}</td>
                                 <td>${relation.productDto.serialNumber}</td>
                                 <td>${relation.relation}</td>
                             `;

@@ -66,6 +66,7 @@ async function displayUserOrders() {
     let ordersResponse = await fetch('http://localhost:8080/orders/all-current-user-orders');
     let orders = await ordersResponse.json();
     let ordersArray = Array.from(orders);
+    console.log(ordersArray);
     let ordersHead = document.createElement('div');
     ordersHead.innerHTML = '<h2>Оформленные заказы</h2>';
     userContent.appendChild(ordersHead);
@@ -96,7 +97,7 @@ async function displayUserOrders() {
             //relationTr.classList.add('order_relation');
             relationTr.innerHTML = `
                 <td class="td_prod_name">${relation.productDto.name}</td>
-                <td class="td_prod_price">${relation.productDto.price}</td>
+                <td class="td_prod_price">${relation.relationPrice}</td>
                 <td class="td_prod_rel">${relation.relation}</td>
             `;
             orderTable.appendChild(relationTr);

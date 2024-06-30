@@ -101,6 +101,7 @@ public class OrderService {
                                 .stream().map(relation -> OrderProductRelationDto.builder()
                                         .productDto(productService.toDto(relation.getProduct()))
                                         .relation(relation.getRelationQuantity())
+                                        .relationPrice(relation.getRelationPrice())
                                         .build())
                                 .collect(Collectors.toSet())));
         return orderDtoList;

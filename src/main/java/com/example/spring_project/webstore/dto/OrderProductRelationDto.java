@@ -17,4 +17,6 @@ public class OrderProductRelationDto {
 
     private int relation;
 
+    private Double relationPrice;
+
 }

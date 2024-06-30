@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -94,5 +95,17 @@ public class ProductService {
         //productDto.setCategoryDto(categoryService.toDto(product.getCategory()));
 
         return productDto;
+    }
+
+    public List<Product> findProductsById(List<UUID> uuids) {
+
+        return productRepository.findAllById(uuids);
+
+    }
+
+    public void changeProducts(List<Product> products) {
+
+        productRepository.saveAll(products);
+
     }
 }

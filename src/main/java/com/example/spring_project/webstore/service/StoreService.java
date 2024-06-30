@@ -175,10 +175,24 @@ public class StoreService {
                         .order(order)
                         .product(relation.getProduct())
                         .relationQuantity(relation.getQuantity())
+                        .relationPrice(relation.getProduct().getPrice())
                         .build())
                 .collect(Collectors.toList());
 
         orderProductRelationService.addRelations(orderProductRelations);
+
+        List<Product> products = productService.findProductsById(userProductRelations.stream()
+                .map(relation -> relation.getProduct().getId())
+                .collect(Collectors.toList()));
+
+        userProductRelations.stream().forEach(relation -> {
+            Product product = products.stream()
+                    .filter(prod -> relation.getProduct().getId().equals(prod.getId()))
+                    .findFirst().orElseThrow();
+            product.setAvailability(product.getAvailability() - relation.getQuantity());
+        });
+
+        productService.changeProducts(products);
 
         userProductRelationService.delAllUserProductRelation(userProductRelations);
 
