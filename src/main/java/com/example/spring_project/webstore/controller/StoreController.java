@@ -1,5 +1,6 @@
 package com.example.spring_project.webstore.controller;
 
+import com.example.spring_project.bot.MessageBot;
 import com.example.spring_project.webstore.dto.*;
 import com.example.spring_project.webstore.service.StoreService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,8 @@ import java.util.UUID;
 public class StoreController {
 
     private final StoreService storeService;
+
+    private final MessageBot messageBot;
 
 /*    @PostMapping("/add-in-basket")
     public void addProductInBasket(@RequestBody ProductDto productDto){
@@ -63,6 +66,7 @@ public class StoreController {
     @GetMapping("/current-user-name-roll")
     public /*UserNameAndRoleDto*/ ResponseEntity<?> userName() {
 
+        messageBot.sendMessage("Я смотрю окна у тебя уже чистые =)");
         return storeService.getCurrentUserNameAndRole();
 
     }

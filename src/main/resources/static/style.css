@@ -47,6 +47,10 @@ header {
     align-items: center;
 }
 
+.label a {
+    text-decoration: none;
+}
+
 .menu_cart_btn {
     padding: 10px;
     border-radius: 10px;
