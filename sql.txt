@@ -1,0 +1,222 @@
+create table if not exists security_users
+(
+    id       uuid not null
+        primary key,
+    email    varchar(45),
+    password varchar(220)
+);
+
+alter table security_users
+    owner to postgres;
+
+create table if not exists users
+(
+    id               uuid not null
+        primary key,
+    name             varchar(45),
+    phone_number     varchar(45),
+    address          varchar(200),
+    email            varchar(45),
+    security_user_id uuid
+        references security_users
+);
+
+alter table users
+    owner to postgres;
+
+create table if not exists products
+(
+    id            uuid not null
+        primary key,
+    serial_number varchar(45),
+    name          varchar(45),
+    price         real,
+    image_url     varchar(200),
+    availability  integer,
+    category_id   uuid,
+    description   varchar(300),
+    visibility    boolean
+);
+
+alter table products
+    owner to postgres;
+
+create table if not exists user_product_relation
+(
+    user_id    uuid
+        constraint product_quantity_user_id_fkey
+            references users,
+    product_id uuid
+        constraint product_quantity_product_id_fkey
+            references products,
+    quantity   integer,
+    id         uuid not null
+        constraint product_quantity_pkey
+            primary key
+);
+
+alter table user_product_relation
+    owner to postgres;
+
+create table if not exists roles
+(
+    id        uuid not null
+        primary key,
+    role_type varchar(45)
+);
+
+alter table roles
+    owner to postgres;
+
+create table if not exists user_role_relation
+(
+    user_id uuid
+        references security_users,
+    role_id uuid
+        references roles
+);
+
+alter table user_role_relation
+    owner to postgres;
+
+create table if not exists category
+(
+    id            uuid not null
+        primary key,
+    category_type varchar(45)
+);
+
+alter table category
+    owner to postgres;
+
+create table if not exists orders
+(
+    id           uuid not null
+        primary key,
+    order_number bigserial,
+    date         timestamp,
+    user_id      uuid
+        references users
+);
+
+alter table orders
+    owner to postgres;
+
+create table if not exists order_product_relation
+(
+    id                uuid not null
+        primary key,
+    order_id          uuid
+        references orders,
+    product_id        uuid
+        references products,
+    relation_quantity integer,
+    relation_price    real
+);
+
+alter table order_product_relation
+    owner to postgres;
+
+
+
+
+
+
+
+
+
+
+-- CREATE TABLE IF NOT EXISTS security_users (
+--     id uuid PRIMARY KEY,
+--     email VARCHAR (45),
+--     password VARCHAR (220)
+-- )
+
+-- CREATE TABLE IF NOT EXISTS roles (
+--     id uuid PRIMARY KEY,
+--     role_type VARCHAR (45)
+-- )
+
+-- CREATE TABLE IF NOT EXISTS user_role_relation (
+--     user_id uuid REFERENCES security_users (id),
+--     role_id uuid REFERENCES roles (id)
+-- )
+
+-- CREATE TABLE IF NOT EXISTS users (
+--     id uuid PRIMARY KEY,
+--     name VARCHAR (45),
+--     phone_number VARCHAR (45),
+--     address VARCHAR (200),
+--     email VARCHAR (45),
+--     security_user_id uuid REFERENCES security_users (id)
+-- )
+
+-- CREATE TABLE IF NOT EXISTS category (
+--     id uuid PRIMARY KEY,
+--     category_type VARCHAR (45)
+-- )
+
+-- CREATE TABLE IF NOT EXISTS products (
+--     id uuid PRIMARY KEY,
+--     serial_number VARCHAR (45),
+--     name VARCHAR (45),
+--     price REAL,
+--     image_url VARCHAR (200),
+--     availability INT,
+--     category_id uuid REFERENCES category (id),
+--     description VARCHAR (300),
+--     visibility boolean
+-- )
+
+-- CREATE TABLE IF NOT EXISTS orders (
+--     id uuid PRIMARY KEY,
+--     order_number BIGSERIAL,
+--     date timestamp,
+--     user_id uuid REFERENCES users (id)
+-- )
+
+-- CREATE TABLE IF NOT EXISTS order_product_relation (
+--     id uuid PRIMARY KEY,
+--     order_id uuid REFERENCES orders (id),
+--     product_id uuid REFERENCES products (id),
+--     relation_quantity INT,
+--     relation_price REAL
+-- )
+
+-- CREATE TABLE IF NOT EXISTS user_product_relation (
+--     id uuid PRIMARY KEY,
+--     user_id uuid REFERENCES users (id),
+--     product_id uuid REFERENCES products (id),
+--     quantity INT
+-- )
+
+
+
+-- INSERT INTO security_users (id, email, password)
+-- VALUES ('7940ea8e-19ba-4abc-993e-2b3e4fa87415', 'test3@mail.ru', '$2a$10$RUKM4ZROE.wcHrFtLJh4sO8ffZPCXjKEc1/nyZiKjuoLHdXuaDvvC')
+
+-- INSERT INTO roles (id, role_type)
+-- VALUES ('15a8a49a-6771-4da0-a560-aebd3e510a42', 'ROLE_ADMIN')
+
+-- INSERT INTO user_role_relation (user_id, role_id)
+-- VALUES ('7940ea8e-19ba-4abc-993e-2b3e4fa87415', '15a8a49a-6771-4da0-a560-aebd3e510a42');
+
+-- ALTER TABLE product_quantity ADD COLUMN id uuid PRIMARY KEY
+
+-- ALTER TABLE products ADD COLUMN availability INT
+
+-- ALTER TABLE products ADD COLUMN category_id uuid REFERENCES category (id)
+
+-- ALTER TABLE products DROP COLUMN category
+
+-- ALTER TABLE products ADD COLUMN category_id uuid
+
+-- ALTER TABLE products ADD COLUMN description VARCHAR (300)
+
+-- DROP TABLE orders
+
+-- ALTER TABLE order_product_relation ADD COLUMN relation_price BIGINT
+
+-- ALTER TABLE  order_product_relation ALTER COLUMN relation_price TYPE REAL
+
+-- ALTER TABLE products ADD COLUMN visibility boolean
