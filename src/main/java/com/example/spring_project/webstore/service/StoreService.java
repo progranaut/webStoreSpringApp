@@ -1,5 +1,7 @@
 package com.example.spring_project.webstore.service;
 
+import com.example.spring_project.bot.MessageBot;
+import com.example.spring_project.bot.service.MessageBotService;
 import com.example.spring_project.security.dto.RoleDto;
 import com.example.spring_project.security.dto.SecurityUserDto;
 import com.example.spring_project.security.service.RoleService;
@@ -30,6 +32,8 @@ public class StoreService {
     private final OrderProductRelationService orderProductRelationService;
 
     private final CategoryService categoryService;
+
+    private final MessageBotService messageBotService;
 
     public ResponseEntity<?> addProductInBasket(UUID id) {
 
@@ -101,7 +105,7 @@ public class StoreService {
                         .id(UUID.fromString("24440326-f4e5-4db6-a351-a116a00320d8"))
                 .build());
 
-        System.out.println(namePass[0].split("=")[1]);
+        //System.out.println(namePass[0].split("=")[1]);
 
         userService.addUser(UserDto.builder()
                         .name(namePass[0].split("=")[1])
@@ -112,6 +116,21 @@ public class StoreService {
                                 .roles(roleDtos)
                                 .build())
                 .build());
+
+    }
+
+    public void userRegistrationV2(UserDto userDto) {
+
+        userDto.getSecurityUserDto().setRoles(roleService.getUserRole().stream()
+                .map(role -> RoleDto.builder()
+                        .id(role.getId())
+                        .roleType(role.getRoleType().toString())
+                        .build())
+                .collect(Collectors.toSet()));
+
+        System.out.println(userDto);
+
+        userService.addUser(userDto);
 
     }
 
@@ -195,6 +214,8 @@ public class StoreService {
         productService.changeProducts(products);
 
         userProductRelationService.delAllUserProductRelation(userProductRelations);
+
+        messageBotService.sendOrderMessage(user, order, orderProductRelations);
 
         return new ResponseEntity<>(HttpStatus.OK);
 

@@ -1,5 +1,6 @@
-package com.example.spring_project.bot;
+package com.example.spring_project.bot.config;
 
+import com.example.spring_project.bot.MessageBot;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.TelegramBotsApi;

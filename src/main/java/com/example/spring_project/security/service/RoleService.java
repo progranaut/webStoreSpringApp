@@ -27,9 +27,18 @@ public class RoleService {
     }
 
     public Set<Role> getRoles(List<UUID> rolesIds) {
+
         return rolesIds.stream()
                 .map(roleRepository::findById)
                 .map(Optional::get)
+                .collect(Collectors.toSet());
+
+    }
+
+    public Set<Role> getUserRole() {
+
+        return roleRepository.findAll().stream()
+                .filter(role -> role.getRoleType().toString().equals("ROLE_USER"))
                 .collect(Collectors.toSet());
 
     }

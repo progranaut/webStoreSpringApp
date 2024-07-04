@@ -5,6 +5,7 @@ import com.example.spring_project.security.dto.SecurityUserDto;
 import com.example.spring_project.security.entity.Role;
 import com.example.spring_project.security.entity.SecurityUser;
 import com.example.spring_project.security.mapper.SecurityUserMapper;
+import com.example.spring_project.security.service.RoleService;
 import com.example.spring_project.security.service.SecurityUserService;
 import com.example.spring_project.webstore.dto.UserDto;
 import com.example.spring_project.webstore.dto.UserNameAndRoleDto;

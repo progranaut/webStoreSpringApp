@@ -33,16 +33,12 @@ public class OrderService {
 
         Order order = Order.builder()
                 .id(UUID.randomUUID())
-                //.orderNumber(1l)
                 .localDateTime(LocalDateTime.now())
                 .user(user)
                 .build();
-        System.out.println("уид");
-        System.out.println(order.getId());
-        //return orderRepository.save(order);
         orderRepository.saveOrder(order.getId(), order.getLocalDateTime(), order.getUser().getId());
-        System.out.println("после запроса");
-        return order;
+
+        return orderRepository.findById(order.getId()).orElseThrow();
     }
 
     public ResponseEntity<?> getOrderByUserId(UUID id) {

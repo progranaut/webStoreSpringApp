@@ -5,16 +5,16 @@ let productBtn = document.getElementById('product_btn');
 let categoryBtn = document.getElementById('category_button');
 let usersBtn = document.getElementById('user_btn');
 let imageBtn = document.getElementById('image_btn');
-let orderBtn = document.getElementById('order_btn');
-
-//Страница заказы
-orderBtn.addEventListener('click', (e)=>{
-    fetch('http://localhost:8080/orders/all-orders').then(async response => {
-        let orders = await response.json();
-        let ordersArray = Array.from(orders);
-        console.log(ordersArray);
-    });
-});
+// let orderBtn = document.getElementById('order_btn');
+//
+// //Страница заказы
+// orderBtn.addEventListener('click', (e)=>{
+//     fetch('http://localhost:8080/orders/all-orders').then(async response => {
+//         let orders = await response.json();
+//         let ordersArray = Array.from(orders);
+//         console.log(ordersArray);
+//     });
+// });
 
 
 //Страница категории
@@ -56,12 +56,14 @@ productBtn.addEventListener('click', async (e) => {
             <input type="text" name="name" id="name">
             <label for="price">Цена: </label>
             <input type="text" name="price" id="price">
+            <br>
             <label for="categories">Категория: </label>
             <select id="categories"></select>
             <label for="description">Описание: </label>
             <input type="text" name="description" id="description">
             <label for="quantity">Количество: </label>
             <input type="text" name="availability" id="availability">
+            <br>
             <button id="add_product_btn">Добавить</button>
         </form>
         <h3>Товары: </h3>
@@ -269,7 +271,6 @@ usersBtn.addEventListener('click', async (e) => {
     fetch('http://localhost:8080/users/all').then( async response => {
         let users = await response.json();
         let usersArray = Array.from(users);
-        console.log(usersArray);
         usersArray.forEach(user => {
             let tr = document.createElement('tr');
             tr.innerHTML = `
@@ -289,11 +290,10 @@ usersBtn.addEventListener('click', async (e) => {
                 fetch(request).then(async response=>{
                     let orders = await response.json();
                     let ordersArray = Array.from(orders);
-                    console.log(orders);
-                    console.log(ordersArray);
                     ordersArray.forEach(order => {
                         let orderDiv = document.createElement('div');
-                        orderDiv.classList.add('order');
+                        //orderDiv.classList.add('order');
+                        orderDiv.classList.add('user_order');
                         orderDiv.innerHTML = `
                             <table>
                                 <tbody>

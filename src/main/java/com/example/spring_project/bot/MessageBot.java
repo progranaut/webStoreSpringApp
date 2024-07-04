@@ -16,7 +16,17 @@ public class MessageBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
+        if (!update.hasMessage() || !update.getMessage().hasText()) {
+            return;
+        }
+        Long chatId = update.getMessage().getChatId();
+        String message = update.getMessage().getText();
+        if (message.equals("/start")) {
+            String userName = update.getMessage().getChat().getUserName();
+            startCommand(chatId, userName);
+        } else {
+            undefinedCommand(chatId);
+        }
     }
 
     @Override
@@ -24,9 +34,18 @@ public class MessageBot extends TelegramLongPollingBot {
         return "java_spring_store_bot";
     }
 
-    public void sendMessage(String text) {
-        String chatIdStr = String.valueOf(2012903675l);
-        System.out.println(chatIdStr);
+    private void startCommand(Long chatId, String userName) {
+        String text = String.format("Привет, %s!", userName);
+        sendMessage(chatId, text);
+    }
+
+    private void undefinedCommand(Long chatId) {
+        String text = "Что-то новенькое? Я такую команду еще не изучил. =/";
+        sendMessage(chatId, text);
+    }
+
+    public void sendMessage(Long chatId, String text) {
+        String chatIdStr = String.valueOf(chatId);
         var sendMessage = new SendMessage(chatIdStr, text);
         try {
             execute(sendMessage);

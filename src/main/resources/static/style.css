@@ -51,6 +51,19 @@ header {
     text-decoration: none;
 }
 
+input {
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px inset;
+    outline: none;
+    background-color: aliceblue;
+    margin-bottom: 10px;
+}
+
+label {
+
+}
+
 .menu_cart_btn {
     padding: 10px;
     border-radius: 10px;
@@ -91,6 +104,28 @@ header {
     text-decoration: none;
     background-color: rgb(252, 106, 144);
     color: white;
+}
+
+#log_btn {
+    align-items: center;
+    padding: 10px;
+    height: 80%;
+    border-radius: 10px;
+    background-color: #8ada36;
+    color: white;
+    margin-top: 10px;
+    border: 0;
+}
+
+#reg_btn {
+    align-items: center;
+    padding: 10px;
+    height: 80%;
+    border-radius: 10px;
+    background-color: #8ada36;
+    color: white;
+    margin-top: 10px;
+    border: 0;
 }
 
 #user div button {
@@ -143,11 +178,11 @@ header {
     align-items: center;
     width: 250px;
     height: 350px;
-
     border-radius: 10px;
     padding: 15px;
     margin: 20px 20px 20px 20px;
     box-shadow: 0px 0px 7px rgb(38, 38, 86);
+    color: #3b3b3b;
 }
 
 .product_name {
@@ -265,29 +300,48 @@ header {
 
 /* admin */
 
+
+#main_content {
+    color: #3b3b3b;
+}
+
 #admin_panel {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
 }
 
 #admin_menu {
-    background-color: #cafff9;
+    display: flex;
 }
 
 #admin_content {
-    background-color: #f0fffe;
+    padding-top: 20px;
+}
+
+.admin_panel_btn {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(109, 108, 221);
+    color: white;
+    border: 0px;
+    margin: 2px;
 }
 
 .content_table {
-    border: midnightblue 1px dotted;
+    border: #7d7d7d 1px dotted;
 }
 
 .content_table tr {
-    border: midnightblue 1px dotted;
+    border: #7d7d7d 1px dotted;
 }
 
 .content_table tr td {
-    border: midnightblue 1px dotted;
+    border: #7d7d7d 1px dotted;
     padding: 5px;
 }
 
@@ -322,12 +376,40 @@ header {
     margin: 20px;
 }
 
+#login_register_btn {
+    display: flex;
+    align-items: center;
+}
+
+#login_register_btn button {
+    margin: 0px 5px 0px 5px;
+}
+
+#login_register_btn p {
+    font-size: xx-large;
+    font-weight: bold;
+}
+
 #login_btn {
+    display: flex;
+    align-items: center;
     height: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(109, 108, 221);
+    color: white;
+    border: 0px;
 }
 
 #register_btn {
+    display: flex;
+    align-items: center;
     height: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(109, 108, 221);
+    color: white;
+    border: 0px;
 }
 
 .form_user_info {
@@ -353,11 +435,6 @@ header {
     justify-content: space-between;
 }
 
-/*.order_relation {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*}*/
-
 .order_table {
     width: 100%;
     margin-top: 10px;
@@ -381,4 +458,16 @@ header {
 
 .order_relation p {
     text-align: center;
+}
+
+#add_product {
+    margin-bottom: 20px;
+}
+
+.back_in_mag {
+
+}
+
+.admin {
+    font-size: xx-large;
 }

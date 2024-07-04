@@ -21,8 +21,6 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    private final MessageBot messageBot;
-
 /*    @PostMapping("/add-in-basket")
     public void addProductInBasket(@RequestBody ProductDto productDto){
 
@@ -66,7 +64,6 @@ public class StoreController {
     @GetMapping("/current-user-name-roll")
     public /*UserNameAndRoleDto*/ ResponseEntity<?> userName() {
 
-        messageBot.sendMessage("Я смотрю окна у тебя уже чистые =)");
         return storeService.getCurrentUserNameAndRole();
 
     }
@@ -80,6 +77,14 @@ public class StoreController {
     public void userRegistration(@RequestBody String request, HttpServletResponse response) throws IOException {
         storeService.userRegistration(request);
         response.sendRedirect("/login");
+    }
+
+    @PostMapping("/user-registration-v2")
+    public void userRegistrationV2(@RequestBody UserDto userDto, HttpServletResponse response) throws IOException {
+
+        storeService.userRegistrationV2(userDto);
+        //response.sendRedirect("/login");
+
     }
 
     @GetMapping("/current-user")
