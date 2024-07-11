@@ -53,7 +53,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/home", "/style.css", "/home.js","/menu.js", "/cart.js", "/login.js", "/img/**", "/files/all-image", "/store/user-registration", "/store/user-registration-v2", "/store/all-products", "/store/current-user-name-roll").permitAll()
+                        .requestMatchers("/", "/home", "/style.css", "/home.js","/menu.js", "/cart.js", "/login.js", "/img/**", "/files/all-image", "/store/user-registration", "/store/user-registration-v2", "/store/all-products", "/store/current-user-name-roll", "/store/init").permitAll()
                         .requestMatchers("/roles/**", "/admin", "/users/add", "/users/all").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

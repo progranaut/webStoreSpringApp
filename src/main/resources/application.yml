@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: spring-sec
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 12345
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+bot:
+  token: 7255984413:AAFCRJUSa6iS20nbRwtJKelU8uoXqGDvwpI
+admin:
+  id: 494033699

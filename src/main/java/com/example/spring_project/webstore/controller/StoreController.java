@@ -1,16 +1,24 @@
 package com.example.spring_project.webstore.controller;
 
+//import com.example.spring_project.bot.MessageBot;
 import com.example.spring_project.bot.MessageBot;
+import com.example.spring_project.security.dto.RoleDto;
+import com.example.spring_project.security.dto.SecurityUserDto;
+import com.example.spring_project.security.service.RoleService;
 import com.example.spring_project.webstore.dto.*;
 import com.example.spring_project.webstore.service.StoreService;
+import com.example.spring_project.webstore.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,12 +29,47 @@ public class StoreController {
 
     private final StoreService storeService;
 
-/*    @PostMapping("/add-in-basket")
-    public void addProductInBasket(@RequestBody ProductDto productDto){
+    private final UserService userService;
 
-        storeService.addProductInBasket(productDto);
+    private final RoleService roleService;
 
-    }*/
+//    private final MessageBot messageBot;
+//
+//    @Value("${admin.id}")
+//    private String adminId;
+
+
+    @GetMapping("/init")
+    public void init() {
+
+//        RoleDto roleDto = RoleDto.builder()
+//                .roleType("ROLE_USER")
+//                .build();
+//
+//        RoleDto roleDto1 = RoleDto.builder()
+//                .roleType("ROLE_ADMIN")
+//                .build();
+//
+//        roleService.addRole(roleDto);
+//        roleService.addRole(roleDto1);
+
+        HashSet<RoleDto> rolesDto = new HashSet<>();
+        rolesDto.add(RoleDto.builder()
+                        .id(UUID.fromString("c6aac0c3-3c76-4c40-a664-63a6eefea03a"))
+                .build());
+
+        UserDto userDto = UserDto.builder()
+                .name("Саша")
+                .securityUserDto(SecurityUserDto.builder()
+                        .email("sasha@mail.ru")
+                        .password("12345")
+                        .roles(rolesDto)
+                        .build())
+                .build();
+
+        userService.addUser(userDto);
+
+    }
 
     @PostMapping("/add-in-basket/{id}")
     public ResponseEntity<?> addProductInBasket(@PathVariable UUID id){
@@ -63,6 +106,8 @@ public class StoreController {
 
     @GetMapping("/current-user-name-roll")
     public /*UserNameAndRoleDto*/ ResponseEntity<?> userName() {
+
+        //messageBot.sendMessage(Long.valueOf(adminId), "Привет!");
 
         return storeService.getCurrentUserNameAndRole();
 
