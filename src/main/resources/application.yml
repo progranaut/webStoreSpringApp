@@ -12,6 +12,5 @@ spring:
       ddl-auto: none
 
 bot:
-  token: 7255984413:AAFCRJUSa6iS20nbRwtJKelU8uoXqGDvwpI
-admin:
-  id: 494033699
+  uri: http://194.87.237.31:8087/send
+  content-type: application/json
