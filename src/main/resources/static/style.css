@@ -298,6 +298,76 @@ label {
     flex-direction: column;
 }
 
+#footer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgb(109, 108, 221);
+}
+
+#call_back_div {
+    display: flex;
+    padding: 5px;
+}
+
+#call_back_form {
+    display: grid;
+    grid-template-areas: "nm nm ph ph"
+    "ms ms ms cb";
+    grid-template-rows: 40% 60%;
+}
+
+#call_back_form input {
+    margin: 3px;
+}
+
+#name {
+    grid-area: nm;
+}
+#phone {
+    grid-area: ph;
+}
+#message {
+    grid-area: ms;
+}
+#call_order_btn {
+    grid-area: cb;
+    border-radius: 10px;
+    border: 0;
+    background-color: #8ada36;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    margin: 3px;
+}
+
+#store_info{
+    color: white;
+    margin-left: 15px;
+    font-size: medium;
+    font-weight: bold;
+}
+
+#stack {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: white;
+}
+
+#stack p {
+    margin-right: 20px;
+    font-size: xx-large;
+}
+
+#stack ul {
+    margin-left: 20px;
+}
+
+#stack li {
+    font-size: small;
+}
+
 /* admin */
 
 
@@ -330,6 +400,7 @@ label {
     color: white;
     border: 0px;
     margin: 2px;
+    cursor: pointer;
 }
 
 .content_table {
@@ -461,7 +532,10 @@ label {
 }
 
 #add_product {
-    margin-bottom: 20px;
+    margin: 10px 0 20px 0;
+    border-radius: 10px;
+    box-shadow: 0px 0px 7px rgb(38, 38, 86);
+    padding: 15px
 }
 
 .back_in_mag {

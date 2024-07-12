@@ -22,6 +22,7 @@ public class AlterMessageBot {
     String contentType;
 
     public void sendMessage(String message) {
+
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(uri))
@@ -34,25 +35,6 @@ public class AlterMessageBot {
         } catch (Exception e) {
             System.out.println(e);
         }
-    }
-
-    public void sendOrderInfo(User user, Order order, List<OrderProductRelation> orderProductRelations) {
-
-        StringBuilder relations = new StringBuilder();
-        orderProductRelations.stream().forEach(relation -> {
-            relations.append(relation.getProduct().getName());
-            relations.append(" - ");
-            relations.append(relation.getRelationPrice());
-            relations.append(" руб. - ");
-            relations.append(relation.getRelationQuantity());
-            relations.append(" шт.\\n");
-        });
-
-        String text = "Новый заказ номер: %d\\nПользователь: %s\\nТелефон: %s\\nАдрес: %s\\nТовары:\\n%s\\n";
-
-        String message = String.format(text, order.getOrderNumber(), user.getName(), user.getPhoneNumber(), user.getAddress(), relations);
-
-        sendMessage(message);
 
     }
 

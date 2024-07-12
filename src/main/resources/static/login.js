@@ -40,10 +40,15 @@ registerBtn.addEventListener('click', (e) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(user)
+        }).then(response => {
+            if (response.status === 200) {
+                window.location.replace("http://localhost:8080/login");
+            }
         });
     });
 
 });
+
 loginBtn.addEventListener('click', (e) => {
 
     logReg.innerHTML = `

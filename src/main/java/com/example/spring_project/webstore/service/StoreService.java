@@ -1,6 +1,7 @@
 package com.example.spring_project.webstore.service;
 
 import com.example.spring_project.alterbot.AlterMessageBot;
+import com.example.spring_project.alterbot.service.MessageService;
 import com.example.spring_project.security.dto.RoleDto;
 import com.example.spring_project.security.dto.SecurityUserDto;
 import com.example.spring_project.security.service.RoleService;
@@ -32,9 +33,9 @@ public class StoreService {
 
     private final CategoryService categoryService;
 
-    //private final MessageBotService messageBotService;
+    private final MessageService messageService;
 
-    private final AlterMessageBot alterMessageBot;
+
 
     public ResponseEntity<?> addProductInBasket(UUID id) {
 
@@ -218,7 +219,7 @@ public class StoreService {
 
         //messageBotService.sendOrderMessage(user, order, orderProductRelations);
 
-        alterMessageBot.sendOrderInfo(user, order, orderProductRelations);
+        messageService.sendOrderInfo(user, order, orderProductRelations);
 
         return new ResponseEntity<>(HttpStatus.OK);
 
