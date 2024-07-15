@@ -1,7 +1,6 @@
 package com.example.spring_project.webstore.service;
 
-import com.example.spring_project.alterbot.AlterMessageBot;
-import com.example.spring_project.alterbot.service.MessageService;
+import com.example.spring_project.messagebot.service.MessageService;
 import com.example.spring_project.security.dto.RoleDto;
 import com.example.spring_project.security.dto.SecurityUserDto;
 import com.example.spring_project.security.service.RoleService;
@@ -169,20 +168,20 @@ public class StoreService {
 
         User user = userService.getCurrentUser();
 
-        if (user.getName().equals("") || user.getName() == null) {
+        if (user.getName() == null || user.getName().equals("")) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (user.getPhoneNumber().equals("") || user.getPhoneNumber() == null) {
+        if (user.getPhoneNumber() == null || user.getPhoneNumber().equals("")) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
 
         System.out.println(user.getEmail());
-        if (user.getEmail().equals("") || user.getEmail() == null) {
+        if (user.getEmail() == null || user.getEmail().equals("")) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        if (user.getAddress().equals("") || user.getAddress() == null) {
+        if (user.getAddress() == null || user.getAddress().equals("")) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
 

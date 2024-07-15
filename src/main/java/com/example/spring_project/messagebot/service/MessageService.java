@@ -1,11 +1,13 @@
-package com.example.spring_project.alterbot.service;
+package com.example.spring_project.messagebot.service;
 
-import com.example.spring_project.alterbot.AlterMessageBot;
-import com.example.spring_project.alterbot.dto.CallOrderDto;
+import com.example.spring_project.messagebot.dto.CallOrderDto;
+import com.example.spring_project.messagebot.dto.MessageDto;
+import com.example.spring_project.messagebot.feign.FeignImpl;
 import com.example.spring_project.webstore.entity.Order;
 import com.example.spring_project.webstore.entity.OrderProductRelation;
 import com.example.spring_project.webstore.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +16,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageService {
 
-    private final AlterMessageBot alterMessageBot;
+    private final FeignImpl feign;
+
+    @Value("${bot.key}")
+    private String key;
 
     public void sendOrderInfo(User user, Order order, List<OrderProductRelation> orderProductRelations) {
 
@@ -29,10 +34,12 @@ public class MessageService {
         });
 
         String text = "Новый заказ номер: %d\\nПользователь: %s\\nТелефон: %s\\nАдрес: %s\\nТовары:\\n%s\\n";
-
         String message = String.format(text, order.getOrderNumber(), user.getName(), user.getPhoneNumber(), user.getAddress(), relations);
 
-        alterMessageBot.sendMessage(message);
+        feign.sendMessage(MessageDto.builder()
+                        .text(message)
+                        .key(key)
+                .build());
 
     }
 
@@ -44,7 +51,10 @@ public class MessageService {
         message.append("Имя: ").append(callOrderDto.getName()).append("\\n");
         message.append("Описание: \\n").append(callOrderDto.getMessage()).append("\\n");
 
-        alterMessageBot.sendMessage(message.toString());
+        feign.sendMessage(MessageDto.builder()
+                        .text(message.toString())
+                        .key(key)
+                .build());
 
     }
 }

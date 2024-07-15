@@ -1,7 +1,7 @@
-package com.example.spring_project.alterbot.controller;
+package com.example.spring_project.messagebot.controller;
 
-import com.example.spring_project.alterbot.dto.CallOrderDto;
-import com.example.spring_project.alterbot.service.MessageService;
+import com.example.spring_project.messagebot.dto.CallOrderDto;
+import com.example.spring_project.messagebot.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

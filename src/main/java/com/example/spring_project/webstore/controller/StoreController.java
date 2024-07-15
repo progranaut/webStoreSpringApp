@@ -31,12 +31,6 @@ public class StoreController {
 
     private final RoleService roleService;
 
-//    private final MessageBot messageBot;
-//
-//    @Value("${admin.id}")
-//    private String adminId;
-
-
     @GetMapping("/init")
     public void init() {
 

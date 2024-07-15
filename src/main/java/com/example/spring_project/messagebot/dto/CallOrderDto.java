@@ -1,4 +1,4 @@
-package com.example.spring_project.alterbot.dto;
+package com.example.spring_project.messagebot.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
