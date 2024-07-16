@@ -368,6 +368,22 @@ label {
     font-size: small;
 }
 
+#start_order {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #8ada36;
+    color: white;
+    border: 0px;
+}
+
+#confirm_order {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #8ada36;
+    color: white;
+    border: 0px;
+}
+
 /* admin */
 
 

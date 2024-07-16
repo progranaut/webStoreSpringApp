@@ -16,7 +16,6 @@ import java.util.UUID;
 @Builder
 @Table(name = "security_users")
 public class SecurityUser {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -32,5 +31,4 @@ public class SecurityUser {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
-
 }

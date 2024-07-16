@@ -97,9 +97,7 @@ public class StoreController {
     }
 
     @GetMapping("/current-user-name-roll")
-    public /*UserNameAndRoleDto*/ ResponseEntity<?> userName() {
-
-        //messageBot.sendMessage(Long.valueOf(adminId), "Привет!");
+    public ResponseEntity<?> userName() {
 
         return storeService.getCurrentUserNameAndRole();
 
@@ -120,7 +118,6 @@ public class StoreController {
     public void userRegistrationV2(@RequestBody UserDto userDto, HttpServletResponse response) throws IOException {
 
         storeService.userRegistrationV2(userDto);
-        //response.sendRedirect("/login");
 
     }
 

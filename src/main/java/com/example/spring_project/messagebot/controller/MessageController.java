@@ -3,6 +3,7 @@ package com.example.spring_project.messagebot.controller;
 import com.example.spring_project.messagebot.dto.CallOrderDto;
 import com.example.spring_project.messagebot.service.MessageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,6 @@ public class MessageController {
 
     @PostMapping("/call-order")
     public void callOrder(@RequestBody CallOrderDto callOrderDto) {
-
         messageService.callOrder(callOrderDto);
-
     }
-
 }

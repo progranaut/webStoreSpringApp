@@ -22,9 +22,8 @@ public class MessageService {
     private String key;
 
     public void sendOrderInfo(User user, Order order, List<OrderProductRelation> orderProductRelations) {
-
         StringBuilder relations = new StringBuilder();
-        orderProductRelations.stream().forEach(relation -> {
+        orderProductRelations.forEach(relation -> {
             relations.append(relation.getProduct().getName());
             relations.append(" - ");
             relations.append(relation.getRelationPrice());
@@ -33,18 +32,17 @@ public class MessageService {
             relations.append(" шт.\\n");
         });
 
-        String text = "Новый заказ номер: %d\\nПользователь: %s\\nТелефон: %s\\nАдрес: %s\\nТовары:\\n%s\\n";
-        String message = String.format(text, order.getOrderNumber(), user.getName(), user.getPhoneNumber(), user.getAddress(), relations);
+        String textTemplate = "Новый заказ номер: %d\nПользователь: %s\nТелефон: %s\nАдрес: %s\nТовары:\n%s\n";
+        String message = String.format(textTemplate, order.getOrderNumber(), user.getName(), user.getPhoneNumber(),
+                user.getAddress(), relations);
 
         feign.sendMessage(MessageDto.builder()
                         .text(message)
                         .key(key)
                 .build());
-
     }
 
     public void callOrder(CallOrderDto callOrderDto) {
-
         StringBuilder message = new StringBuilder();
         message.append("Заказ звонка! \\n");
         message.append("Номер телефона: ").append(callOrderDto.getPhone()).append("\\n");
@@ -55,6 +53,5 @@ public class MessageService {
                         .text(message.toString())
                         .key(key)
                 .build());
-
     }
 }

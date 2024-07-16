@@ -45,31 +45,39 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-
-        var realmName = "localhost";
-        var entryPoint = new BasicAuthenticationEntryPoint();
-        entryPoint.setRealmName(realmName);
-
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/home", "/style.css", "/home.js","/menu.js", "/cart.js", "/login.js", "/footer.js", "/img/**", "/files/all-image", "/store/user-registration", "/store/user-registration-v2", "/store/all-products", "/store/current-user-name-roll", "/store/init", "/message/call-order").permitAll()
-                        .requestMatchers("/roles/**", "/admin", "/users/add", "/users/all").hasRole("ADMIN")
+                        .requestMatchers(
+                                "/",
+                                "/home",
+                                "/store/user-registration-v2",
+                                "/store/all-products",
+                                "/store/current-user-name-roll",
+                                "/message/call-order",
+                                "/style.css",
+                                "/js/**",
+                                "/img/**")
+                        .permitAll()
+                        .requestMatchers(
+                                "/roles/**",
+                                "/admin",
+                                "/users/add",
+                                "/users/all",
+                                "/products/**",
+                                "/orders/all-orders",
+                                "/orders/all-user-order/**",
+                                "/files/**",
+                                "/category/**")
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .successHandler(successHandler())
-                        .permitAll()/*Customizer.withDefaults()*/)
+                        .permitAll())
                 .userDetailsService(userDetailsService)
                 .logout(LogoutConfigurer::permitAll);
-
-//                .httpBasic(httpBasic ->
-//                        httpBasic.realmName(realmName)
-//                                .authenticationEntryPoint(entryPoint)
-//                                .authenticationDetailsSource(new WebAuthenticationDetailsSource())
-//                                .securityContextRepository(new RequestAttributeSecurityContextRepository()));
-
         return http.build();
     }
 

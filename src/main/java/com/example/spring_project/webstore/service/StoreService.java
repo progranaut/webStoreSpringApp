@@ -34,8 +34,6 @@ public class StoreService {
 
     private final MessageService messageService;
 
-
-
     public ResponseEntity<?> addProductInBasket(UUID id) {
 
         User user = userService.getCurrentUser();
@@ -51,7 +49,6 @@ public class StoreService {
         }
 
         return userProductRelationService.addUserProductRelation(user, product);
-
     }
 
     public ResponseEntity<?> deleteProductFromBasket(UUID id) {
@@ -69,7 +66,6 @@ public class StoreService {
         }
 
         return userProductRelationService.delUserProductRelation(user, product);
-
     }
 
     public List<UserProductRelationDto> getAllProductsInBasket() {
@@ -86,10 +82,9 @@ public class StoreService {
                         .quantity(userProductRelation.getQuantity())
                         .build())
                 .collect(Collectors.toList());
-
     }
 
-    public /*UserNameAndRoleDto*/ ResponseEntity<?> getCurrentUserNameAndRole() {
+    public ResponseEntity<?> getCurrentUserNameAndRole() {
         return userService.getCurrentUserNameAndRole();
     }
 
@@ -106,8 +101,6 @@ public class StoreService {
                         .id(UUID.fromString("24440326-f4e5-4db6-a351-a116a00320d8"))
                 .build());
 
-        //System.out.println(namePass[0].split("=")[1]);
-
         userService.addUser(UserDto.builder()
                         .name(namePass[0].split("=")[1])
                         .email(namePass[1].split("=")[1])
@@ -117,7 +110,6 @@ public class StoreService {
                                 .roles(roleDtos)
                                 .build())
                 .build());
-
     }
 
     public void userRegistrationV2(UserDto userDto) {
@@ -132,13 +124,10 @@ public class StoreService {
         System.out.println(userDto);
 
         userService.addUser(userDto);
-
     }
 
     public UserDto getCurrentUserDto() {
-
         return userService.getCurrentUserDto();
-
     }
 
     public ResponseEntity<?> getProductInBasket(UUID productId) {
@@ -161,7 +150,6 @@ public class StoreService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         }
-
     }
 
     public ResponseEntity<?> addOrder() {
@@ -216,18 +204,13 @@ public class StoreService {
 
         userProductRelationService.delAllUserProductRelation(userProductRelations);
 
-        //messageBotService.sendOrderMessage(user, order, orderProductRelations);
-
         messageService.sendOrderInfo(user, order, orderProductRelations);
 
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     public List<CategoryDto> getAllProductCategories() {
-
         return categoryService.getAllProductCategories();
-
     }
 
     public void addBasket(List<UserProductRelationDto> uprd) {

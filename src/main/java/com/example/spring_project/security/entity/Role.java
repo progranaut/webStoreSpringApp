@@ -17,7 +17,6 @@ import java.util.UUID;
 @Builder
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

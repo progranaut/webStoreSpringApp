@@ -110,12 +110,14 @@ async function displayProductInCart() {
 
     let orderBtn = document.createElement('button');
     orderBtn.innerText = "Оформить заказ";
+    orderBtn.setAttribute('id','start_order');
     orderBtn.addEventListener('click', async (e)=>{
         orderBtn.style.visibility = "hidden";
         let dispUser = await displayUser();
         cartContent.appendChild(dispUser);
         let confirmBtn = document.createElement('button');
         confirmBtn.innerText = "Подтвердить заказ";
+        confirmBtn.setAttribute('id','confirm_order');
         confirmBtn.addEventListener('click', (e) => {
             fetch('http://localhost:8080/store/add-order').then(response => {
                 if (response.status === 200) {

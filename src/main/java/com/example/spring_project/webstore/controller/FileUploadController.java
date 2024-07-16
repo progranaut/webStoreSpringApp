@@ -22,9 +22,8 @@ public class FileUploadController {
     private final FileSystemStorageService fileSystemStorageService;
 
     @PostMapping("/upload")
-    public void handleFileUpload(@RequestParam("file")MultipartFile file /*,HttpServletResponse response*/) /*throws IOException*/ {
+    public void handleFileUpload(@RequestParam("file")MultipartFile file) {
         fileSystemStorageService.store(file);
-        //response.sendRedirect("/admin");
     }
 
     @GetMapping("/all-image")

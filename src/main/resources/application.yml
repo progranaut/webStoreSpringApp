@@ -16,3 +16,6 @@ bot:
 
 feign:
   url: http://194.87.237.31:8087
+
+storage:
+  url: src\\main\\resources\\static\\img
